@@ -9,22 +9,25 @@
 #define BANK_H_
 
 struct User {
-	short user_ID;
-	short personal_number;
-	char firstname;
-	char lastname;
-	char adress;
-	short userType;
-	char password;
-	short active;
+	char user_ID[10];
+	char personal_number[10];
+	char username[100];
+	char firstname[100];
+	char lastname[100];
+	char adress[100];
+	char userType[10];
+	char password[100];
+	char active[10];
+
 };
+
 
 struct Account {
 	short account_ID;
-	short account_number;
-	short user_ID;
+	int account_number;
 	int money;
 	short active;
+	short user_ID;
 };
 
 struct Transaction {
