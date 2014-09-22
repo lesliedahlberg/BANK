@@ -17,6 +17,7 @@ int main(){
 	//char c;
 
 	char filePath[500] = "/Users/lesliedahlberg/Documents/DVA117/BANK/BANK/data.xml";
+	char targetFilePath[500] = "/Users/lesliedahlberg/Documents/DVA117/BANK/BANK/data_written.xml";
 	//file = fopen("/data.xml", "r");
 
 	struct User *user;
@@ -44,7 +45,9 @@ int main(){
 	}*/
 
 	readXML(filePath, &user, &account, &transaction, &request, &userCount, &accountCount, &transactionCount, &requestCount);
-	//printf("%s\n", (user)[0].password);
+
+	writeToXML(targetFilePath, user, account, transaction, request, userCount, accountCount, transactionCount, requestCount);
+	
 	
 
 	/*do {

@@ -12,13 +12,137 @@ void writeToXML(char filePath[], struct User *user, struct Account *account, str
 	file = fopen(filePath, "w");
 
 	//WRITE USER
-	fputs("<FILE>\n");
+	fputs("<FILE>\n", file);
+	fputs("<FILE_NAME>USER\n", file);
+	
+	for(int i = 0; i < userCount; i++){
+		fputs("<RECORD>\n", file);
+
+		fputs("<USER_ID>", file);
+		fputs(user[i].user_id, file);
+		fputs("\n", file);
+
+		fputs("<PERSONAL_NUMBER>", file);
+		fputs(user[i].personal_number, file);
+		fputs("\n", file);
+
+		fputs("<USERNAME>", file);
+		fputs(user[i].username, file);
+		fputs("\n", file);
+
+		fputs("<FIRST_NAME>", file);
+		fputs(user[i].first_name, file);
+		fputs("\n", file);
+
+		fputs("<LAST_NAME>", file);
+		fputs(user[i].last_name, file);
+		fputs("\n", file);
+
+		fputs("<ADDRESS>", file);
+		fputs(user[i].address, file);
+		fputs("\n", file);
+
+		fputs("<USER_TYPE>", file);
+		fputs(user[i].user_type, file);
+		fputs("\n", file);
+
+		fputs("<PASSWORD>", file);
+		fputs(user[i].password, file);
+		fputs("\n", file);
+
+		fputs("</RECORD>\n", file);
+	}
+
+	fputs("</FILE>\n", file);
+
 
 	//WRITE ACCOUNT
+	fputs("<FILE>\n", file);
+	fputs("<FILE_NAME>ACCOUNT\n", file);
+	
+	for(int i = 0; i < accountCount; i++){
+		fputs("<RECORD>\n", file);
+
+		fputs("<ACCOUNT_ID>", file);
+		fprintf(file, "%hd", account[i].account_id);
+		//fputs(account[i].account_id, file);
+		fputs("\n", file);
+
+		fputs("<ACCOUNT_NUMBER>", file);
+		fprintf(file, "%d", account[i].account_number);
+		//fputs(accounti].account_number, file);
+		fputs("\n", file);
+
+		fputs("<BALANCE>", file);
+		fprintf(file, "%d", account[i].balance);
+		//fputs(accounti].balance, file);
+		fputs("\n", file);
+
+		fputs("<USER_ID>", file);
+		fputs(account[i].user_id, file);
+		fputs("\n", file);
+
+		fputs("</RECORD>\n", file);
+	}
+
+	fputs("</FILE>\n", file);
+
 
 	//WRITE TRANSACTION
+	fputs("<FILE>\n", file);
+	fputs("<FILE_NAME>TRANSACTION\n", file);
+	
+	for(int i = 0; i < transactionCount; i++){
+		fputs("<RECORD>\n", file);
+
+		fputs("<FROM>", file);
+		fprintf(file, "%hd", transaction[i].from);
+		//fputs(transaction[i].from, file);
+		fputs("\n", file);
+
+		fputs("<TO>", file);
+		fprintf(file, "%hd", transaction[i].to);
+		//fputs(transaction[i].to, file);
+		fputs("\n", file);
+
+		fputs("<DATE>", file);
+		fputs(transaction[i].date, file);
+		fputs("\n", file);
+
+		fputs("<AMMOUNT>", file);
+		fprintf(file, "%d", transaction[i].ammount);
+		//fputs(transaction[i].ammount, file);
+		fputs("\n", file);
+
+		fputs("</RECORD>\n", file);
+	}
+
+	fputs("</FILE>\n", file);
+
 
 	//WRITE REQUEST
+	fputs("<FILE>\n", file);
+	fputs("<FILE_NAME>REQUEST\n", file);
+	
+	for(int i = 0; i < requestCount; i++){
+		fputs("<RECORD>\n", file);
+
+		fputs("<USER_ID>", file);
+		fputs(request[i].user_id, file);
+		fputs("\n", file);
+
+		fputs("<ACTION>", file);
+		fputs(request[i].action, file);
+		fputs("\n", file);
+
+		fputs("<DATE>", file);
+		fputs(request[i].date, file);
+		fputs("\n", file);
+
+		fputs("</RECORD>\n", file);
+	}
+
+	fputs("</FILE>\n", file);
 
 }
 
@@ -191,15 +315,15 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    			}
 	    		}else if(!strcmp(currentFile, "ACCOUNT")){
 	    			if(!strcmp(tag, "ACCOUNT_ID")){
-	    				(*account)[accountStructIndex].account_id = (short) entry;
+	    				(*account)[accountStructIndex].account_id = (short) atoi(entry);
 	    				//strncpy(account[accountStructIndex].account_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACCOUNT_NUMBER")){
-	    				(*account)[accountStructIndex].account_number = (int) entry;
+	    				(*account)[accountStructIndex].account_number = (int) atoi(entry);
 	    				//strncpy(account[accountStructIndex].account_number, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "BALANCE")){
-	    				(*account)[accountStructIndex].balance = (int) entry;
+	    				(*account)[accountStructIndex].balance = (int) atoi(entry);
 	    				//strncpy(account[accountStructIndex].balance, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USER_ID")){
@@ -208,18 +332,18 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    			}
 	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			if(!strcmp(tag, "FROM")){
-	    				(*transaction)[transactionStructIndex].from = (short) entry;
+	    				(*transaction)[transactionStructIndex].from = (short) atoi(entry);
 	    				//strncpy(transaction[transactionStructIndex].from, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "TO")){
-	    				(*transaction)[transactionStructIndex].to = (short) entry;
+	    				(*transaction)[transactionStructIndex].to = (short) atoi(entry);
 	    				//strncpy(transaction[transactionStructIndex].to, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "DATE")){
 	    				strncpy((*transaction)[transactionStructIndex].date, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "AMMOUNT")){
-	    				(*transaction)[transactionStructIndex].ammount = (int) entry;
+	    				(*transaction)[transactionStructIndex].ammount = (int) atoi(entry);
 	    				//strncpy(transaction[transactionStructIndex].ammount, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "REQUEST")){
@@ -268,6 +392,8 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 		free(entry);
 
 	}
+	
+	printf("FUNCTION: %hd\n", (*account)[0].account_id);
 
 	*userCount = userStructIndex;
 	*accountCount = accountStructIndex;

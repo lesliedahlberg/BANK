@@ -27,7 +27,7 @@ struct Account {
 	int account_number;
 	int balance;
 	short active;
-	short user_id;
+	char user_id[100];
 };
 
 struct Transaction {
@@ -39,7 +39,7 @@ struct Transaction {
 };
 
 struct Request {
-	short user_id;
+	char user_id[100];
 	char action[10];
 	char date[10];
 	short active;
