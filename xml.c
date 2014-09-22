@@ -277,9 +277,9 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    	if(isSetFileEntry){
 	    		//SET FILE_ENTRY
 	    		if(!strcmp(tag, "FILE_NAME")){
-	    			printf("%s\n", entry);
+	
 	    			strcpy(currentFile, entry);
-	    			printf("%s\n", currentFile);
+
 	    		}
 	    	}
 
@@ -393,7 +393,7 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 
 	}
 	
-	printf("FUNCTION: %hd\n", (*account)[0].account_id);
+	
 
 	*userCount = userStructIndex;
 	*accountCount = accountStructIndex;
