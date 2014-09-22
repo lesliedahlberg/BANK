@@ -38,10 +38,6 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	int endTagIndex;
 	int endCategoryTag;
 
-	int error;
-
-	
-
 	//INIT
 	isSetFileEntry = 0;
 	isSetRecordEntry = 0;
@@ -57,19 +53,12 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	*transaction = malloc(sizeof(struct Transaction));
 	*request = malloc(sizeof(struct Request));
 
-	//TEST ALLOC
-	/*
-	strcpy((*user)[0].user_id, "9560");
-	*/
-	
 	//OPEN FILE
-
 	file = fopen(filePath, "r");
 	currentFile = calloc(20, sizeof(char));
 	//LOOP THROUGH FILE
 	for(int row = 0; !isEOF; row++){
-		
-		
+				
 		//LOAD LINE
 		line = malloc(sizeof(char));
 		readingLine = 1;
@@ -90,7 +79,6 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	            line = realloc(line, (2 + i)*sizeof(char));
 	    }
 
-
 	    //INIT VARS
 	    tagOpen = 0;
 	    tagClosed = 0;
@@ -101,7 +89,6 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    endTagIndex = 0;
 	    endCategoryTag = 0;
 	    
-
 	    entry = malloc(sizeof(char));
 		tag = malloc(sizeof(char));
 		
@@ -134,14 +121,7 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 			}
 	    }
 
-	    //tag[tagIndex] = '\0';
-	    //entry[entryIndex] = '\0';
-
-	    //printf("LINE: %d, TAG: %s, ENTRY: %s;\n", row, tag, entry);
-
-
-	    //EVALUATE TAGS AND ENTRIES
-	    
+	    //EVALUATE TAGS AND ENTRIES	    
     	if(!strcmp(tag, "FILE")){
     		isSetFileEntry = 1;
     		
@@ -164,7 +144,7 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    	if(isSetRecordEntry){
 	    		
 	    		//SAVE ENTRIES
-	    		//printf("%s\n", currentFile);
+	    		
 	    		if(!strcmp(currentFile, "USER")){
 	    			
 	    			if(!strcmp(tag, "USER_ID")){
@@ -265,15 +245,9 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    	}
 	    }
 	   
-	    
 	   	free(line);
 		free(tag);
 		free(entry);
-
+		
 	}
-
-	//printf("%s\n", (*user)[0].first_name);
-
-	
-
 }
