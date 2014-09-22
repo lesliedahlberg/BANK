@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+
 #include "Bank.h"
 
 #define MAXLINE 80
@@ -146,13 +147,13 @@ void newTransaction(struct Account *account) {
 	puts("Välj från vilket av dina konto du vill överföra ifrån!");
 	scanf("%d", &input);
 
-	while (account[i].account_id != NULL ) {
+	//while (account[i].account_id != NULL ) {
 		if (account[i].user_id == LOGGED_IN_USER_ID) {
 			printf("Option: %d, Account Number: %d :Balance: %d ", i,account[i].account_number, account[i].balance);
 
 		}
 		i++;
-	}
+	//}
 
 
 
