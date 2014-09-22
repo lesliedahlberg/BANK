@@ -157,7 +157,7 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    		//SET FILE_ENTRY
 	    		if(!strcmp(tag, "FILE_NAME")){
 	    			printf("%s\n", entry);
-	    			currentFile = malloc((entryIndex+1)*sizeof(char));
+	    			currentFile = calloc(20, sizeof(char));
 	    			strncpy(currentFile, entry, entryIndex);
 	    			printf("%s\n", currentFile);
 	    		}
