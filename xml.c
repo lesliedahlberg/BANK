@@ -4,7 +4,21 @@
 #include "bank.h"
 #include "xml.h"
 
+
+
 void writeToXML(char filePath[], struct User *user, struct Account *account, struct Transaction *transaction, struct Request *request, int userCount, int accountCount, int transactionCount, int requestCount){
+
+	FILE *file;
+	file = fopen(filePath, "w");
+
+	//WRITE USER
+	fputs("<FILE>\n");
+
+	//WRITE ACCOUNT
+
+	//WRITE TRANSACTION
+
+	//WRITE REQUEST
 
 }
 
@@ -189,8 +203,8 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    				//strncpy(account[accountStructIndex].balance, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USER_ID")){
-	    				(*account)[accountStructIndex].user_id = (short) entry;
-	    				//strncpy(account[accountStructIndex].user_id, entry, entryIndex);
+	    				//(*account)[accountStructIndex].user_id = (short) entry;
+	    				strncpy((*account)[accountStructIndex].user_id, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			if(!strcmp(tag, "FROM")){
@@ -210,8 +224,8 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    			}
 	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			if(!strcmp(tag, "USER_ID")){
-	    				(*request)[requestStructIndex].user_id = (short) entry;
-	    				//strncpy(request[requestStructIndex].user_id, entry, entryIndex);
+	    				//(*request)[requestStructIndex].user_id = (short) entry;
+	    				strncpy((*request)[requestStructIndex].user_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACTION")){
 	    				strncpy((*request)[requestStructIndex].action, entry, entryIndex);
