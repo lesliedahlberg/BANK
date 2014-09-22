@@ -1,40 +1,53 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <conio.h>
 
 #include "Bank.h"
-//#include "xml.h"
+#include "xml.h"
 
-int main(){
-	setvbuf(stdout, NULL, _IONBF, 0); // Fixar delayen i min Eclipse konsol
-	int running = 1;
-	int logedIn = 0;
+
+
+int main() {
+	int running;
+	int logedIn;
 	int currentUserId;
 
-
-	char filePath[50];
-
-	struct User *users;
+	struct User *user;
 	struct Account *account;
 	struct Transaction *transaction;
 	struct Request *request;
 
-	//readXML(filePath, user, account, transaction, request);
+	running = 1;
+	logedIn = 0;
+
+
+	int userCount;
+	int accountCount;
+	int transactionCount;
+	int requestCount;
+
+	setvbuf(stdout, NULL, _IONBF, 0); // Fixar delayen i min Eclipse konsol
+
+	char filePath[500] = "src/data.xml";
+
+	readXML(filePath, &user, &account, &transaction, &request, &userCount, &accountCount, &transactionCount, &requestCount);
+
 
 	do {
-		showOptions(users); //on-start visar vad man har för alternativ
-		if(stricmp(users->user_type, "client") == 0) {
+		showOptions(user, logedIn); //on-start visar vad man har f�r alternativ
+
+		if (strcmp(user[LOGGED_IN_INDEX].user_type, "client") == 0) {
 			do {
-				showClientOptions();
-			}while(logedIn);
-		}else if(stricmp(users->user_type, "admin") == 0) {
-			do{
-				showAdminOptions();
-			}while(logedIn);
+				showClientOptions(account, user, accountCount);
+			} while (logedIn);
+		} else if (strcmp(user[LOGGED_IN_INDEX].user_type, "admin") == 0) {
+			do {
+				showAdminOptions(account, user, accountCount);
+			} while (logedIn);
 		}
-	}while(running == 1);
+	} while (running == 1);
 
 	return 0;
 }
