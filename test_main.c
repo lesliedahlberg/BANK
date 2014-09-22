@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-//#include <ctype.h>
-//#include <conio.h>
 
 #include "Bank.h"
 #include "xml.h"
@@ -12,12 +10,10 @@ int main(){
 	int logedIn;
 	int currentUserId;
 
-	int running = 1;
-	int logedIn = 0;
+	running = 1;
+	logedIn = 0;
 
-	char filePath[50];
-
-	filePath = "data.xml";
+	char filePath[50] = "data.xml";
 
 	struct User *user;
 	struct Account *account;

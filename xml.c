@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "bank.h"
 #include "xml.h"
 
@@ -37,6 +40,10 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	int endTagIndex;
 	int endCategoryTag;
 
+	int error;
+
+	char *line;
+
 	FILE *file;
 
 	//INIT
@@ -53,7 +60,7 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 
 	//LOOP THROUGH FILE
 	for(int row = 0; !isEOF; row++){
-		line = malloc(sizeof(char))
+		line = malloc(sizeof(char));
 		lineLength = 0;
 
 		//LOAD LINE
@@ -86,15 +93,15 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	  		//LOAD ENTRIES AND TAGS
 	    	if(!tagClosed){
 		    	if(!tagOpen){
-		    		if(line[i] == "<"){
-		    			if(line[i+1] == "/"){
+		    		if(line[i] == '<'){
+		    			if(line[i+1] == '/'){
 		    				endCategoryTag = 1;
 		    				i = lineLength;
 		    			}
 		    			tagOpen = 1;
 		    		}
 		    	}else if(tagOpen){
-		    		if(line[i] == ">"){
+		    		if(line[i] == '>'){
 		    			tagClosed = 1;
 		    		}else{
 		    			tag[tagIndex] = line[i];
@@ -102,7 +109,7 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 		    		}
 		    	}
 			}else if(!entryClosed){
-				if(line[i] == "<"){
+				if(line[i] == '<'){
 					entryClosed = 1;
 				}else{
 					entry[entryIndex] = line[i];
@@ -110,15 +117,15 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 				}
 			}else if(entryClosed){
 				if(endTagIndex == 1){
-					if(line[i] != "/"){
+					if(line[i] != '/'){
 						error = 1;
 					}
 				}else if(i == lineLength - 1){
-					if(line[i] != ">"){
+					if(line[i] != '>'){
 						error = 1;
 					}
 				}else{
-					if(line[i] != tag[endTagIndex]{
+					if(line[i] != tag[endTagIndex]){
 						error = 1;
 					}
 					endTagIndex++;
@@ -144,7 +151,7 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    	}
 	    	if(isSetRecordEntry){
 	    		//SAVE ENTRIES
-	    		if(currentFile == "USER"){
+	    		if(!strcmp(currentFile, "USER")){
 	    			if(!strcmp(tag, "USER_ID")){
 	    				strcpy(user[userStructIndex].user_id, entry);
 	    			}
@@ -152,7 +159,7 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    				strcpy(user[userStructIndex].personal_number, entry);
 	    			}
 	    			else if(!strcmp(tag, "USERNAME")){
-	    				strcpy(user[userStructIndex].user_name, entry);
+	    				strcpy(user[userStructIndex].username, entry);
 	    			}
 	    			else if(!strcmp(tag, "FIRST_NAME")){
 	    				strcpy(user[userStructIndex].first_name, entry);
@@ -164,40 +171,48 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    				strcpy(user[userStructIndex].address, entry);
 	    			}
 	    			else if(!strcmp(tag, "USER_TYPE")){
-	    				strcpy(user[userStructIndex].user_name, entry);
+	    				strcpy(user[userStructIndex].user_type, entry);
 	    			}
 	    			else if(!strcmp(tag, "PASSWORD")){
 	    				strcpy(user[userStructIndex].password, entry);
 	    			}
-	    		}else if(currentFile == "ACCOUNT"){
+	    		}else if(!strcmp(currentFile, "ACCOUNT")){
 	    			if(!strcmp(tag, "ACCOUNT_ID")){
-	    				strcpy(account[accountStructIndex]., entry);
+	    				account[accountStructIndex].account_id = (short) entry;
+	    				//strcpy(account[accountStructIndex].account_id, entry);
 	    			}
 	    			else if(!strcmp(tag, "ACCOUNT_NUMBER")){
-	    				strcpy(account[accountStructIndex].account_number, entry);
+	    				account[accountStructIndex].account_number = (int) entry;
+	    				//strcpy(account[accountStructIndex].account_number, entry);
 	    			}
 	    			else if(!strcmp(tag, "BALANCE")){
-	    				strcpy(account[accountStructIndex].balance, entry);
+	    				account[accountStructIndex].balance = (int) entry;
+	    				//strcpy(account[accountStructIndex].balance, entry);
 	    			}
 	    			else if(!strcmp(tag, "USER_ID")){
-	    				strcpy(account[accountStructIndex].user_id, entry);
+	    				account[accountStructIndex].user_id = (short) entry;
+	    				//strcpy(account[accountStructIndex].user_id, entry);
 	    			}
-	    		}else if(currentFile == "TRANSACTION"){
+	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			if(!strcmp(tag, "FROM")){
-	    				strcpy(transaction[transactionStructIndex].from, entry);
+	    				transaction[transactionStructIndex].from = (short) entry;
+	    				//strcpy(transaction[transactionStructIndex].from, entry);
 	    			}
 	    			else if(!strcmp(tag, "TO")){
-	    				strcpy(transaction[transactionStructIndex].to, entry);
+	    				transaction[transactionStructIndex].to = (short) entry;
+	    				//strcpy(transaction[transactionStructIndex].to, entry);
 	    			}
 	    			else if(!strcmp(tag, "DATE")){
 	    				strcpy(transaction[transactionStructIndex].date, entry);
 	    			}
 	    			else if(!strcmp(tag, "AMMOUNT")){
-	    				strcpy(transaction[transactionStructIndex].ammount, entry);
+	    				transaction[transactionStructIndex].ammount = (int) entry;
+	    				//strcpy(transaction[transactionStructIndex].ammount, entry);
 	    			}
-	    		}else if(currentFile == "REQUEST"){
+	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			if(!strcmp(tag, "USER_ID")){
-	    				strcpy(request[requestStructIndex].user_id, entry);
+	    				request[requestStructIndex].user_id = (short) entry;
+	    				//strcpy(request[requestStructIndex].user_id, entry);
 	    			}
 	    			else if(!strcmp(tag, "ACTION")){
 	    				strcpy(request[requestStructIndex].action, entry);
@@ -212,16 +227,16 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    	//++INDEXES
 	    	if(isSetRecordEntry){
 	    		isSetRecordEntry = 0;
-	    		if(currentFile == "USER"){
+	    		if(!strcmp(currentFile, "USER")){
 	    			userStructIndex++;
 	    			user = realloc(user, (1 + userStructIndex)*sizeof(struct User));
-	    		}else if(currentFile == "ACCOUNT"){
+	    		}else if(!strcmp(currentFile, "ACCOUNT")){
 	    			accountStructIndex++;
 	    			account = realloc(account, (1 + accountStructIndex)*sizeof(struct Account));
-	    		}else if(currentFile == "TRANSACTION"){
+	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			transactionStructIndex++;
 	    			transaction = realloc(transaction, (1 + transactionStructIndex)*sizeof(struct Transaction));
-	    		}else if(currentFile == "REQUEST"){
+	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			requestStructIndex++;
 	    			request = realloc(request, (1 + requestStructIndex)*sizeof(struct Request));
 	    		}
