@@ -16,7 +16,7 @@ int main(){
 	FILE *file;
 	//char c;
 
-	char filePath[50] = "data.xml";
+	char filePath[500] = "/Users/lesliedahlberg/Documents/DVA117/BANK/BANK/data.xml";
 	//file = fopen("/data.xml", "r");
 
 	struct User *user;
@@ -39,7 +39,7 @@ int main(){
 	}*/
 
 	readXML(filePath, &user, &account, &transaction, &request);
-	printf("%s\n", (user)[0].password);
+	//printf("%s\n", (user)[0].password);
 	
 
 	/*do {

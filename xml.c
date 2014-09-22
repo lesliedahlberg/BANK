@@ -13,8 +13,8 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 
 	FILE *file;
 
-	char currentFile[20];
-	char currentRecord[20];
+	char *currentFile;
+	char *currentRecord;
 
 	int lineLength;
 	int isEOF = 0;
@@ -124,22 +124,24 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    			tag[tagIndex] = line[i];
 	    			tagIndex++;
 	    			tag = realloc(tag, (1 + tagIndex)*sizeof(char));
+	    			tag[tagIndex] = '\0';
 	    		}
 		    }else if(tagClosed){
 				entry[entryIndex] = line[i];
 				entryIndex++;
 				entry = realloc(entry, (1 + entryIndex)*sizeof(char));
+				entry[entryIndex] = '\0';
 			}
 	    }
 
-	    tag[tagIndex] = '\0';
-	    entry[entryIndex] = '\0';
+	    //tag[tagIndex] = '\0';
+	    //entry[entryIndex] = '\0';
 
 	    //printf("LINE: %d, TAG: %s, ENTRY: %s;\n", row, tag, entry);
 
 
 	    //EVALUATE TAGS AND ENTRIES
-	    
+	    currentFile = malloc(sizeof(char));
 	    
     	if(!strcmp(tag, "FILE")){
     		isSetFileEntry = 1;
@@ -154,15 +156,17 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    	if(isSetFileEntry){
 	    		//SET FILE_ENTRY
 	    		if(!strcmp(tag, "FILE_NAME")){
+	    			printf("%s\n", entry);
+	    			currentFile = malloc((entryIndex+1)*sizeof(char));
 	    			strncpy(currentFile, entry, entryIndex);
-
+	    			printf("%s\n", currentFile);
 	    		}
 	    	}
 
 	    	if(isSetRecordEntry){
 	    		
 	    		//SAVE ENTRIES
-	    		
+	    		//printf("%s\n", currentFile);
 	    		if(!strcmp(currentFile, "USER")){
 	    			
 	    			if(!strcmp(tag, "USER_ID")){
@@ -258,10 +262,12 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    		//RESET FILE_ENTRY
 	    		isSetFileEntry = 0;
 	    		strcpy(currentFile, "");
+	    		free(currentFile);
+	    		
 	    	}
 	    }
+	   
 	    
-
 	   	free(line);
 		free(tag);
 		free(entry);
