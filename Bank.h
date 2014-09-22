@@ -9,13 +9,13 @@
 #define BANK_H_
 
 struct User {
-	char user_ID[10];
+	char user_id[10];
 	char personal_number[10];
 	char username[100];
-	char firstname[100];
-	char lastname[100];
-	char adress[100];
-	char userType[10];
+	char first_name[100];
+	char last_name[100];
+	char address[100];
+	char user_type[10];
 	char password[100];
 	char active[10];
 
@@ -23,26 +23,25 @@ struct User {
 
 
 struct Account {
-	short account_ID;
+	short account_id;
 	int account_number;
-	int money;
+	int balance;
 	short active;
-	short user_ID;
+	short user_id;
 };
 
 struct Transaction {
-	short transaction_from;
-	short transaction_to;
-	int amount;
-	int money;
+	short from;
+	short to;
+	char date[9];
+	int ammount;
 	short active;
 };
 
-struct Request { //Ändrade så vi bara har en struct med request, sen identifieras det var det är för request.
-	short user_ID;
-	short remove_account; //Om det är en request om att få bort konto är det 1, annars 0
-	short new_account; //Om det är en request om att få ett nytt konto är det 1, annars 0
+struct Request {
+	short user_id;
+	char action[10];
 	short active;
 };
 
-#endif /* BANK_H_ */
+#endif

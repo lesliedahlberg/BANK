@@ -1,13 +1,3 @@
-/*
- ============================================================================
- Name        : Bank.c
- Author      : Mattias
- Version     :
- Copyright   : nan
- Description : Hello World in C, Ansi-style
- ============================================================================
- */
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -52,14 +42,14 @@ void readData() {
 	//users.user_ID = 0;
 	strcpy(users.personal_number, strtok(NULL, ","));
 	strcpy(users.username, strtok(NULL, ","));
-	strcpy(users.firstname, strtok(NULL, ","));
-	strcpy(users.lastname, strtok(NULL, ","));
-	strcpy(users.adress, strtok(NULL, ","));
-	strcpy(users.userType, strtok(NULL, ","));
+	strcpy(users.first_name, strtok(NULL, ","));
+	strcpy(users.last_name, strtok(NULL, ","));
+	strcpy(users.address, strtok(NULL, ","));
+	strcpy(users.user_type, strtok(NULL, ","));
 	strcpy(users.password, strtok(NULL, ","));
 	strcpy(users.active, strtok(NULL, ","));
 
-	accounts.account_ID = 0;
+	accounts.account_id = 0;
 	accounts.account_number = 123456;
 
 }
@@ -103,12 +93,12 @@ int main(void) {
 
 					showOptions(); //on-start visar vad man har för alternativ
 
-					if(stricmp(users.userType, "0") == 0) {
+					if(stricmp(users.user_type, "0") == 0) {
 						do {
 							showClientOptions();
 
 						}while(logedIn);
-					} else if(stricmp(users.userType, "1") == 0) {
+					} else if(stricmp(users.user_type, "1") == 0) {
 						do {
 							showAdminOptions();
 
