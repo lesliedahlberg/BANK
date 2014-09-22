@@ -4,17 +4,21 @@
 #include "bank.h"
 #include "xml.h"
 
-void readXML(char filePath[], struct User *user, struct Account *account, struct Transaction *transaction, struct Request *request){
+void readXML(char filePath[], struct User **user, struct Account **account, struct Transaction **transaction, struct Request **request){
 
 	//DEKLARATIONS
-	char entry[20];
-	char tag[20];
+	char *entry;
+	char *tag;
+	char *line;
+
+	FILE *file;
 
 	char currentFile[20];
 	char currentRecord[20];
 
 	int lineLength;
-	int isEOF;
+	int isEOF = 0;
+	int readingLine;
 
 	int isSetFileEntry;
 	int isSetRecordEntry;
@@ -23,12 +27,6 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	int accountStructIndex;
 	int transactionStructIndex;
 	int requestStructIndex;
-
-	//ALLOC STRUCTS
-	user = malloc(sizeof(struct User));
-	account = malloc(sizeof(struct Account));
-	transaction = malloc(sizeof(struct Transaction));
-	request = malloc(sizeof(struct Request));
 
 	//LOOP VARS
 	int tagOpen;
@@ -42,9 +40,7 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 
 	int error;
 
-	char *line;
-
-	FILE *file;
+	
 
 	//INIT
 	isSetFileEntry = 0;
@@ -55,27 +51,45 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	transactionStructIndex = 0;
 	requestStructIndex = 0;
 
-	//OPEN FILE
-	file = fopen(filePath, "r");
+	//ALLOC STRUCTS
+	*user = malloc(sizeof(struct User));
+	*account = malloc(sizeof(struct Account));
+	*transaction = malloc(sizeof(struct Transaction));
+	*request = malloc(sizeof(struct Request));
 
+	//TEST ALLOC
+	/*
+	strcpy((*user)[0].user_id, "9560");
+	*/
+	
+	//OPEN FILE
+
+	file = fopen(filePath, "r");
+	
 	//LOOP THROUGH FILE
 	for(int row = 0; !isEOF; row++){
-		line = malloc(sizeof(char));
-		lineLength = 0;
-
+		
+		
 		//LOAD LINE
-		for (int i = 0; 1; i++){
+		line = malloc(sizeof(char));
+		readingLine = 1;
+		lineLength = 0;
+		for (int i = 0; readingLine; i++){
+
 	            line[i] = fgetc(file);
-	            if (line[i] == '\n') {
-	                lineLength = i + 1;
-	                break;
-	            }
 	            if (line[i] == EOF) {
 	                isEOF = 1;
-	                break;
+	                readingLine = 0;
+	            }else if (line[i] != '\n') {
+	                lineLength++;
+	                
+	            }else{
+	            	readingLine = 0;
 	            }
+	            
 	            line = realloc(line, (2 + i)*sizeof(char));
 	    }
+
 
 	    //INIT VARS
 	    tagOpen = 0;
@@ -86,139 +100,138 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    endTagOpen = 0;
 	    endTagIndex = 0;
 	    endCategoryTag = 0;
+	    
 
+	    entry = malloc(sizeof(char));
+		tag = malloc(sizeof(char));
+		
 	    //LOOP THROUGH LINE
 	    for(int i = 0; i < lineLength; i++){
-
+			
 	  		//LOAD ENTRIES AND TAGS
-	    	if(!tagClosed){
-		    	if(!tagOpen){
-		    		if(line[i] == '<'){
-		    			if(line[i+1] == '/'){
-		    				endCategoryTag = 1;
-		    				i = lineLength;
-		    			}
-		    			tagOpen = 1;
-		    		}
-		    	}else if(tagOpen){
-		    		if(line[i] == '>'){
-		    			tagClosed = 1;
-		    		}else{
-		    			tag[tagIndex] = line[i];
-		    			tagIndex++;
-		    		}
-		    	}
-			}else if(!entryClosed){
-				if(line[i] == '<'){
-					entryClosed = 1;
-				}else{
-					entry[entryIndex] = line[i];
-					entryIndex++;
-				}
-			}else if(entryClosed){
-				if(endTagIndex == 1){
-					if(line[i] != '/'){
-						error = 1;
-					}
-				}else if(i == lineLength - 1){
-					if(line[i] != '>'){
-						error = 1;
-					}
-				}else{
-					if(line[i] != tag[endTagIndex]){
-						error = 1;
-					}
-					endTagIndex++;
-				}
+	  		if(!tagOpen && !tagClosed){
+	  			
+	  			if(line[i] == '<' && line[i + 1] != '/'){
+	  				tagOpen = 1;
+	  			}else if(line[i] == '<' && line[i + 1] == '/'){
+	  				endCategoryTag = 1;
+	  			}
+	  		}
+	    	else if(tagOpen && !tagClosed){
+	    		if(line[i] == '>'){
+	    			tagClosed = 1;
+	    		}else{
+	    			tag[tagIndex] = line[i];
+	    			tagIndex++;
+	    			tag = realloc(tag, (1 + tagIndex)*sizeof(char));
+	    		}
+		    }else if(tagClosed){
+				entry[entryIndex] = line[i];
+				entryIndex++;
+				entry = realloc(entry, (1 + entryIndex)*sizeof(char));
 			}
 	    }
 
-	    //EVALUATE TAGS AND ENTRIES
-	    if(!entryClosed){
-	    	if(!strcmp(tag, "FILE")){
-	    		isSetFileEntry = 1;
-	    	}
-	    	if(!strcmp(tag, "RECORD")){
-	    		isSetRecordEntry = 1;
-	    	}
+	    tag[tagIndex] = '\0';
+	    entry[entryIndex] = '\0';
 
-	    }else if(entryClosed){
+	    //printf("LINE: %d, TAG: %s, ENTRY: %s;\n", row, tag, entry);
+
+
+	    //EVALUATE TAGS AND ENTRIES
+	    
+	    
+    	if(!strcmp(tag, "FILE")){
+    		isSetFileEntry = 1;
+    		
+	
+    	}
+    	if(!strcmp(tag, "RECORD")){
+    		isSetRecordEntry = 1;
+	    }
+	    if(entryIndex > 0){
+	    	
 	    	if(isSetFileEntry){
 	    		//SET FILE_ENTRY
 	    		if(!strcmp(tag, "FILE_NAME")){
-	    			strcpy(currentFile, tag);
+	    			strncpy(currentFile, entry, entryIndex);
+
 	    		}
 	    	}
+
 	    	if(isSetRecordEntry){
+	    		
 	    		//SAVE ENTRIES
+	    		
 	    		if(!strcmp(currentFile, "USER")){
+	    			
 	    			if(!strcmp(tag, "USER_ID")){
-	    				strcpy(user[userStructIndex].user_id, entry);
+	    				strncpy((*user)[userStructIndex].user_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "PERSONAL_NUMBER")){
-	    				strcpy(user[userStructIndex].personal_number, entry);
+	    				strncpy((*user)[userStructIndex].personal_number, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USERNAME")){
-	    				strcpy(user[userStructIndex].username, entry);
+	    				strncpy((*user)[userStructIndex].username, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "FIRST_NAME")){
-	    				strcpy(user[userStructIndex].first_name, entry);
+	    				strcpy((*user)[userStructIndex].first_name, entry);
 	    			}
 	    			else if(!strcmp(tag, "LAST_NAME")){
-	    				strcpy(user[userStructIndex].last_name, entry);
+	    				strncpy((*user)[userStructIndex].last_name, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ADDRESS")){
-	    				strcpy(user[userStructIndex].address, entry);
+	    				strncpy((*user)[userStructIndex].address, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USER_TYPE")){
-	    				strcpy(user[userStructIndex].user_type, entry);
+	    				strncpy((*user)[userStructIndex].user_type, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "PASSWORD")){
-	    				strcpy(user[userStructIndex].password, entry);
+	    				strncpy((*user)[userStructIndex].password, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "ACCOUNT")){
 	    			if(!strcmp(tag, "ACCOUNT_ID")){
-	    				account[accountStructIndex].account_id = (short) entry;
-	    				//strcpy(account[accountStructIndex].account_id, entry);
+	    				(*account)[accountStructIndex].account_id = (short) entry;
+	    				//strncpy(account[accountStructIndex].account_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACCOUNT_NUMBER")){
-	    				account[accountStructIndex].account_number = (int) entry;
-	    				//strcpy(account[accountStructIndex].account_number, entry);
+	    				(*account)[accountStructIndex].account_number = (int) entry;
+	    				//strncpy(account[accountStructIndex].account_number, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "BALANCE")){
-	    				account[accountStructIndex].balance = (int) entry;
-	    				//strcpy(account[accountStructIndex].balance, entry);
+	    				(*account)[accountStructIndex].balance = (int) entry;
+	    				//strncpy(account[accountStructIndex].balance, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USER_ID")){
-	    				account[accountStructIndex].user_id = (short) entry;
-	    				//strcpy(account[accountStructIndex].user_id, entry);
+	    				(*account)[accountStructIndex].user_id = (short) entry;
+	    				//strncpy(account[accountStructIndex].user_id, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			if(!strcmp(tag, "FROM")){
-	    				transaction[transactionStructIndex].from = (short) entry;
-	    				//strcpy(transaction[transactionStructIndex].from, entry);
+	    				(*transaction)[transactionStructIndex].from = (short) entry;
+	    				//strncpy(transaction[transactionStructIndex].from, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "TO")){
-	    				transaction[transactionStructIndex].to = (short) entry;
-	    				//strcpy(transaction[transactionStructIndex].to, entry);
+	    				(*transaction)[transactionStructIndex].to = (short) entry;
+	    				//strncpy(transaction[transactionStructIndex].to, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "DATE")){
-	    				strcpy(transaction[transactionStructIndex].date, entry);
+	    				strncpy((*transaction)[transactionStructIndex].date, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "AMMOUNT")){
-	    				transaction[transactionStructIndex].ammount = (int) entry;
-	    				//strcpy(transaction[transactionStructIndex].ammount, entry);
+	    				(*transaction)[transactionStructIndex].ammount = (int) entry;
+	    				//strncpy(transaction[transactionStructIndex].ammount, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			if(!strcmp(tag, "USER_ID")){
-	    				request[requestStructIndex].user_id = (short) entry;
-	    				//strcpy(request[requestStructIndex].user_id, entry);
+	    				(*request)[requestStructIndex].user_id = (short) entry;
+	    				//strncpy(request[requestStructIndex].user_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACTION")){
-	    				strcpy(request[requestStructIndex].action, entry);
+	    				strncpy((*request)[requestStructIndex].action, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "DATE")){
-	    				strcpy(request[requestStructIndex].date, entry);
+	    				strncpy((*request)[requestStructIndex].date, entry, entryIndex);
 	    			}
 	    		}
 	    	}
@@ -229,16 +242,16 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    		isSetRecordEntry = 0;
 	    		if(!strcmp(currentFile, "USER")){
 	    			userStructIndex++;
-	    			user = realloc(user, (1 + userStructIndex)*sizeof(struct User));
+	    			*user = realloc(*user, (1 + userStructIndex)*sizeof(struct User));
 	    		}else if(!strcmp(currentFile, "ACCOUNT")){
 	    			accountStructIndex++;
-	    			account = realloc(account, (1 + accountStructIndex)*sizeof(struct Account));
+	    			*account = realloc(*account, (1 + accountStructIndex)*sizeof(struct Account));
 	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			transactionStructIndex++;
-	    			transaction = realloc(transaction, (1 + transactionStructIndex)*sizeof(struct Transaction));
+	    			*transaction = realloc(*transaction, (1 + transactionStructIndex)*sizeof(struct Transaction));
 	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			requestStructIndex++;
-	    			request = realloc(request, (1 + requestStructIndex)*sizeof(struct Request));
+	    			*request = realloc(*request, (1 + requestStructIndex)*sizeof(struct Request));
 	    		}
 
 	    	}else{
@@ -247,9 +260,16 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    		strcpy(currentFile, "");
 	    	}
 	    }
+	    
+
+	   	free(line);
+		free(tag);
+		free(entry);
 
 	}
 
-	free(line);
+	//printf("%s\n", (*user)[0].first_name);
+
+	
 
 }

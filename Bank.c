@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include <conio.h>
 
 #include "Bank.h"
 
@@ -19,7 +17,7 @@ void showOptions(struct User *users){
 	char *options[3] = { "Login", "Register", "Quit" };
 
 	for (i = 0; i < 3; i++) {
-		printf("\n%10s:   %20=> %20d.", options[i], i);
+		printf("\n%10s: => %20d.", options[i], i);
 	}
 	printf("\n Watcha'd like to do?");
 	scanf("%d", &input);
@@ -83,7 +81,7 @@ void showClientOptions(int running) {
 			"Transfer to other", "Request new/delet account", "Quit" };
 
 	for (i = 0; i < 3; i++) {
-		printf("\n%25s:   %25=> %20d.", options[i], i);
+		printf("\n%25s: => %20d.", options[i], i);
 	}
 	printf("\nWatcha'd like to do?");
 	scanf("%d", &input);
@@ -134,7 +132,7 @@ void showAdminOptions() {
 	char *options[4] = { "Clients", "Account Requests", "User log", "Quit" };
 
 	for (i = 0; i < 3; i++) {
-		printf("\n%35s:   %25=> %25d.", options[i], i);
+		printf("\n%35s: => %25d.", options[i], i);
 	}
 	printf("\n Watcha'd like to do?");
 	scanf("%d", &input);

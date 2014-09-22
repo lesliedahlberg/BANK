@@ -9,8 +9,8 @@
 #define BANK_H_
 
 struct User {
-	char user_id[10];
-	char personal_number[10];
+	char user_id[100];
+	char personal_number[100];
 	char username[100];
 	char first_name[100];
 	char last_name[100];
