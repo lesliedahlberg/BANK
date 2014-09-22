@@ -9,12 +9,6 @@
 #define MAXLINE 80
 #define MAXRECORDS 10
 
-int running = 1;
-int logedIn = 0;
-
-struct User users;
-struct Account accounts;
-
 void readData() {
 	FILE *fp = NULL;
 	int nrecs = 0;
@@ -76,40 +70,6 @@ void showRequests();
 void listLog();
 
 void saveDataToFile();
-
-int main(void) {
-	setvbuf(stdout, NULL, _IONBF, 0); // Fixar delayen i min Eclipse konsol
-			int logedIn = 0;
-			int user;
-			int admin;
-			int argc = 0;
-			char *argv[1000];
-
-			//loadDataFromFile(argc, &argv[1000]);
-
-			readData();
-
-			do {
-
-					showOptions(); //on-start visar vad man har för alternativ
-
-					if(stricmp(users.user_type, "0") == 0) {
-						do {
-							showClientOptions();
-
-						}while(logedIn);
-					} else if(stricmp(users.user_type, "1") == 0) {
-						do {
-							showAdminOptions();
-
-						}while(logedIn);
-					}
-
-			}while(running == 1);
-
-			puts("Bank system"); /* prints Bank system */
-			return EXIT_SUCCESS;
-		}
 
 void showOptions() {
 	int i;
