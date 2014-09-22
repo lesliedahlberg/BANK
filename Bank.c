@@ -1,8 +1,7 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include <conio.h>
+
 
 #include "Bank.h"
 
@@ -54,9 +53,9 @@ void logIn(struct User *user, int logedIn) {
 		//getchar();
 		fgets(password, 100, stdin);
 
-		if (username[strlen(username) - 1] == '\n') //fgets() sätter automatisk ett '\n' i slutet av varje string, denna funktion kollar om det är en '\n' i slutet ersätter  den med 0
+		if (username[strlen(username) - 1] == '\n') //fgets() sÃ¤tter automatisk ett '\n' i slutet av varje string, denna funktion kollar om det Ã¤r en '\n' i slutet ersÃ¤tter  den med 0
 			username[strlen(username) - 1] = 0;
-		if (password[strlen(password) - 1] == '\n') //fgets() sätter automatisk ett '\n' i slutet av varje string, denna funktion kollar om det är en '\n' i slutet ersätter  den med 0
+		if (password[strlen(password) - 1] == '\n') //fgets() sÃ¤tter automatisk ett '\n' i slutet av varje string, denna funktion kollar om det Ã¤r en '\n' i slutet ersÃ¤tter  den med 0
 			password[strlen(password) - 1] = 0;
 
 		while (i < 2 ) {
@@ -89,7 +88,7 @@ void showClientOptions(struct Account *account, struct User *user, int accountCo
 			"Transfer to other", "Request new/delet account", "Quit" };
 
 	for (i = 0; i < 6; i++) {
-		printf("\n%25s:   %25=> %20d.", options[i], i);
+		printf("\n%25s: => %20d.", options[i], i);
 	}
 	printf("\nWatcha'd like to do?");
 	scanf("%d", &input);
@@ -145,7 +144,7 @@ void newTransaction(struct Account *account) {
 	int i = 0;
 	int input;
 
-	puts("Välj från vilket av dina konto du vill överföra ifrån!");
+	puts("VÃ¤lj frÃ¥n vilket av dina konto du vill Ã¶verfÃ¶ra ifrÃ¥n!");
 	scanf("%d", &input);
 
 	while (account[i].account_id != NULL ) {
@@ -158,8 +157,8 @@ void newTransaction(struct Account *account) {
 
 
 
-	puts("Till vilket bank nummer vill du göra en överförning?\n");
-	scanf("%d", numTo);
+	puts("Till vilket bank nummer vill du gÃ¶ra en Ã¶verfÃ¶rning?\n");
+	scanf("%d", &numTo);
 
 }
 
@@ -169,7 +168,7 @@ void showAdminOptions(struct Account *account, struct User *user, int accountCou
 	char *options[5] = { "Clients","My Account(s)" ,"Account Requests", "User log", "Quit" };
 
 	for (i = 0; i < 5; i++) {
-		printf("\n%35s:   %25=> %25d.", options[i], i);
+		printf("\n%35s: => %25d.", options[i], i);
 	}
 	printf("\n Watcha'd like to do?");
 	scanf("%d", &input);
@@ -200,7 +199,7 @@ void addClient() {
 }
 
 void listClient() {
-//I den här funktionen ska man sen kunna välja vilken klient man vill ta bort/redigera, och kunna lägga till en ny kliet. samt nytt konto åt klient, avsluta bankkonto
+//I den hÃ¤r funktionen ska man sen kunna vÃ¤lja vilken klient man vill ta bort/redigera, och kunna lÃ¤gga till en ny kliet. samt nytt konto Ã¥t klient, avsluta bankkonto
 }
 
 void editClient() {
