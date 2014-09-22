@@ -21,6 +21,12 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	int transactionStructIndex;
 	int requestStructIndex;
 
+	//ALLOC STRUCTS
+	user = malloc(sizeof(struct User));
+	account = malloc(sizeof(struct Account));
+	transaction = malloc(sizeof(struct Transaction));
+	request = malloc(sizeof(struct Request));
+
 	//LOOP VARS
 	int tagOpen;
 	int tagClosed;
@@ -208,12 +214,16 @@ void readXML(char filePath[], struct User *user, struct Account *account, struct
 	    		isSetRecordEntry = 0;
 	    		if(currentFile == "USER"){
 	    			userStructIndex++;
+	    			user = realloc(user, (1 + userStructIndex)*sizeof(struct User));
 	    		}else if(currentFile == "ACCOUNT"){
 	    			accountStructIndex++;
+	    			account = realloc(account, (1 + accountStructIndex)*sizeof(struct Account));
 	    		}else if(currentFile == "TRANSACTION"){
 	    			transactionStructIndex++;
+	    			transaction = realloc(transaction, (1 + transactionStructIndex)*sizeof(struct Transaction));
 	    		}else if(currentFile == "REQUEST"){
 	    			requestStructIndex++;
+	    			request = realloc(request, (1 + requestStructIndex)*sizeof(struct Request));
 	    		}
 
 	    	}else{
