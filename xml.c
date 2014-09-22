@@ -13,44 +13,44 @@ void writeToXML(char filePath[], struct User *user, struct Account *account, str
 
 	//WRITE USER
 	fputs("<FILE>\n", file);
-	fputs("<FILE_NAME>USER\n", file);
+	fputs("	<FILE_NAME>USER\n", file);
 	
 	for(int i = 0; i < userCount; i++){
-		fputs("<RECORD>\n", file);
+		fputs("	<RECORD>\n", file);
 
-		fputs("<USER_ID>", file);
+		fputs("		<USER_ID>", file);
 		fputs(user[i].user_id, file);
 		fputs("\n", file);
 
-		fputs("<PERSONAL_NUMBER>", file);
+		fputs("		<PERSONAL_NUMBER>", file);
 		fputs(user[i].personal_number, file);
 		fputs("\n", file);
 
-		fputs("<USERNAME>", file);
+		fputs("		<USERNAME>", file);
 		fputs(user[i].username, file);
 		fputs("\n", file);
 
-		fputs("<FIRST_NAME>", file);
+		fputs("		<FIRST_NAME>", file);
 		fputs(user[i].first_name, file);
 		fputs("\n", file);
 
-		fputs("<LAST_NAME>", file);
+		fputs("		<LAST_NAME>", file);
 		fputs(user[i].last_name, file);
 		fputs("\n", file);
 
-		fputs("<ADDRESS>", file);
+		fputs("		<ADDRESS>", file);
 		fputs(user[i].address, file);
 		fputs("\n", file);
 
-		fputs("<USER_TYPE>", file);
+		fputs("		<USER_TYPE>", file);
 		fputs(user[i].user_type, file);
 		fputs("\n", file);
 
-		fputs("<PASSWORD>", file);
+		fputs("		<PASSWORD>", file);
 		fputs(user[i].password, file);
 		fputs("\n", file);
 
-		fputs("</RECORD>\n", file);
+		fputs("	</RECORD>\n", file);
 	}
 
 	fputs("</FILE>\n", file);
@@ -58,31 +58,31 @@ void writeToXML(char filePath[], struct User *user, struct Account *account, str
 
 	//WRITE ACCOUNT
 	fputs("<FILE>\n", file);
-	fputs("<FILE_NAME>ACCOUNT\n", file);
+	fputs("	<FILE_NAME>ACCOUNT\n", file);
 	
 	for(int i = 0; i < accountCount; i++){
-		fputs("<RECORD>\n", file);
+		fputs("	<RECORD>\n", file);
 
-		fputs("<ACCOUNT_ID>", file);
+		fputs("		<ACCOUNT_ID>", file);
 		fprintf(file, "%hd", account[i].account_id);
 		//fputs(account[i].account_id, file);
 		fputs("\n", file);
 
-		fputs("<ACCOUNT_NUMBER>", file);
+		fputs("		<ACCOUNT_NUMBER>", file);
 		fprintf(file, "%d", account[i].account_number);
 		//fputs(accounti].account_number, file);
 		fputs("\n", file);
 
-		fputs("<BALANCE>", file);
+		fputs("		<BALANCE>", file);
 		fprintf(file, "%d", account[i].balance);
 		//fputs(accounti].balance, file);
 		fputs("\n", file);
 
-		fputs("<USER_ID>", file);
+		fputs("		<USER_ID>", file);
 		fputs(account[i].user_id, file);
 		fputs("\n", file);
 
-		fputs("</RECORD>\n", file);
+		fputs("	</RECORD>\n", file);
 	}
 
 	fputs("</FILE>\n", file);
@@ -90,31 +90,31 @@ void writeToXML(char filePath[], struct User *user, struct Account *account, str
 
 	//WRITE TRANSACTION
 	fputs("<FILE>\n", file);
-	fputs("<FILE_NAME>TRANSACTION\n", file);
+	fputs("	<FILE_NAME>TRANSACTION\n", file);
 	
 	for(int i = 0; i < transactionCount; i++){
-		fputs("<RECORD>\n", file);
+		fputs("	<RECORD>\n", file);
 
-		fputs("<FROM>", file);
+		fputs("		<FROM>", file);
 		fprintf(file, "%hd", transaction[i].from);
 		//fputs(transaction[i].from, file);
 		fputs("\n", file);
 
-		fputs("<TO>", file);
+		fputs("		<TO>", file);
 		fprintf(file, "%hd", transaction[i].to);
 		//fputs(transaction[i].to, file);
 		fputs("\n", file);
 
-		fputs("<DATE>", file);
+		fputs("		<DATE>", file);
 		fputs(transaction[i].date, file);
 		fputs("\n", file);
 
-		fputs("<AMMOUNT>", file);
+		fputs("		<AMMOUNT>", file);
 		fprintf(file, "%d", transaction[i].ammount);
 		//fputs(transaction[i].ammount, file);
 		fputs("\n", file);
 
-		fputs("</RECORD>\n", file);
+		fputs("	</RECORD>\n", file);
 	}
 
 	fputs("</FILE>\n", file);
@@ -122,24 +122,24 @@ void writeToXML(char filePath[], struct User *user, struct Account *account, str
 
 	//WRITE REQUEST
 	fputs("<FILE>\n", file);
-	fputs("<FILE_NAME>REQUEST\n", file);
+	fputs("	<FILE_NAME>REQUEST\n", file);
 	
 	for(int i = 0; i < requestCount; i++){
-		fputs("<RECORD>\n", file);
+		fputs("		<RECORD>\n", file);
 
-		fputs("<USER_ID>", file);
+		fputs("		<USER_ID>", file);
 		fputs(request[i].user_id, file);
 		fputs("\n", file);
 
-		fputs("<ACTION>", file);
+		fputs("		<ACTION>", file);
 		fputs(request[i].action, file);
 		fputs("\n", file);
 
-		fputs("<DATE>", file);
+		fputs("		<DATE>", file);
 		fputs(request[i].date, file);
 		fputs("\n", file);
 
-		fputs("</RECORD>\n", file);
+		fputs("	</RECORD>\n", file);
 	}
 
 	fputs("</FILE>\n", file);
