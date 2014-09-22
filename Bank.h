@@ -41,8 +41,34 @@ struct Transaction {
 struct Request {
 	short user_id;
 	char action[10];
-	char date[9];
+	char date[10];
 	short active;
 };
+
+
+
+int main();
+void showOptions(struct User *users);
+void registerClient();
+void showClientOptions();
+void listAccounts();
+void showTransactions();
+void newTransactionToPA();
+void newTransaction();
+void request();
+void logIn(struct User *users);
+void logOut();
+void quitProgram();
+
+void showAdminOptions();
+void addClient();
+void listClient();
+void editClient();
+void addAccount();
+void removeAccount();
+void showRequests();
+void listLog();
+
+void saveDataToFile();
 
 #endif
