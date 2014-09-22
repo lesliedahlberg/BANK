@@ -1,7 +1,10 @@
 ﻿#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 
 #include "Bank.h"
 
