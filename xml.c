@@ -65,7 +65,7 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	//OPEN FILE
 
 	file = fopen(filePath, "r");
-	
+	currentFile = calloc(20, sizeof(char));
 	//LOOP THROUGH FILE
 	for(int row = 0; !isEOF; row++){
 		
@@ -141,7 +141,6 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 
 
 	    //EVALUATE TAGS AND ENTRIES
-	    currentFile = malloc(sizeof(char));
 	    
     	if(!strcmp(tag, "FILE")){
     		isSetFileEntry = 1;
@@ -157,8 +156,7 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    		//SET FILE_ENTRY
 	    		if(!strcmp(tag, "FILE_NAME")){
 	    			printf("%s\n", entry);
-	    			currentFile = calloc(20, sizeof(char));
-	    			strncpy(currentFile, entry, entryIndex);
+	    			strcpy(currentFile, entry);
 	    			printf("%s\n", currentFile);
 	    		}
 	    	}
@@ -261,8 +259,8 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    	}else{
 	    		//RESET FILE_ENTRY
 	    		isSetFileEntry = 0;
-	    		strcpy(currentFile, "");
-	    		free(currentFile);
+	    		currentFile[0] = '\0';
+	    		
 	    		
 	    	}
 	    }
