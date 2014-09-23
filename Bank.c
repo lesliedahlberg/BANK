@@ -259,51 +259,173 @@ void showClientOptions() {
 			}
 	}while(loop);
 }
-
 void listAccounts() {
 	int i;
+	int userAccCount = 0;
 
-	//printf("User ID: %s \nBalance: %d ", user[LOGGED_IN_INDEX].user_id, account[0].balance);
-	for(i=0; i < accountCount; i++){
-		if (account[LOGGED_IN_INDEX].user_id == user[LOGGED_IN_INDEX].user_id) {
-
-			printf("Account Number: %d \nBalance: %d ", account[i].account_number, account[i].balance);
+	for (i = 0; i < accountCount; i++) {
+		if (!strcmp(account[i].user_id, user[LOGGED_IN_INDEX].user_id)) {
+			printf("Account Number: %d : Balance: %d => [%d]\n",
+					account[i].account_number, account[i].balance, i);
+			userAccCount++;
 		}
 	}
 
-	getchar();
 }
 
 void showTransactions() {
+	int i;
+	for (i=0; i < transactionCount; i++){
+
+	}
 
 }
 
 void newTransactionToPA() {
+	int fromAcc, toAcc, amount;
+	char accept;
+	char date[100];
+	time_t now = time(NULL );
+	struct tm *t = localtime(&now);
+	strftime(date, sizeof(date) - 1, "%d %m %Y %H:%M", t);
 
+	puts("Here are your accounts!");
+	listAccounts(account, user, accountCount);
+	puts("Choose an account to transfer money from!");
+	scanf("%d", &fromAcc);
+	while (strcmp(account[fromAcc].user_id, user[LOGGED_IN_INDEX].user_id)) {//Kollar om det valda konton verkligen tillhör användaren
+		puts("Whops!, something went wrong, try choosing an account again\n");
+		listAccounts(account, user, accountCount);
+		scanf("%d", &fromAcc);
+	}
+	puts("Transfer to which account of yours?");
+	scanf("%d", &toAcc);
+	while (strcmp(account[toAcc].user_id, user[LOGGED_IN_INDEX].user_id)
+			|| account[fromAcc].account_id == account[toAcc].account_id) {//Kollar om det valda konton verkligen tillhör användaren
+		puts("Whops!, something went wrong, try choosing an account again\n");
+		listAccounts(account, user, accountCount);
+		scanf("%d", &toAcc);
+	}
+
+	printf(
+			"How much money would you'd like to transfer from account: %d to account: %d.",
+			account[fromAcc].account_number, account[toAcc].account_number);
+	scanf("%d", &amount);
+
+	printf(
+			"Do you accept this transfer of %d kr, from your account: %d, to your account: %d y/n\n",
+			amount, account[fromAcc].account_number,
+			account[toAcc].account_number);
+	scanf(" %c", &accept);
+	if (accept == 'y') {
+		if (account[fromAcc].balance < amount) {//Kollar om det konto som pengarna skall överföras ifrån innehar den summan pengar
+			puts(
+					"Whops!, seems like your have insufficent amount of money on the account you're trying to transfer from");
+			puts("You'll have to try with another one!\n");
+			system("cls");
+			newTransactionToPA();
+		}
+		//överför pengarna mellan kontonen
+		account[fromAcc].balance = account[fromAcc].balance - amount;
+		account[toAcc].balance = account[toAcc].balance + amount;
+
+		//loggar transaktionen
+		transactionCount++;
+		transaction[transactionCount].from = account[fromAcc].account_number;
+		transaction[transactionCount].to = account[toAcc].account_number;
+		transaction[transactionCount].ammount = amount;
+		strcpy(transaction[transactionCount].date, date);
+
+		puts("Transfer complete!\nYour current balance:");
+		printf("Account: %d, Balance: %d\nAccount: %d, Balance: %d",
+				account[fromAcc].account_number, account[fromAcc].balance,
+				account[toAcc].account_number, account[toAcc].balance);
+		getchar();
+		system("cls");
+	} else if (accept == 'n') {
+
+	}
+	getchar();
+	system("cls");
 }
 
 void newTransaction() {
-	int numTo;
-	int i = 0;
-	int input;
+	int numTo = 0, i = 0, toAcc = 0, fromAcc = 0, amount = 0;
+	char accept;
+	char date[100];
+	time_t now = time(NULL );
+	struct tm *t = localtime(&now);
+	strftime(date, sizeof(date) - 1, "%d %m %Y %H:%M", t);
 
-	puts("Välj från vilket av dina konto du vill överföra ifrån!");
-	scanf("%d", &input);
+	puts("Here are your account(s)!");
+	listAccounts(account, user, accountCount);
+	puts("Choose an account to transfer money from!");
+	scanf("%d", &fromAcc);
 
-	//while (account[i].account_id != NULL ) {
-		if (account[i].user_id == LOGGED_IN_USER_ID) {
-			printf("Option: %d, Account Number: %d :Balance: %d ", i,account[i].account_number, account[i].balance);
+	while (strcmp(account[fromAcc].user_id, user[LOGGED_IN_INDEX].user_id)) {//Kollar om det valda konton verkligen tillhör användaren
+		puts(
+				"Whops!, seems something went wrong choosing accounts. Try Again!\n");
+		listAccounts(account, user, accountCount);
+		scanf("%d", &fromAcc);
+	}
 
-		}
-		i++;
-	//}
-
-
-
-	puts("Till vilket bank nummer vill du göra en överförning?\n");
+	puts("Enter a bank number to transfer money to!");
 	scanf("%d", &numTo);
+	for (i = 0; i < accountCount; i++) { //loopar igenom account struktur arrayen och letar efter ett konto med samma nummer som blev insrkivet
+		if (account[i].account_number == numTo) {
+			printf("Account Number: %d found!\n", numTo);
+			toAcc = i;
+		}
+	}
+	while (account[fromAcc].account_id == account[toAcc].account_id) { //loopar och kollar om man överför tillsamma bankkonto
+		puts(
+				"Whops!, you canno't transfer money back to same account, Try with another one!");
+		system("cls");
+		puts("Enter a bank number to transfer money to!");
+		scanf("%d", &numTo);
+		for (i = 0; i < accountCount; i++) { //loopar igenom account struktur arrayen och letar efter ett konto med samma nummer som blev insrkivet
+			if (account[i].account_number == numTo) {
+				printf("Account Number: %d found!\n", numTo);
+				toAcc = i;
+			}
+		}
+	}
 
+	puts("Type in the amount of money you'd like to transfer?");
+	scanf("%d", &amount);
+	getchar();
+	printf(
+			"Do you accept this transfer of %d kr, from your account: %d, to the account: %d y/n\n",
+			amount, account[fromAcc].account_number, numTo);
+	scanf(" %c", &accept);
+	if (accept == 'y') {
+		if (account[fromAcc].balance < amount) { //Kollar om det konto som pengarna skall överföras ifrån innehar den summan pengar
+			puts(
+					"Whops!, seems like your have insufficent amount of money on the account you're trying to transfer from");
+			puts("You'll have to try with another one!\n");
+			system("cls");
+			newTransactionToPA();
+		}
+		//överförningern av pengarna görs
+		account[fromAcc].balance = account[fromAcc].balance - amount;
+		account[toAcc].balance = account[toAcc].balance + amount;
+
+		//loggar transkationerna
+		transactionCount++;
+		transaction[transactionCount].from = account[fromAcc].account_number;
+		transaction[transactionCount].to = account[toAcc].account_number;
+		transaction[transactionCount].ammount = amount;
+		strcpy(transaction[transactionCount].date, date);
+
+
+		puts("Transfer complete!");
+		getchar();
+		system("cls");
+	} else if (accept == 'n') {
+
+	}
 }
+
 
 void showAdminOptions() {
 	
