@@ -48,6 +48,7 @@ struct Transaction {
 
 struct Request {
 	int user_id;
+	int account_id;
 	char action[21];
 	char date[21];
 	short active;

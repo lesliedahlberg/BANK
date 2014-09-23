@@ -46,6 +46,7 @@ int readXML(char filePath[]){
 	isSetFileEntry = 0;
 	isSetRecordEntry = 0;
 
+	infoStructIndex = 0;
 	userStructIndex = 0;
 	accountStructIndex = 0;
 	transactionStructIndex = 0;
@@ -252,6 +253,10 @@ int readXML(char filePath[]){
 	    			}
 	    			else if(!strcmp(tag, "ACTIVE")){
 	    				account[accountStructIndex].active = (short) atoi(entry);
+	    			}
+	    			else if(!strcmp(tag, "ACCOUNT_ID")){
+	    				request[requestStructIndex].account_id = (short) atoi(entry);
+	    				//strncpy(request[requestStructIndex].user_id, entry, entryIndex);
 	    			}
 	    		}
 	    	}
@@ -469,6 +474,11 @@ int writeToXML(char filePath[]){
 
 			fputs("		<USER_ID>", file);
 			fprintf(file, "%d", request[i].user_id);
+			//fputs(request[i].user_id, file);
+			fputs("\n", file);
+
+			fputs("		<ACCOUNT_ID>", file);
+			fprintf(file, "%d", request[i].account_id);
 			//fputs(request[i].user_id, file);
 			fputs("\n", file);
 

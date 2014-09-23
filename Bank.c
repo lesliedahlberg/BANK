@@ -521,10 +521,18 @@ void addAccount() {
 
 }
 
-int getAccountIdByNumber(int accountNumber){
+int getAccountIndexByNumber(int accountNumber){
 	for(int i = 0; i < accountCount; i++){
 		if(account[i].account_number == accountNumber){
 			return i;
+		}
+	}
+	return -1;
+}
+int getAccountIdByNumber(int accountNumber){
+	for(int i = 0; i < accountCount; i++){
+		if(account[i].account_number == accountNumber){
+			return account[i].account_id;
 		}
 	}
 	return -1;
@@ -556,7 +564,7 @@ int getAccountIdByNumber(int accountNumber){
 }*/
 
 void removeAccount(int accountNumber) {
-	account[getAccountIdByNumber(accountNumber)].active = 0;
+	account[getAccountIndexByNumber(accountNumber)].active = 0;
 	printf("The account was successfully deleted!\n");
 }
 
@@ -569,7 +577,7 @@ void listLog() {
 }
 
 void newRequest() {
-	int loop;
+	int loop, loop2;
 	int input;
 	int accountNumber;
 
@@ -589,7 +597,13 @@ void newRequest() {
 					requestNewAccount();
 					break;
 				case 2:
-					//requestRemovalOfAccount()
+					listAccounts();
+					loop2 = 0;
+					while(!loop2){
+						printf("Enter account number of account to be deleted: ");
+						loop2 = scanf("%d", &accountNumber);
+					}
+					requestRemovalOfAccount(accountNumber);
 					break;
 				default:
 					printf("Error, please choose again!\n");
@@ -608,6 +622,8 @@ void requestNewAccount(){
 	strcpy(request[requestCount].action, "NEW ACCOUNT");
 	strcpy(request[requestCount].date, date);
 	request[requestCount].active = 1;
+
+	printf("New \n");
 	
 
 	requestCount++;
@@ -616,7 +632,20 @@ void requestNewAccount(){
 }
 
 void requestRemovalOfAccount(int accountNumber){
+	char date[20];
+	getDate(date);
 
+	request[requestCount].user_id = user[LOGGED_IN_INDEX].user_id;
+	strcpy(request[requestCount].action, "REMOVE ACCOUNT");
+	request[requestCount].account_id = getAccountIdByNumber(accountNumber);
+	strcpy(request[requestCount].date, date);
+	request[requestCount].active = 1;
+
+	printf("New \n");
+	
+
+	requestCount++;
+	request = realloc(request, (requestCount + 1)*sizeof(struct Request));
 }
 
 void getDate(char *date){
