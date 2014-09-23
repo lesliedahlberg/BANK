@@ -8,8 +8,15 @@
 #ifndef BANK_H_
 #define BANK_H_
 
+struct Info {
+	char bank_name[50];
+	int last_user_id;
+	int last_account_id;
+};
+
 struct User {
-	char user_id[100];
+	//char user_id[100];
+	int user_id;
 	char personal_number[100];
 	char username[100];
 	char first_name[100];
@@ -17,7 +24,7 @@ struct User {
 	char address[100];
 	char user_type[10];
 	char password[100];
-	char active[10];
+	short active;
 
 };
 
@@ -27,7 +34,7 @@ struct Account {
 	int account_number;
 	int balance;
 	short active;
-	char user_id[100];
+	int user_id;
 };
 
 struct Transaction {
@@ -36,6 +43,7 @@ struct Transaction {
 	char date[9];
 	int ammount;
 	short active;
+	int user_id;
 };
 
 struct Request {

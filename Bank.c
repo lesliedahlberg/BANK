@@ -14,11 +14,12 @@ void showOptions() {
 	int loop = 0;
 
 	if(loggedIn){
-		printf("Option:\n");
+		printf("Options:\n");
 		printf("Logout..............(1)\n");
 		printf("Quit................(2)\n");
 		do{
 			loop = 0;
+			input = 0;
 
 			printf("Enter number to select option: ");
 			scanf("%d", &input);
@@ -38,12 +39,13 @@ void showOptions() {
 		}while(loop);
 	}else if(!loggedIn){
 
-		printf("Option:\n");
+		printf("Options:\n");
 		printf("Login...............(1)\n");
 		printf("Register............(2)\n");
 		printf("Quit................(3)\n");
 		do{
 			loop = 0;
+			input = 0;
 
 			printf("Enter number to select option: ");
 			scanf("%d", &input);
@@ -107,7 +109,7 @@ int logIn() {
 			if (strcmp(user[i].username, username) == 0 && strcmp(user[i].password, password) == 0) {
 				printf("Successfull login!\n");
 				loggedIn = 1;
-				strcpy(LOGGED_IN_USER_ID, user[i].user_id);
+				LOGGED_IN_USER_ID = user[i].user_id;
 				LOGGED_IN_INDEX = i;
 				system("cls");
 				i = userCount;
@@ -123,48 +125,139 @@ int logIn() {
 }
 
 void registerClient() {
-	printf("Fill in the form below");
+
+	int user_id;
+	char personal_number[100];
+	char username[100];
+	char first_name[100];
+	char last_name[100];
+	char address[100];
+	char user_type[10];
+	char password[100];
+
+	printf("Register new user\n");
+	
+	while(1){
+		while(getchar() != '\n');
+		printf("National identification number (10 digits): ");
+		if(scanf("%d", &user_id))
+			break;
+		printf("Error, please try again!\n");
+	}
+
+	while(1){
+		while(getchar() != '\n');
+		printf("Username: ");
+		if(scanf("%s", username))
+			break;
+		printf("Error, please try again!\n");
+	}
+
+	while(1){
+		while(getchar() != '\n');
+		printf("First name: ");
+		if(scanf("%s", first_name))
+			break;
+		printf("Error, please try again!\n");
+	}
+
+	while(1){
+		while(getchar() != '\n');
+		printf("Last name: ");
+		if(scanf("%s", last_name))
+			break;
+		printf("Error, please try again!\n");
+	}
+
+	while(1){
+		while(getchar() != '\n');
+		printf("Address: ");
+		if(scanf("%s", address))
+			break;
+		printf("Error, please try again!\n");
+	}
+
+	while(1){
+		while(getchar() != '\n');
+		printf("Password: ");
+		if(scanf("%s", password))
+			break;
+		printf("Error, please try again!\n");
+	}
+
+
+
+	
+	
+
+	
+
+	user[userCount].user_id = ++info[0].last_user_id;
+	strcpy(user[userCount].personal_number, personal_number);
+	strcpy(user[userCount].username, username);
+	strcpy(user[userCount].first_name, first_name);
+	strcpy(user[userCount].last_name, last_name);
+	strcpy(user[userCount].address, address);
+	strcpy(user[userCount].password, password);
+	strcpy(user[userCount].user_type, "client");
+
+	userCount++;
+	user = realloc(user, (userCount + 1)*sizeof(struct User));
+
 
 }
 
 void showClientOptions() {
 
-
-
-
-	int i;
 	int input;
-	char *options[6] = { "Accounts", "Transactions", "Transfer own accounts",
-			"Transfer to other", "Request new/delet account", "Quit" };
+	int loop;
 
-	for (i = 0; i < 6; i++) {
-		printf("\n%25s: => %20d.", options[i], i);
-	}
-	printf("\nWatcha'd like to do?");
-	scanf("%d", &input);
-	switch (input) {
-	case 0:
-		listAccounts(account, user, accountCount);
-		break;
-	case 1:
-		showTransactions();
-		break;
-	case 2:
-		newTransactionToPA();
-		break;
-	case 3:
-		newTransaction(account);
-		break;
-	case 4:
-		newRequest();
-		break;
-	case 5:
-		quitProgram(running);
-		break;
-	default:
-		printf("Bad input, quitting!");
-		break;
-	}
+	printf("Options:\n");
+	printf("Accounts......................(1)\n");
+	printf("Transactions..................(2)\n");
+	printf("Transfer own accounts.........(3)\n");
+	printf("Transfer to other.............(4)\n");
+	printf("Request new/delet account.....(5)\n");
+	printf("Logout........................(6)\n");
+	printf("Quit..........................(7)\n");
+
+	
+
+	do{
+			loop = 0;
+			input = 0;
+
+			printf("Enter number to select option: ");
+			scanf("%d", &input);
+
+			switch (input) {
+				case 1:
+					listAccounts();
+					break;
+				case 2:
+					showTransactions();
+					break;
+				case 3:
+					newTransactionToPA();
+					break;
+				case 4:
+					newTransaction();
+					break;
+				case 5:
+					newRequest();
+					break;
+				case 6:
+					logOut();
+					break;
+				case 7:
+					quitProgram();
+					break;
+				default:
+					printf("Error, please choose again!\n");
+					loop = 1;
+					break;
+			}
+	}while(loop);
 }
 
 void listAccounts() {
@@ -172,7 +265,7 @@ void listAccounts() {
 
 	//printf("User ID: %s \nBalance: %d ", user[LOGGED_IN_INDEX].user_id, account[0].balance);
 	for(i=0; i < accountCount; i++){
-		if (strcmp(account[LOGGED_IN_INDEX].user_id, user[LOGGED_IN_INDEX].user_id) == 0) {
+		if (account[LOGGED_IN_INDEX].user_id == user[LOGGED_IN_INDEX].user_id) {
 
 			printf("Account Number: %d \nBalance: %d ", account[i].account_number, account[i].balance);
 		}
@@ -213,35 +306,46 @@ void newTransaction() {
 }
 
 void showAdminOptions() {
-	int i;
+	
 	int input;
-	char *options[5] = { "Clients","My Account(s)" ,"Account Requests", "User log", "Quit" };
+	int loop;
 
-	for (i = 0; i < 5; i++) {
-		printf("\n%35s: => %25d.", options[i], i);
-	}
-	printf("\n Watcha'd like to do?");
-	scanf("%d", &input);
-	switch (input) {
-	case 0:
-		listClient();
-		break;
-	case 1:
-		listAccounts(account, user, accountCount);
-		break;
-	case 2:
-		showRequests();
-		break;
-	case 3:
-		listLog();
-		break;
-	case 4:
-		quitProgram();
-		break;
-	default:
-		printf("Bad input, quitting!");
-		break;
-	}
+	printf("Options:\n");
+	printf("Clients ......................(1)\n");
+	printf("Account Requests..............(2)\n");
+	printf("User log......................(3)\n");
+	printf("Logout........................(4)\n");
+	printf("Quit..........................(5)\n");
+
+	do{
+			loop = 0;
+			input = 0;
+
+			printf("Enter number to select option: ");
+			scanf("%d", &input);
+
+			switch (input) {
+				case 1:
+					listClient();
+					break;
+				case 2:
+					showRequests();
+					break;
+				case 3:
+					listLog();
+					break;
+				case 4:
+					logOut();
+					break;
+				case 5:
+					quitProgram();
+					break;
+				default:
+					printf("Error, please choose again!\n");
+					loop = 1;
+					break;
+			}
+	}while(loop);
 }
 
 void addClient() {
@@ -277,11 +381,13 @@ void newRequest() {
 }
 
 void logOut() {
-
+	loggedIn = 0;
+	LOGGED_IN_INDEX = 0;
+	LOGGED_IN_USER_ID = 0;
 }
 
 void quitProgram() {
-	printf("Quitting, Thank you for using our bank service!");
+	logOut();
 	running = 0;
 
 }

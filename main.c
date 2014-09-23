@@ -9,6 +9,7 @@
 //DECLARE GLOBALS
 //NEW ONES MUST BE ADDED TO SHARED.H
 
+int infoCount;
 int userCount;
 int accountCount;
 int transactionCount;
@@ -16,11 +17,11 @@ int requestCount;
 
 int running;
 int loggedIn;
-int currentUserId;
 
-char LOGGED_IN_USER_ID[100];
+int LOGGED_IN_USER_ID;
 int LOGGED_IN_INDEX;
 
+struct Info *info;
 struct User *user;
 struct Account *account;
 struct Transaction *transaction;
@@ -42,18 +43,23 @@ int main() {
 	
 	while(running){
 		showOptions();
+		
 		while(loggedIn){
-			if(strcmp(user[LOGGED_IN_INDEX].user_type, "client")){
+			if(!strcmp(user[LOGGED_IN_INDEX].user_type, "client")){
 				showClientOptions();
 
-			}else if(strcmp(user[LOGGED_IN_INDEX].user_type, "admin")){
-				//printf("USER!\n");
+			}else if(!strcmp(user[LOGGED_IN_INDEX].user_type, "admin")){
+				showAdminOptions();
 
 			}
 		}
 	}
 
+	
+
 	writeToXML(filePath);
+
+
 
 	/*
 	do {
