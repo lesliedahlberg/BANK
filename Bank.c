@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 #include "Bank.h"
@@ -264,7 +265,7 @@ void listAccounts() {
 	int userAccCount = 0;
 
 	for (i = 0; i < accountCount; i++) {
-		if (!strcmp(account[i].user_id, user[LOGGED_IN_INDEX].user_id)) {
+		if (account[i].user_id == user[LOGGED_IN_INDEX].user_id) {
 			printf("Account Number: %d : Balance: %d => [%d]\n",
 					account[i].account_number, account[i].balance, i);
 			userAccCount++;
@@ -290,20 +291,20 @@ void newTransactionToPA() {
 	strftime(date, sizeof(date) - 1, "%d %m %Y %H:%M", t);
 
 	puts("Here are your accounts!");
-	listAccounts(account, user, accountCount);
+	listAccounts();
 	puts("Choose an account to transfer money from!");
 	scanf("%d", &fromAcc);
-	while (strcmp(account[fromAcc].user_id, user[LOGGED_IN_INDEX].user_id)) {//Kollar om det valda konton verkligen tillhör användaren
+	while (account[fromAcc].user_id != user[LOGGED_IN_INDEX].user_id) {//Kollar om det valda konton verkligen tillhör användaren
 		puts("Whops!, something went wrong, try choosing an account again\n");
-		listAccounts(account, user, accountCount);
+		listAccounts();
 		scanf("%d", &fromAcc);
 	}
 	puts("Transfer to which account of yours?");
 	scanf("%d", &toAcc);
-	while (strcmp(account[toAcc].user_id, user[LOGGED_IN_INDEX].user_id)
+	while (account[toAcc].user_id != user[LOGGED_IN_INDEX].user_id
 			|| account[fromAcc].account_id == account[toAcc].account_id) {//Kollar om det valda konton verkligen tillhör användaren
 		puts("Whops!, something went wrong, try choosing an account again\n");
-		listAccounts(account, user, accountCount);
+		listAccounts();
 		scanf("%d", &toAcc);
 	}
 
@@ -358,14 +359,14 @@ void newTransaction() {
 	strftime(date, sizeof(date) - 1, "%d %m %Y %H:%M", t);
 
 	puts("Here are your account(s)!");
-	listAccounts(account, user, accountCount);
+	listAccounts();
 	puts("Choose an account to transfer money from!");
 	scanf("%d", &fromAcc);
 
-	while (strcmp(account[fromAcc].user_id, user[LOGGED_IN_INDEX].user_id)) {//Kollar om det valda konton verkligen tillhör användaren
+	while (account[fromAcc].user_id != user[LOGGED_IN_INDEX].user_id) {//Kollar om det valda konton verkligen tillhör användaren
 		puts(
 				"Whops!, seems something went wrong choosing accounts. Try Again!\n");
-		listAccounts(account, user, accountCount);
+		listAccounts();
 		scanf("%d", &fromAcc);
 	}
 
