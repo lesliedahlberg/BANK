@@ -1,15 +1,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "bank.h"
 #include "xml.h"
+#include "shared.h"
 
 
 
-void writeToXML(char filePath[], struct User *user, struct Account *account, struct Transaction *transaction, struct Request *request, int userCount, int accountCount, int transactionCount, int requestCount){
+int writeToXML(char filePath[]){
 
 	FILE *file;
 	file = fopen(filePath, "w");
+	if(file == NULL){
+		return 0;
+	}
 
 	//WRITE USER
 	fputs("<FILE>\n", file);
@@ -144,9 +149,10 @@ void writeToXML(char filePath[], struct User *user, struct Account *account, str
 
 	fputs("</FILE>\n", file);
 
+	return 1;
 }
 
-void readXML(char filePath[], struct User **user, struct Account **account, struct Transaction **transaction, struct Request **request, int *userCount, int *accountCount, int *transactionCount, int *requestCount){
+int readXML(char filePath[]){
 
 	//DEKLARATIONS
 	char *entry;
@@ -190,13 +196,16 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	requestStructIndex = 0;
 
 	//ALLOC STRUCTS
-	*user = malloc(sizeof(struct User));
-	*account = malloc(sizeof(struct Account));
-	*transaction = malloc(sizeof(struct Transaction));
-	*request = malloc(sizeof(struct Request));
+	user = malloc(sizeof(struct User));
+	account = malloc(sizeof(struct Account));
+	transaction = malloc(sizeof(struct Transaction));
+	request = malloc(sizeof(struct Request));
 
 	//OPEN FILE
 	file = fopen(filePath, "r");
+	if(file == NULL){
+		return 0;
+	}
 	currentFile = calloc(20, sizeof(char));
 	//LOOP THROUGH FILE
 	for(int row = 0; !isEOF; row++){
@@ -290,72 +299,72 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    		if(!strcmp(currentFile, "USER")){
 	    			
 	    			if(!strcmp(tag, "USER_ID")){
-	    				strncpy((*user)[userStructIndex].user_id, entry, entryIndex);
+	    				strncpy(user[userStructIndex].user_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "PERSONAL_NUMBER")){
-	    				strncpy((*user)[userStructIndex].personal_number, entry, entryIndex);
+	    				strncpy(user[userStructIndex].personal_number, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USERNAME")){
-	    				strncpy((*user)[userStructIndex].username, entry, entryIndex);
+	    				strncpy(user[userStructIndex].username, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "FIRST_NAME")){
-	    				strcpy((*user)[userStructIndex].first_name, entry);
+	    				strcpy(user[userStructIndex].first_name, entry);
 	    			}
 	    			else if(!strcmp(tag, "LAST_NAME")){
-	    				strncpy((*user)[userStructIndex].last_name, entry, entryIndex);
+	    				strncpy(user[userStructIndex].last_name, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ADDRESS")){
-	    				strncpy((*user)[userStructIndex].address, entry, entryIndex);
+	    				strncpy(user[userStructIndex].address, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USER_TYPE")){
-	    				strncpy((*user)[userStructIndex].user_type, entry, entryIndex);
+	    				strncpy(user[userStructIndex].user_type, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "PASSWORD")){
-	    				strncpy((*user)[userStructIndex].password, entry, entryIndex);
+	    				strncpy(user[userStructIndex].password, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "ACCOUNT")){
 	    			if(!strcmp(tag, "ACCOUNT_ID")){
-	    				(*account)[accountStructIndex].account_id = (short) atoi(entry);
+	    				account[accountStructIndex].account_id = (short) atoi(entry);
 	    				//strncpy(account[accountStructIndex].account_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACCOUNT_NUMBER")){
-	    				(*account)[accountStructIndex].account_number = (int) atoi(entry);
+	    				account[accountStructIndex].account_number = (int) atoi(entry);
 	    				//strncpy(account[accountStructIndex].account_number, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "BALANCE")){
-	    				(*account)[accountStructIndex].balance = (int) atoi(entry);
+	    				account[accountStructIndex].balance = (int) atoi(entry);
 	    				//strncpy(account[accountStructIndex].balance, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USER_ID")){
-	    				//(*account)[accountStructIndex].user_id = (short) entry;
-	    				strncpy((*account)[accountStructIndex].user_id, entry, entryIndex);
+	    				//account[accountStructIndex].user_id = (short) entry;
+	    				strncpy(account[accountStructIndex].user_id, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			if(!strcmp(tag, "FROM")){
-	    				(*transaction)[transactionStructIndex].from = (short) atoi(entry);
+	    				transaction[transactionStructIndex].from = (short) atoi(entry);
 	    				//strncpy(transaction[transactionStructIndex].from, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "TO")){
-	    				(*transaction)[transactionStructIndex].to = (short) atoi(entry);
+	    				transaction[transactionStructIndex].to = (short) atoi(entry);
 	    				//strncpy(transaction[transactionStructIndex].to, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "DATE")){
-	    				strncpy((*transaction)[transactionStructIndex].date, entry, entryIndex);
+	    				strncpy(transaction[transactionStructIndex].date, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "AMMOUNT")){
-	    				(*transaction)[transactionStructIndex].ammount = (int) atoi(entry);
+	    				transaction[transactionStructIndex].ammount = (int) atoi(entry);
 	    				//strncpy(transaction[transactionStructIndex].ammount, entry, entryIndex);
 	    			}
 	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			if(!strcmp(tag, "USER_ID")){
-	    				//(*request)[requestStructIndex].user_id = (short) entry;
-	    				strncpy((*request)[requestStructIndex].user_id, entry, entryIndex);
+	    				//request[requestStructIndex].user_id = (short) entry;
+	    				strncpy(request[requestStructIndex].user_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACTION")){
-	    				strncpy((*request)[requestStructIndex].action, entry, entryIndex);
+	    				strncpy(request[requestStructIndex].action, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "DATE")){
-	    				strncpy((*request)[requestStructIndex].date, entry, entryIndex);
+	    				strncpy(request[requestStructIndex].date, entry, entryIndex);
 	    			}
 	    		}
 	    	}
@@ -366,16 +375,16 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	    		isSetRecordEntry = 0;
 	    		if(!strcmp(currentFile, "USER")){
 	    			userStructIndex++;
-	    			*user = realloc(*user, (1 + userStructIndex)*sizeof(struct User));
+	    			user = realloc(user, (1 + userStructIndex)*sizeof(struct User));
 	    		}else if(!strcmp(currentFile, "ACCOUNT")){
 	    			accountStructIndex++;
-	    			*account = realloc(*account, (1 + accountStructIndex)*sizeof(struct Account));
+	    			account = realloc(account, (1 + accountStructIndex)*sizeof(struct Account));
 	    		}else if(!strcmp(currentFile, "TRANSACTION")){
 	    			transactionStructIndex++;
-	    			*transaction = realloc(*transaction, (1 + transactionStructIndex)*sizeof(struct Transaction));
+	    			transaction = realloc(transaction, (1 + transactionStructIndex)*sizeof(struct Transaction));
 	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			requestStructIndex++;
-	    			*request = realloc(*request, (1 + requestStructIndex)*sizeof(struct Request));
+	    			request = realloc(request, (1 + requestStructIndex)*sizeof(struct Request));
 	    		}
 
 	    	}else{
@@ -395,8 +404,10 @@ void readXML(char filePath[], struct User **user, struct Account **account, stru
 	
 	
 
-	*userCount = userStructIndex;
-	*accountCount = accountStructIndex;
-	*transactionCount = transactionStructIndex;
-	*requestCount = requestStructIndex;
+	userCount = userStructIndex;
+	accountCount = accountStructIndex;
+	transactionCount = transactionStructIndex;
+	requestCount = requestStructIndex;
+
+	return 1;
 }

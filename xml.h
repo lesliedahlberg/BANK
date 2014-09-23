@@ -1,8 +1,8 @@
 #ifndef XML_H_
 #define XML_H_
 
-void writeToXML(char filePath[], struct User *user, struct Account *account, struct Transaction *transaction, struct Request *request, int userCount, int accountCount, int transactionCount, int requestCount);
+int writeToXML(char filePath[]);
 
-void readXML(char filePath[], struct User **user, struct Account **account, struct Transaction **transaction, struct Request **request, int *userCount, int *accountCount, int *transactionCount, int *requestCount);
+int readXML(char filePath[]);
 
 #endif

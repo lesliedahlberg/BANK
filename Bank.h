@@ -47,24 +47,21 @@ struct Request {
 
 
 
-int logedIn;
-int running;
-char LOGGED_IN_USER_ID[100];
-int LOGGED_IN_INDEX;
 
-void showOptions(struct User *user, int logedIn);
+
+void showOptions();
 void registerClient();
-void showClientOptions(struct Account *account, struct User *user, int accountCount);
-void listAccounts(struct Account *account, struct User *user, int accountCount);
+void showClientOptions();
+void listAccounts();
 void showTransactions();
 void newTransactionToPA();
-void newTransaction(struct Account *account);
-void request();
-void logIn(struct User *user, int logedIn);
+void newTransaction();
+void newRequest();
+int logIn();
 void logOut();
 void quitProgram();
 
-void showAdminOptions(struct Account *account, struct User *user, int accountCount);
+void showAdminOptions();
 void addClient();
 void listClient();
 void editClient();

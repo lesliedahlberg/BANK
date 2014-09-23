@@ -4,76 +4,122 @@
 
 
 #include "Bank.h"
+#include "shared.h"
 
 #define MAXLINE 80
 #define MAXRECORDS 10
 
-void showOptions(struct User *user, int logedIn) {
-	int i;
+void showOptions() {
 	int input;
-	char *options[3] = { "Login", "Register", "Quit" };
+	int loop = 0;
 
-	for (i = 0; i < 3; i++) {
-		printf("\n%10s:   => %20d.", options[i], i);
-	}
-	printf("\n Watcha'd like to do?");
-	scanf("%d", &input);
-	switch (input) {
-	case 0:
-		logIn(user, logedIn);
-		break;
-	case 1:
-		registerClient();
-		break;
-	case 2:
-		quitProgram();
-		break;
-	default:
-		printf("Bad input, quitting!");
-		break;
-	}
+	if(loggedIn){
+		printf("Option:\n");
+		printf("Logout..............(1)\n");
+		printf("Quit................(2)\n");
+		do{
+			loop = 0;
 
+			printf("Enter number to select option: ");
+			scanf("%d", &input);
+
+			switch (input) {
+				case 1:
+					logOut();
+					break;
+				case 2:
+					quitProgram();
+					break;
+				default:
+					printf("Error, please choose again!\n");
+					loop = 1;
+					break;
+			}
+		}while(loop);
+	}else if(!loggedIn){
+
+		printf("Option:\n");
+		printf("Login...............(1)\n");
+		printf("Register............(2)\n");
+		printf("Quit................(3)\n");
+		do{
+			loop = 0;
+
+			printf("Enter number to select option: ");
+			scanf("%d", &input);
+
+			switch (input) {
+				case 1:
+					logIn();
+					break;
+				case 2:
+					registerClient();
+					break;
+				case 3:
+					quitProgram();
+					break;
+				default:
+					printf("Error, please choose again!\n");
+					loop = 1;
+					break;
+			}
+		}while(loop);
+	}
 }
 
-void logIn(struct User *user, int logedIn) {
+int logIn() {
 	//system("cls");
 	char username[100];
 	char password[100];
-	int badLogin = 1;
-	int i = 0;
+	int loop = 0;
+
+	if(loggedIn){
+		logOut();
+	}
 
 	do {
 
-		printf("Enter your Username and Password\n");
-		getchar();
-		puts("Username: ");
+		printf("Login (Enter \"cancel\" as username to cancel)\n");
 		//getchar();
-		fgets(username, 100, stdin);
-		puts("Password: ");
-		//getchar();
-		fgets(password, 100, stdin);
+		
+		printf("Username: ");
+		scanf("%s", username);
 
+		if(!strcmp(username, "cancel")){
+			return 0;
+		}
+		//getchar();
+		//fgets(username, 100, stdin);
+		
+		printf("Password: ");
+		scanf("%s", password);
+		//getchar();
+		//fgets(password, 100, stdin);
+		
+		/*
 		if (username[strlen(username) - 1] == '\n') //fgets() sätter automatisk ett '\n' i slutet av varje string, denna funktion kollar om det är en '\n' i slutet ersätter  den med 0
-			username[strlen(username) - 1] = 0;
+			username[strlen(username) - 1] = '';
 		if (password[strlen(password) - 1] == '\n') //fgets() sätter automatisk ett '\n' i slutet av varje string, denna funktion kollar om det är en '\n' i slutet ersätter  den med 0
-			password[strlen(password) - 1] = 0;
+			password[strlen(password) - 1] = '';
+		*/
 
-		while (i < 2 ) {
-			if (strcmp(user[i].username, username) == 0
-					&& strcmp(user[i].password, password) == 0) {
-				puts("Successfull login!");
-				badLogin = 0;
-				logedIn = 1;
+		for(int i = 0; i < userCount; i++){
+			if (strcmp(user[i].username, username) == 0 && strcmp(user[i].password, password) == 0) {
+				printf("Successfull login!\n");
+				loggedIn = 1;
 				strcpy(LOGGED_IN_USER_ID, user[i].user_id);
 				LOGGED_IN_INDEX = i;
 				system("cls");
-			} else {
-				puts("Bad login!");
+				i = userCount;
 			}
-			i++;
 		}
+		if(!loggedIn){
+			printf("Wrong username or password, try again!\n");
+		}
+		
+	} while (!loggedIn);
 
-	} while (badLogin == 1);
+	return 1;
 }
 
 void registerClient() {
@@ -81,7 +127,11 @@ void registerClient() {
 
 }
 
-void showClientOptions(struct Account *account, struct User *user, int accountCount) {
+void showClientOptions() {
+
+
+
+
 	int i;
 	int input;
 	char *options[6] = { "Accounts", "Transactions", "Transfer own accounts",
@@ -106,7 +156,7 @@ void showClientOptions(struct Account *account, struct User *user, int accountCo
 		newTransaction(account);
 		break;
 	case 4:
-		request();
+		newRequest();
 		break;
 	case 5:
 		quitProgram(running);
@@ -117,7 +167,7 @@ void showClientOptions(struct Account *account, struct User *user, int accountCo
 	}
 }
 
-void listAccounts(struct Account *account, struct User *user, int accountCount) {
+void listAccounts() {
 	int i;
 
 	//printf("User ID: %s \nBalance: %d ", user[LOGGED_IN_INDEX].user_id, account[0].balance);
@@ -139,7 +189,7 @@ void newTransactionToPA() {
 
 }
 
-void newTransaction(struct Account *account) {
+void newTransaction() {
 	int numTo;
 	int i = 0;
 	int input;
@@ -162,7 +212,7 @@ void newTransaction(struct Account *account) {
 
 }
 
-void showAdminOptions(struct Account *account, struct User *user, int accountCount) {
+void showAdminOptions() {
 	int i;
 	int input;
 	char *options[5] = { "Clients","My Account(s)" ,"Account Requests", "User log", "Quit" };
@@ -222,7 +272,7 @@ void listLog() {
 
 }
 
-void request() {
+void newRequest() {
 
 }
 
@@ -230,7 +280,7 @@ void logOut() {
 
 }
 
-void quitProgram(int running) {
+void quitProgram() {
 	printf("Quitting, Thank you for using our bank service!");
 	running = 0;
 
