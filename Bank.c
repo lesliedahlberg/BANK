@@ -271,7 +271,7 @@ void listAccounts() {
 
 void showTransactions() {
 	int i;
-	for (i=0; i <= transactionCount; i++){
+	for (i=0; i < transactionCount; i++){
 		if(transaction[i].user_id == user[LOGGED_IN_INDEX].user_id){
 			printf("From: %d\nTo: %d\nAmmount: %d\nDate: %s\n||||||||||||||||||\n", transaction[i].from, transaction[i].to, transaction[i].ammount, transaction[i].date);
 		}
@@ -326,16 +326,24 @@ void newTransactionToPA() {
 		account[fromAcc].balance = account[fromAcc].balance - ammount;
 		account[toAcc].balance = account[toAcc].balance + ammount;
 
+
+
 		//loggar transaktionen
-		printf("Before: %d", transactionCount);
-		transactionCount++;
 		transaction[transactionCount].from = account[fromAcc].account_number;
 		transaction[transactionCount].to = account[toAcc].account_number;
-		transaction[transactionCount].ammount = ammount;
+	
+		transaction[transactionCount].ammount = (int) ammount;
+		
 		transaction[transactionCount].user_id = user[LOGGED_IN_INDEX].user_id;
-		strcpy(transaction[transactionCount].date, date);
+		
+		transaction[transactionCount].active = 1;
+		
+		strncpy(transaction[transactionCount].date, date, 20);
+		printf("%d\n", transaction[transactionCount].ammount);
 
 
+		transactionCount++;
+		transaction = realloc(transaction, (transactionCount + 1)*sizeof(struct Transaction));
 
 		puts("Transfer complete!\nYour current balance:");
 		printf("Account: %d, Balance: %d\nAccount: %d, Balance: %d",
@@ -415,13 +423,17 @@ void newTransaction() {
 
 		//loggar transkationerna
 		printf("Before: %d", transactionCount);
-		transactionCount++;
 		transaction[transactionCount].from = account[fromAcc].account_number;
 		transaction[transactionCount].to = account[toAcc].account_number;
 		transaction[transactionCount].ammount = ammount;
+
 		transaction[transactionCount].user_id = user[LOGGED_IN_INDEX].user_id;
-		strcpy(transaction[transactionCount].date, date);
+		transaction[transactionCount].active = 1;
+		strncpy(transaction[transactionCount].date, date, 20);
 		printf("After: %d", transactionCount);
+
+		transactionCount++;
+		transaction = realloc(transaction, (transactionCount + 1)*sizeof(struct Transaction));
 
 
 		puts("Transfer complete!");

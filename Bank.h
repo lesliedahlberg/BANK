@@ -40,7 +40,7 @@ struct Account {
 struct Transaction {
 	short from;
 	short to;
-	char date[9];
+	char date[21];
 	int ammount;
 	short active;
 	int user_id;
@@ -48,8 +48,8 @@ struct Transaction {
 
 struct Request {
 	int user_id;
-	char action[20];
-	char date[20];
+	char action[21];
+	char date[21];
 	short active;
 };
 
