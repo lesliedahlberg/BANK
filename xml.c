@@ -241,8 +241,8 @@ int readXML(char filePath[]){
 	    			}
 	    		}else if(!strcmp(currentFile, "REQUEST")){
 	    			if(!strcmp(tag, "USER_ID")){
-	    				//request[requestStructIndex].user_id = (short) entry;
-	    				strncpy(request[requestStructIndex].user_id, entry, entryIndex);
+	    				request[requestStructIndex].user_id = (short) atoi(entry);
+	    				//strncpy(request[requestStructIndex].user_id, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACTION")){
 	    				strncpy(request[requestStructIndex].action, entry, entryIndex);
@@ -468,7 +468,8 @@ int writeToXML(char filePath[]){
 			fputs("		<RECORD>\n", file);
 
 			fputs("		<USER_ID>", file);
-			fputs(request[i].user_id, file);
+			fprintf(file, "%d", request[i].user_id);
+			//fputs(request[i].user_id, file);
 			fputs("\n", file);
 
 			fputs("		<ACTION>", file);

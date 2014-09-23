@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 
 #include "Bank.h"
@@ -127,6 +128,7 @@ int logIn() {
 
 void registerClient() {
 
+	char input;
 	int user_id;
 	char personal_number[100];
 	char username[100];
@@ -185,13 +187,6 @@ void registerClient() {
 			break;
 		printf("Error, please try again!\n");
 	}
-
-
-
-	
-	
-
-	
 
 	user[userCount].user_id = ++info[0].last_user_id;
 	strcpy(user[userCount].personal_number, personal_number);
@@ -476,7 +471,21 @@ void addClient() {
 }
 
 void listClient() {
-//I den här funktionen ska man sen kunna välja vilken klient man vill ta bort/redigera, och kunna lägga till en ny kliet. samt nytt konto åt klient, avsluta bankkonto
+
+	char fullName[203];
+
+	
+	printf("Clients:\n");
+	printf("NAME                ID NUMBER      ACCOUNT ID     ADDRESS             \n");
+	for(int i = 0; i < userCount; i ++){
+
+		fullName[0] = '\0';
+		strcat(fullName, user[i].first_name);
+		strcat(fullName, " ");
+		strcat(fullName, user[i].last_name);
+
+		printf("%-20s%-15s%-15d%-20s\n", fullName, user[i].personal_number, user[i].user_id, user[i].address);
+	}
 }
 
 void editClient() {
@@ -487,8 +496,43 @@ void addAccount() {
 
 }
 
-void removeAccount() {
+int getAccountIdByNumber(int accountNumber){
+	for(int i = 0; i < accountCount; i++){
+		if(account[i].account_number == accountNumber){
+			return i;
+		}
+	}
+	return -1;
+}
 
+/*FOR USER: void removeAccount() {
+	int ID;
+	char verify[1];
+	int loop = 1;
+	printf("Remove account\n");
+	
+	listAccounts();
+	
+	while(loop){
+		printf("Enter account number of account to be deleted: ");
+		loop = scanf("%d", &ID);
+	}
+
+	printf("Are you sure you want to delete the account (y/n)?\n");
+	while(!scanf("%s", verify));
+
+	if(!strcmp(verify, "y")){
+		account[getAccountIdByNumber(ID)].active = 0;
+		printf("The account was successfully deleted!\n");
+	}else{
+		printf("The account was not deleted!\n");
+	}
+	
+}*/
+
+void removeAccount(int accountNumber) {
+	account[getAccountIdByNumber(accountNumber)].active = 0;
+	printf("The account was successfully deleted!\n");
 }
 
 void showRequests() {
@@ -500,7 +544,63 @@ void listLog() {
 }
 
 void newRequest() {
+	int loop;
+	int input;
+	int accountNumber;
 
+	printf("Request\n");
+	printf("Options:\n");
+		printf("New account.........(1)\n");
+		printf("Delete account......(2)\n");
+		do{
+			loop = 0;
+			input = 0;
+
+			printf("Enter number to select option: ");
+			scanf("%d", &input);
+
+			switch (input) {
+				case 1:
+					requestNewAccount();
+					break;
+				case 2:
+					//requestRemovalOfAccount()
+					break;
+				default:
+					printf("Error, please choose again!\n");
+					loop = 1;
+					break;
+			}
+		}while(loop);
+
+}
+
+void requestNewAccount(){
+	char date[20];
+	getDate(date);
+
+	request[requestCount].user_id = user[LOGGED_IN_INDEX].user_id;
+	strcpy(request[requestCount].action, "NEW ACCOUNT");
+	strcpy(request[requestCount].date, date);
+	request[requestCount].active = 1;
+	
+
+	requestCount++;
+	request = realloc(request, (requestCount + 1)*sizeof(struct Request));
+
+}
+
+void requestRemovalOfAccount(int accountNumber){
+
+}
+
+void getDate(char *date){
+	
+	time_t now = time(NULL );
+	struct tm *t = localtime(&now);
+	strftime(date, 20, "%d %m %Y %H:%M", t);
+	//printf("%s\n", date);
+	
 }
 
 void logOut() {
@@ -512,9 +612,5 @@ void logOut() {
 void quitProgram() {
 	logOut();
 	running = 0;
-
-}
-
-void saveDataToFile() {
 
 }

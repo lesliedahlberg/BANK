@@ -47,9 +47,9 @@ struct Transaction {
 };
 
 struct Request {
-	char user_id[100];
-	char action[10];
-	char date[10];
+	int user_id;
+	char action[20];
+	char date[20];
 	short active;
 };
 
@@ -78,6 +78,9 @@ void removeAccount();
 void showRequests();
 void listLog();
 
-void saveDataToFile();
+int getAccountIdByNumber(int accountNumber);
+void requestNewAccount();
+void requestRemovalOfAccount(int accountNumber);
+void getDate(char *date);
 
 #endif
