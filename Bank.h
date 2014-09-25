@@ -84,4 +84,7 @@ void requestNewAccount();
 void requestRemovalOfAccount(int accountNumber);
 void getDate(char *date);
 
+void newScreen();
+void waitForEnter();
+
 #endif
