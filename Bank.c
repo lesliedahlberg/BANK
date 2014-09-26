@@ -533,7 +533,29 @@ void editClient() {
 
 }
 
-void addAccount() {
+int uniqueAccountNumberGenerator(){
+	int accountNumber;
+	srand((unsigned) time(NULL ));
+	accountNumber = rand() % 9999 + 1;
+	for(int loop=0; loop < accountCount; loop++){
+		if(accountNumber == account[loop].account_number){
+			accountNumber = rand() % 9999 + 1;
+		}
+	}
+	return accountNumber;
+}
+
+void addAccount(int user_id) {
+
+
+	account[accountCount].account_id = accountCount;
+	account[accountCount].account_number = uniqueAccountNumberGenerator();
+	account[accountCount].balance = 100;
+	account[accountCount].user_id = user_id;
+	account[accountCount].active = 1;
+
+	accountCount++;
+	account = realloc(account, (accountCount + 1)*sizeof(struct Account));
 
 }
 
@@ -545,6 +567,16 @@ int getAccountIndexByNumber(int accountNumber){
 	}
 	return -1;
 }
+
+int getAccountIndexByID(int account_id){
+	for(int i = 0; i < accountCount; i++){
+			if(account[i].account_id == account_id){
+				return i;
+			}
+		}
+		return -1;
+}
+
 int getAccountIdByNumber(int accountNumber){
 	for(int i = 0; i < accountCount; i++){
 		if(account[i].account_number == accountNumber){
@@ -579,14 +611,40 @@ int getAccountIdByNumber(int accountNumber){
 	
 }*/
 
-void removeAccount(int accountNumber) {
-	account[getAccountIndexByNumber(accountNumber)].active = 0;
+void removeAccount(int accountIndex) {
+	//account[getAccountIndexByNumber(accountNumber)].active = 0;
+	account[accountIndex].active = 0;
 	printf("The account was successfully deleted!\n");
 }
 
 void showRequests() {
+	int request_nr;
+	char answer;
+
+	for(int loop=0; loop < requestCount; loop++){
+		printf("Request Nr. [%d]\nFrom User: %d\nAccount ID: %d\nAction: %s\nDate: %s\n////////////////////////////////\n\n", loop,request[loop].user_id, request[loop].account_id, request[loop].action, request[loop].date);
+	}
+	puts("Select a request to answer!");
+	scanf("%d", &request_nr);
+	printf("Would you'd like to take the action %s for the request nr [%d], y/n??", request[request_nr].action, request_nr);
+	scanf("%s", &answer);
+	if(answer == 'y'){
+
+		if(!strcmp(request[request_nr].action, "NEW ACCOUNT")){
+			printf("Add account");
+			addAccount(request[request_nr].user_id);
+		}
+
+		if(!strcmp(request[request_nr].action, "DELETE ACCOUNT")){
+			removeAccount(getAccountIndexByID(request[request_nr].account_id));
+		}
+
+	}else if(answer == 'n'){
+		showRequests();
+	}
 
 }
+
 
 void listLog() {
 
@@ -687,6 +745,7 @@ void quitProgram() {
 }
 
 void newScreen(){
+	system("cls");
 	//CLEARSCREEN
 }
 
