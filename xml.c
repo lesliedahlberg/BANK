@@ -302,6 +302,7 @@ int readXML(char filePath[]){
 	transactionCount = transactionStructIndex;
 	requestCount = requestStructIndex;
 
+    fclose(file);
 	return 1;
 }
 
@@ -502,6 +503,7 @@ int writeToXML(char filePath[]){
 	}
 
 	fputs("</FILE>\n", file);
+    fclose(file);
 
 	return 1;
 }

@@ -18,6 +18,9 @@ int requestCount;
 int running;
 int loggedIn;
 
+char * dataPath;
+char * logPath;
+
 int LOGGED_IN_USER_ID;
 int LOGGED_IN_INDEX;
 
@@ -35,10 +38,14 @@ int main() {
 
 	//setvbuf(stdout, NULL, _IONBF, 0); // Fixar delayen i min Eclipse konsol
 
-	//char filePath[500] = "src/data.xml";
-	char filePath[500] = "/Users/lesliedahlberg/Documents/GITHUB/BANK/data.xml";
+    dataPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/data.xml";
+    //dataPath = "src/data.xml";
+    
+    logPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/log.txt";
+    //logPath = "src/log.txt";
 
-	readXML(filePath);
+    readXML(dataPath);
+    
 	
 	while(running){
 		showOptions();
@@ -56,24 +63,6 @@ int main() {
 
 	
 
-	writeToXML(filePath);
-
-
-
-	/*
-	do {
-		showOptions(user, loggedIn); //on-start visar vad man har för alternativ
-
-		if (strcmp(user[LOGGED_IN_INDEX].user_type, "client") == 0) {
-			do {
-				showClientOptions(account, user, accountCount);
-			} while (loggedIn);
-		} else if (strcmp(user[LOGGED_IN_INDEX].user_type, "admin") == 0) {
-			do {
-				showAdminOptions(account, user, accountCount);
-			} while (*loggedIn);
-		}
-	} while (running == 1);
-	*/
+	writeToXML(dataPath);
 	return 0;
 }

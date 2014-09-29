@@ -79,6 +79,7 @@ void addAccount();
 void removeAccount();
 void showRequests();
 void listLog();
+void logMessage(char * logMessage);
 
 int getAccountIdByNumber(int accountNumber);
 void requestNewAccount();

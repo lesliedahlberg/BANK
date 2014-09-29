@@ -77,7 +77,6 @@ void showOptions() {
 }
 
 int logIn() {
-    //system("cls");
     char username[100];
     char password[100];
     int loop = 0;
@@ -105,14 +104,22 @@ int logIn() {
         
         for(int i = 0; i < userCount; i++){
             if (strcmp(user[i].username, username) == 0 && strcmp(user[i].password, password) == 0 && user[i].active == 1) {
-                
+                char date[100];
+                char message[100];
+                getDate(date);
                 loggedIn = 1;
                 loop = 1;
                 LOGGED_IN_USER_ID = user[i].user_id;
                 LOGGED_IN_INDEX = i;
-                i = userCount;
+               
                 newScreen();
                 printf("Successfull login!\n");
+                strcat(message, user[i].username);
+                strcat(message, " logged in: ");
+                strcat(message, date);
+                logMessage(message);
+                
+                i = userCount;
                 waitForEnter();
             }
         }
@@ -545,13 +552,16 @@ void listClient() {
     printf("Clients:\n");
     printf("NAME                ID NUMBER      ACCOUNT ID     ADDRESS             \n");
     for(int i = 0; i < userCount; i ++){
+        if(!strcmp(user[i].user_type, "client") ){
+            fullName[0] = '\0';
+            strcat(fullName, user[i].first_name);
+            strcat(fullName, " ");
+            strcat(fullName, user[i].last_name);
+            
+            printf("%-20s%-15s%-15d%-20s\n", fullName, user[i].personal_number, user[i].user_id, user[i].address);
+        }
         
-        fullName[0] = '\0';
-        strcat(fullName, user[i].first_name);
-        strcat(fullName, " ");
-        strcat(fullName, user[i].last_name);
         
-        printf("%-20s%-15s%-15d%-20s\n", fullName, user[i].personal_number, user[i].user_id, user[i].address);
     }
     waitForEnter();
 }
@@ -679,6 +689,33 @@ void showRequests() {
 
 void listLog() {
     
+    newScreen();
+    
+    FILE * file;
+    file = fopen(logPath, "r");
+    char letter;
+    
+    while (1) {
+        letter = fgetc(file);
+        if(letter == EOF){
+            break;
+        }else{
+            printf("%c", letter);
+        }
+    }
+    
+    fclose(file);
+    waitForEnter();
+    
+}
+
+void logMessage(char logMessage[]){
+    FILE * file;
+    file = fopen(logPath, "a");
+    char date[100];
+    getDate(date);
+    fprintf(file, "%s\n", logMessage);
+    fclose(file);
 }
 
 void newRequest() {
@@ -764,6 +801,18 @@ void getDate(char *date){
 }
 
 void logOut() {
+    
+    char date[100];
+    char message[100];
+    getDate(date);
+    
+    message[0] = '\0';
+    
+    strcat(message, user[LOGGED_IN_INDEX].username);
+    strcat(message, " logged out: ");
+    strcat(message, date);
+    logMessage(message);
+    
     loggedIn = 0;
     LOGGED_IN_INDEX = 0;
     LOGGED_IN_USER_ID = 0;

@@ -11,6 +11,9 @@ extern int running;
 extern int loggedIn;
 extern int currentUserId;
 
+extern char * dataPath;
+extern char * logPath;
+
 extern int LOGGED_IN_USER_ID;
 extern int LOGGED_IN_INDEX;
 

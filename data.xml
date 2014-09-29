@@ -14,7 +14,7 @@
 		<USERNAME>leslie
 		<FIRST_NAME>Leslie
 		<LAST_NAME>Dahlberg
-		<ADDRESS>Backstugugatan
+		<ADDRESS>Backstugugatan 18
 		<USER_TYPE>client
 		<PASSWORD>password
 		<ACTIVE>1
@@ -36,14 +36,14 @@
  <RECORD>
 		<ACCOUNT_ID>1
 		<ACCOUNT_NUMBER>2094
-		<BALANCE>100
+		<BALANCE>55
 		<USER_ID>6
 		<ACTIVE>1
 	</RECORD>
  <RECORD>
 		<ACCOUNT_ID>2
 		<ACCOUNT_NUMBER>6579
-		<BALANCE>123
+		<BALANCE>168
 		<USER_ID>6
 		<ACTIVE>1
 	</RECORD>
