@@ -667,12 +667,10 @@ void showRequests() {
     scanf("%d", &request_nr);
     getchar();
     printf("Would you'd like to take the action %s for the request nr [%d], y/n??", request[request_nr].action, request_nr);
-   //scanf("%c", &answer);
     answer = getchar();
 
     if(answer == 'y'){
-    	printf("%s", request[request_nr].action);
-
+    	
 
          if(!strcmp(request[request_nr].action, "ADD ACCOUNT")){
          addAccount(request[request_nr].user_id);
@@ -766,7 +764,7 @@ void requestNewAccount(){
     getDate(date);
     
     request[requestCount].user_id = user[LOGGED_IN_INDEX].user_id;
-    strcpy(request[requestCount].action, "NEW ACCOUNT");
+    strcpy(request[requestCount].action, "ADD ACCOUNT");
     strcpy(request[requestCount].date, date);
     request[requestCount].active = 1;
     
