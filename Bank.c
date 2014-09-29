@@ -659,31 +659,35 @@ void showRequests() {
     char answer;
     
     for(int loop=0; loop < requestCount; loop++){
-        
-            printf("Request Nr. [%d]\nFrom User: %d\nAccount ID: %d\nAction: %s\nDate: %s\n////////////////////////////////\n\n", loop,request[loop].user_id, request[loop].account_id, request[loop].action, request[loop].date);
-        
+    	if(request[loop].active != 0){
+        printf("Request Nr. [%d]\nFrom User: %d\nAccount ID: %d\nAction: %s\nDate: %s\n////////////////////////////////\n\n", loop,request[loop].user_id, request[loop].account_id, request[loop].action, request[loop].date);
+    	}
     }
-    
-    
+    puts("Select a request to answer!");
+    scanf("%d", &request_nr);
+    getchar();
     printf("Would you'd like to take the action %s for the request nr [%d], y/n??", request[request_nr].action, request_nr);
-    scanf("%s", &answer);
+   //scanf("%c", &answer);
+    answer = getchar();
+
     if(answer == 'y'){
-        //DOES NOT WORK
-        /*
-         if(!strcmp(request[request_nr].action, "NEW ACCOUNT")){
-         printf("Add account\n");
+    	printf("%s", request[request_nr].action);
+
+
+         if(!strcmp(request[request_nr].action, "ADD ACCOUNT")){
          addAccount(request[request_nr].user_id);
-         }
-         
-         if(!strcmp(request[request_nr].action, "REMOVE ACCOUNT")){
+
+
+         } else if(!strcmp(request[request_nr].action, "REMOVE ACCOUNT")){
          account[getAccountIndexByID(request[request_nr].account_id)].active = 0;
-         printf("The account was successfully deleted!\n");
-         }*/
-        
+
+
+         }
+     request[request_nr].active = 0;
     }else if(answer == 'n'){
         showRequests();
     }
-    
+    waitForEnter();
 }
 
 
