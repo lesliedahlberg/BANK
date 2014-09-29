@@ -62,6 +62,7 @@ void showOptions();
 void registerClient();
 void showClientOptions();
 void listAccounts();
+void listAccountsWithNewScreen();
 void showTransactions();
 void newTransactionToPA();
 void newTransaction();

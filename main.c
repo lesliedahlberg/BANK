@@ -36,8 +36,7 @@ int main() {
 	//setvbuf(stdout, NULL, _IONBF, 0); // Fixar delayen i min Eclipse konsol
 
 	//char filePath[500] = "src/data.xml";
-	char filePath[500] = "/Users/lesliedahlberg/Documents/DVA117/BANK/BANK/data.xml";
-	//char targetFilePath[500] = "/Users/lesliedahlberg/Documents/DVA117/BANK/BANK/data_written.xml";
+	char filePath[500] = "/Users/lesliedahlberg/Documents/GITHUB/BANK/data.xml";
 
 	readXML(filePath);
 	

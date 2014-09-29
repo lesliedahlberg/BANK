@@ -64,6 +64,7 @@ int readXML(char filePath[]){
 	if(file == NULL){
 		return 0;
 	}
+    
 	currentFile = calloc(20, sizeof(char));
 	//LOOP THROUGH FILE
 	for(int row = 0; !isEOF; row++){
@@ -390,11 +391,11 @@ int writeToXML(char filePath[]){
 
 	//WRITE ACCOUNT
 	fputs("<FILE>\n", file);
-	fputs("	<FILE_NAME>ACCOUNT\n", file);
+	fputs(" <FILE_NAME>ACCOUNT\n", file);
 	
 	for(int i = 0; i < accountCount; i++){
 		
-			fputs("	<RECORD>\n", file);
+			fputs(" <RECORD>\n", file);
 
 			fputs("		<ACCOUNT_ID>", file);
 			fprintf(file, "%hd", account[i].account_id);
