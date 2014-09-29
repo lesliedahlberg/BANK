@@ -27,7 +27,7 @@ void showOptions() {
             input = 0;
             
             printf("Enter number to select option: ");
-            while (getchar() != '\n');
+            //while (getchar() != '\n');
             scanf("%d", &input);
             
             switch (input) {
@@ -54,7 +54,7 @@ void showOptions() {
             input = 0;
             
             printf("Enter number to select option: ");
-            while (getchar() != '\n');
+            //while (getchar() != '\n');
             scanf("%d", &input);
             
             switch (input) {
