@@ -399,6 +399,96 @@ void newTransactionToPA() {
 }
 
 void newTransaction() {
+    int fromAcc = 0, toAcc = 0, ammount = 0;
+    char accept;
+    char date[100];
+    getDate(date);
+    int transactionSuccesfull = 1;
+    int looping;
+    
+    //Get source account
+    looping = 0;
+    do{
+        newScreen();
+        
+        puts("Your accounts:");
+        listAccounts();
+        
+        if(looping){
+            puts("We are sorry, but something went wrong. Please choose an account again!\n");
+        }
+        
+        puts("What account do you want to tranfer money from (Enter account number)?");
+        scanf("%d", &fromAcc);
+        
+        looping = 1;
+        
+    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[LOGGED_IN_INDEX].user_id);
+    
+    //Get target account
+    looping = 0;
+    do{
+        newScreen();
+        
+        if(looping){
+            puts("We are sorry, but something went wrong. Please choose an account again!\n");
+        }
+        
+        puts("What account do you want to tranfer money to (Enter account number)?");
+        scanf("%d", &toAcc);
+        
+        looping = 1;
+        
+    }while(getAccountIndexByNumber(toAcc) < accountCount || fromAcc == toAcc);
+    
+    
+    
+    printf("Enter ammount to transfer from account: %d to account: %d.", fromAcc, toAcc);
+    while(!scanf("%d", &ammount));
+    
+    printf("Are you sure you want to transfer %d kr from account %d to account %d (y/n)?\n", ammount, fromAcc, toAcc);
+    scanf(" %c", &accept);
+    
+    if (accept == 'y') {
+        if (account[getAccountIndexByNumber(fromAcc)].balance < ammount) {
+            puts("We are sorry, but your account balance is insufficent for this tranfer.");
+            transactionSuccesfull = 0;
+        }else{
+            //överför pengarna mellan kontonen
+            account[getAccountIndexByNumber(fromAcc)].balance = account[getAccountIndexByNumber(fromAcc)].balance - ammount;
+            account[getAccountIndexByNumber(toAcc)].balance = account[getAccountIndexByNumber(toAcc)].balance + ammount;
+            
+            //loggar transaktionen
+            transaction[transactionCount].from = account[getAccountIndexByNumber(fromAcc)].account_number;
+            transaction[transactionCount].to = account[getAccountIndexByNumber(toAcc)].account_number;
+            
+            transaction[transactionCount].ammount = (int) ammount;
+            
+            transaction[transactionCount].user_id = user[LOGGED_IN_INDEX].user_id;
+            
+            transaction[transactionCount].active = 1;
+            
+            strncpy(transaction[transactionCount].date, date, 20);
+            //printf("%d\n", transaction[transactionCount].ammount);
+            
+            
+            transactionCount++;
+            transaction = realloc(transaction, (transactionCount + 1)*sizeof(struct Transaction));
+            
+            puts("Transfer complete!");
+            printf("Account %d: %d kr\nAccount %d: %d kr\n",
+                   account[getAccountIndexByNumber(fromAcc)].account_number, account[getAccountIndexByNumber(fromAcc)].balance,
+                   account[getAccountIndexByNumber(toAcc)].account_number, account[getAccountIndexByNumber(toAcc)].balance);
+            
+        }
+        
+    } else if (accept == 'n') {
+        return;
+    }
+    waitForEnter();
+}
+
+/*void newTransaction() {
     int numTo = 0, i = 0, toAcc = 0, fromAcc = 0, ammount = 0;
     char accept;
     char date[100];
@@ -480,7 +570,7 @@ void newTransaction() {
         return;
     }
     waitForEnter();
-}
+}*/
 
 void showAdminOptions() {
     
