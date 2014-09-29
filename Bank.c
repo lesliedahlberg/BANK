@@ -330,7 +330,7 @@ void newTransactionToPA() {
         
         looping = 1;
         
-    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[LOGGED_IN_INDEX].user_id && account[i].active != 1);
+    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[LOGGED_IN_INDEX].user_id && account[getAccountIndexByNumber(fromAcc)].active != 1);
     
     //Get target account
     looping = 0;
@@ -349,7 +349,7 @@ void newTransactionToPA() {
         
         looping = 1;
         
-    }while((account[getAccountIndexByNumber(toAcc)].user_id != user[LOGGED_IN_INDEX].user_id || fromAcc == toAcc) && account[i].active != 1);
+    }while((account[getAccountIndexByNumber(toAcc)].user_id != user[LOGGED_IN_INDEX].user_id || fromAcc == toAcc) && account[getAccountIndexByNumber(toAcc)].active != 1);
     
     
     
@@ -423,7 +423,7 @@ void newTransaction() {
         
         looping = 1;
         
-    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[LOGGED_IN_INDEX].user_id && account[i].active != 1);
+    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[LOGGED_IN_INDEX].user_id && account[getAccountIndexByNumber(fromAcc)].active != 1);
     
     //Get target account
     looping = 0;
@@ -439,7 +439,7 @@ void newTransaction() {
         
         looping = 1;
         
-    }while((getAccountIndexByNumber(toAcc) >= accountCount || fromAcc == toAcc) && account[i].active != 1);
+    }while((getAccountIndexByNumber(toAcc) >= accountCount || fromAcc == toAcc) && account[getAccountIndexByNumber(toAcc)].active != 1);
     
     
     

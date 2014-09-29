@@ -345,6 +345,7 @@ int writeToXML(char filePath[]){
 	fputs("	<FILE_NAME>USER\n", file);
 	
 	for(int i = 0; i < userCount; i++){
+        if(user[i].active == 1){
 
 			fputs("	<RECORD>\n", file);
 
@@ -383,7 +384,7 @@ int writeToXML(char filePath[]){
 			fputs("		<ACTIVE>1\n", file);
 
 			fputs("	</RECORD>\n", file);
-		
+        }
 	}
 
 	fputs("</FILE>\n", file);
@@ -394,6 +395,7 @@ int writeToXML(char filePath[]){
 	fputs(" <FILE_NAME>ACCOUNT\n", file);
 	
 	for(int i = 0; i < accountCount; i++){
+        if(account[i].active == 1){
 		
 			fputs(" <RECORD>\n", file);
 
@@ -420,7 +422,7 @@ int writeToXML(char filePath[]){
 			fputs("		<ACTIVE>1\n", file);
 
 			fputs("	</RECORD>\n", file);
-		
+        }
 	}
 
 	fputs("</FILE>\n", file);
@@ -431,6 +433,7 @@ int writeToXML(char filePath[]){
 	fputs("	<FILE_NAME>TRANSACTION\n", file);
 	
 	for(int i = 0; i < transactionCount; i++){
+        if(transaction[i].active == 1){
 		fputs("	<RECORD>\n", file);
 
 		fputs("		<FROM>", file);
@@ -460,6 +463,7 @@ int writeToXML(char filePath[]){
 		fputs("		<ACTIVE>1\n", file);
 
 		fputs("	</RECORD>\n", file);
+        }
 	}
 
 	fputs("</FILE>\n", file);
@@ -470,7 +474,7 @@ int writeToXML(char filePath[]){
 	fputs("	<FILE_NAME>REQUEST\n", file);
 	
 	for(int i = 0; i < requestCount; i++){
-		
+		if(user[i].active == 1){
 			fputs("		<RECORD>\n", file);
 
 			fputs("		<USER_ID>", file);
@@ -494,7 +498,7 @@ int writeToXML(char filePath[]){
 			fputs("		<ACTIVE>1\n", file);
 
 			fputs("	</RECORD>\n", file);
-		
+        }
 	}
 
 	fputs("</FILE>\n", file);
