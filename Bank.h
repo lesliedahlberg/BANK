@@ -33,7 +33,7 @@ struct Transaction {
 	short from;
 	short to;
 	char date[21];
-	int ammount;
+	int amount;
 	short active;
 	int user_id;
 };

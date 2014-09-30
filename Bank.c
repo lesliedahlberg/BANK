@@ -33,7 +33,11 @@ void showOptions() {
             loop = 0;
             input = 0;
             
-            scanf("%d", &input);
+            
+            if (scanf(" %d", &input)) {
+            }else{
+                getchar();
+            }
             
             switch (input) {
                 case 1:
@@ -60,7 +64,10 @@ void showOptions() {
             loop = 0;
             input = 0;
             
-            scanf("%d", &input);
+            if (scanf(" %d", &input)) {
+            }else{
+                getchar();
+            }
             
             switch (input) {
                 case 1:
@@ -101,14 +108,14 @@ int logIn() {
         }
         
         printf("Username: ");
-        scanf("%s", username);
+        scanf(" %s", username);
         
         if(!strcmp(username, "#")){
             return 0;
         }
         
         printf("Password: ");
-        scanf("%s", password);
+        scanf(" %s", password);
         
         for(int i = 0; i < userCount; i++){
             if (strcmp(user[i].username, username) == 0 && strcmp(user[i].password, password) == 0 && user[i].active == 1) {
@@ -178,7 +185,7 @@ void registerClient() {
     while(1){
         while(getchar() != '\n');
         printf("National identification number (10 digits): ");
-        if(scanf("%s", personal_number))
+        if(scanf(" %s", personal_number))
             break;
         if (!strcmp(personal_number, "#")) {
             return;
@@ -189,7 +196,7 @@ void registerClient() {
     while(1){
         while(getchar() != '\n');
         printf("Username: ");
-        if(scanf("%s", username))
+        if(scanf(" %s", username))
             break;
         printf("Invalid input!\n");
     }
@@ -197,7 +204,7 @@ void registerClient() {
     while(1){
         while(getchar() != '\n');
         printf("First name: ");
-        if(scanf("%s", first_name))
+        if(scanf(" %s", first_name))
             break;
         printf("Invalid input!\n");
     }
@@ -205,7 +212,7 @@ void registerClient() {
     while(1){
         while(getchar() != '\n');
         printf("Last name: ");
-        if(scanf("%s", last_name))
+        if(scanf(" %s", last_name))
             break;
         printf("Invalid input!\n");
     }
@@ -213,7 +220,7 @@ void registerClient() {
     while(1){
         while(getchar() != '\n');
         printf("Address: ");
-        if(scanf("%s", address))
+        if(scanf(" %s", address))
             break;
         printf("Invalid input!\n");
     }
@@ -221,7 +228,7 @@ void registerClient() {
     while(1){
         while(getchar() != '\n');
         printf("Password: ");
-        if(scanf("%s", password))
+        if(scanf(" %s", password))
             break;
         printf("Invalid input!\n");
     }
@@ -280,7 +287,10 @@ void showClientOptions() {
         loop = 0;
         input = 0;
         
-        scanf("%d", &input);
+        if (scanf(" %d", &input)) {
+        }else{
+            getchar();
+        }
         
         switch (input) {
             case 1:
@@ -300,9 +310,11 @@ void showClientOptions() {
                 break;
             case 6:
                 logOut();
+                loop = 0;
                 break;
             case 7:
                 quitProgram();
+                loop = 0;
                 break;
             default:
                 printf("Invalid input!\n");
@@ -322,17 +334,23 @@ void listAccountsWithNewScreen() {
 //SHOW TRANSACTIONS
 void showTransactions() {
     int i;
+    int accountExist = 0;
     
     newScreen();
     
     for (i=0; i < transactionCount; i++){
         if(transaction[i].user_id == user[loggedInUserIndex].user_id){
+            accountExist = 1;
             if (i == 0) {
                 printf("FROM      TO        AMOUNT    DATE           \n");
             }
-            printf("%-10d%-10d%-10d%-15s\n", transaction[i].from, transaction[i].to, transaction[i].ammount, transaction[i].date);
-            //printf("From: %d\nTo: %d\nAmmount: %d\nDate: %s\n||||||||||||||||||\n", transaction[i].from, transaction[i].to, transaction[i].ammount, transaction[i].date);
+            printf("%-10d%-10d%-10d%-15s\n", transaction[i].from, transaction[i].to, transaction[i].amount, transaction[i].date);
+            //printf("From: %d\nTo: %d\nAmount: %d\nDate: %s\n||||||||||||||||||\n", transaction[i].from, transaction[i].to, transaction[i].amount, transaction[i].date);
         }
+    }
+    
+    if (!accountExist) {
+        printf("You do not have any transactions!\n");
     }
     
     waitForEnter();
@@ -340,16 +358,24 @@ void showTransactions() {
 
 //NEW PERSONAL TRANSACTION
 void newTransactionToPA() {
-    int fromAcc = 0, toAcc = 0, ammount = 0;
+    int fromAcc = 0, toAcc = 0, amount = 0;
     char accept;
     char date[100];
     getDate(date);
     
     //Get source account
     newScreen();
-    puts("SELECT SOURCE ACCOUNT (enter account number and press enter):");
+    printf("SELECT SOURCE ACCOUNT NUMBER (enter # to cancel):\n");
     listAccounts();
-    scanf("%d", &fromAcc);
+    
+    if (scanf(" %d", &fromAcc)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
     if(account[getAccountIndexByNumber(fromAcc)].user_id != user[loggedInUserIndex].user_id || account[getAccountIndexByNumber(fromAcc)].active != 1){
         printf("Invalid input!\n");
         waitForEnter();
@@ -358,9 +384,15 @@ void newTransactionToPA() {
     
     //Get target account
     newScreen();
-    puts("SELECT TARGET ACCOUNT (enter account number and press enter):");
+    printf("SELECT TARGET ACCOUNT NUMBER (enter # to cancel):\n");
     listAccounts();
-    scanf("%d", &toAcc);
+    if (scanf(" %d", &toAcc)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
     if((account[getAccountIndexByNumber(toAcc)].user_id != user[loggedInUserIndex].user_id || fromAcc == toAcc) || account[getAccountIndexByNumber(toAcc)].active != 1){
         printf("Invalid input!\n");
         waitForEnter();
@@ -368,29 +400,38 @@ void newTransactionToPA() {
     }
     
     newScreen();
-    printf("AMOUNT TO TRANSFER:");
-    while(!scanf("%d", &ammount));
+    printf("AMOUNT TO TRANSFER (enter # to cancel): ");
+    if (scanf(" %d", &amount)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
     
     newScreen();
-    printf("TRANSFERE %d SEK FROM %d TO %d (y/n)?\n", ammount, fromAcc, toAcc);
-    scanf(" %c", &accept);
+    printf("TRANSFERE %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
+    if (scanf(" %c", &accept)) {
+    }else{
+        getchar();
+    }
     
     if (accept == 'y') {
-        if (account[getAccountIndexByNumber(fromAcc)].balance < ammount) {
+        if (account[getAccountIndexByNumber(fromAcc)].balance < amount) {
             newScreen();
-            puts("Insufficient balance on account!");
+            printf("Insufficient balance on account!\n");
             waitForEnter();
             return;
         }else{
             
             //TRANSFERE MONEY
-            account[getAccountIndexByNumber(fromAcc)].balance = account[getAccountIndexByNumber(fromAcc)].balance - ammount;
-            account[getAccountIndexByNumber(toAcc)].balance = account[getAccountIndexByNumber(toAcc)].balance + ammount;
+            account[getAccountIndexByNumber(fromAcc)].balance = account[getAccountIndexByNumber(fromAcc)].balance - amount;
+            account[getAccountIndexByNumber(toAcc)].balance = account[getAccountIndexByNumber(toAcc)].balance + amount;
             
             //SAVE TRANSACTION
             transaction[transactionCount].from = account[getAccountIndexByNumber(fromAcc)].account_number;
             transaction[transactionCount].to = account[getAccountIndexByNumber(toAcc)].account_number;
-            transaction[transactionCount].ammount = (int) ammount;
+            transaction[transactionCount].amount = amount;
             transaction[transactionCount].user_id = user[loggedInUserIndex].user_id;
             transaction[transactionCount].active = 1;
             strncpy(transaction[transactionCount].date, date, 20);
@@ -401,149 +442,168 @@ void newTransactionToPA() {
             
             //NOTIFY
             newScreen();
-            puts("Transfer succesfull!");
+            printf("Transfer succesfull!\n");
+            waitForEnter();
+            return;
             
         }
         
     } else if (accept == 'n') {
         newScreen();
-        printf("Transfere canceled!");
+        printf("Transfere canceled!\n");
         waitForEnter();
         return;
     }
-    waitForEnter();
+    
 }
+
 
 //NEW GENERAL TRANSACTION
 void newTransaction() {
-    int fromAcc = 0, toAcc = 0, ammount = 0;
+    int fromAcc = 0, toAcc = 0, amount = 0;
     char accept;
     char date[100];
     getDate(date);
-    int transactionSuccesfull = 1;
-    int looping;
     
     //Get source account
-    looping = 0;
-    do{
-        newScreen();
-        
-        puts("Your accounts:");
-        listAccounts();
-        
-        if(looping){
-            puts("We are sorry, but something went wrong. Please choose an account again!\n");
-        }
-        
-        puts("What account do you want to tranfer money from (Enter account number)?");
-        scanf("%d", &fromAcc);
-        
-        looping = 1;
-        
-    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[loggedInUserIndex].user_id && account[getAccountIndexByNumber(fromAcc)].active != 1);
+    newScreen();
+    printf("SELECT SOURCE ACCOUNT (enter account number and press enter):\n");
+    listAccounts();
+    if (scanf(" %d", &fromAcc)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    if(account[getAccountIndexByNumber(fromAcc)].user_id != user[loggedInUserIndex].user_id || account[getAccountIndexByNumber(fromAcc)].active != 1){
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
     
     //Get target account
-    looping = 0;
-    do{
-        newScreen();
-        
-        if(looping){
-            puts("We are sorry, but something went wrong. Please choose an account again!\n");
-        }
-        
-        puts("What account do you want to tranfer money to (Enter account number)?");
-        scanf("%d", &toAcc);
-        
-        looping = 1;
-        
-    }while((getAccountIndexByNumber(toAcc) >= accountCount || fromAcc == toAcc) && account[getAccountIndexByNumber(toAcc)].active != 1);
+    newScreen();
+    printf("SELECT TARGET ACCOUNT (enter account number and press enter):\n");
+    if (scanf(" %d", &toAcc)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+    }
+    if((getAccountIndexByNumber(toAcc) >= accountCount || fromAcc == toAcc) || account[getAccountIndexByNumber(toAcc)].active != 1){
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
     
+    newScreen();
+    printf("AMOUNT TO TRANSFER:");
+    if (scanf(" %d", &amount)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
     
-    
-    printf("Enter ammount to transfer from account: %d to account: %d.", fromAcc, toAcc);
-    while(!scanf("%d", &ammount));
-    
-    printf("Are you sure you want to transfer %d kr from account %d to account %d (y/n)?\n", ammount, fromAcc, toAcc);
-    scanf(" %c", &accept);
+    newScreen();
+    printf("TRANSFERE %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
+    if (scanf(" %c", &accept)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
     
     if (accept == 'y') {
-        if (account[getAccountIndexByNumber(fromAcc)].balance < ammount) {
-            puts("We are sorry, but your account balance is insufficent for this tranfer.");
-            transactionSuccesfull = 0;
+        if (account[getAccountIndexByNumber(fromAcc)].balance < amount) {
+            newScreen();
+            printf("Insufficient balance on account!\n");
+            waitForEnter();
+            return;
         }else{
-            //överför pengarna mellan kontonen
-            account[getAccountIndexByNumber(fromAcc)].balance = account[getAccountIndexByNumber(fromAcc)].balance - ammount;
-            account[getAccountIndexByNumber(toAcc)].balance = account[getAccountIndexByNumber(toAcc)].balance + ammount;
             
-            //loggar transaktionen
+            //TRANSFERE MONEY
+            account[getAccountIndexByNumber(fromAcc)].balance = account[getAccountIndexByNumber(fromAcc)].balance - amount;
+            account[getAccountIndexByNumber(toAcc)].balance = account[getAccountIndexByNumber(toAcc)].balance + amount;
+            
+            //SAVE TRANSACTION
             transaction[transactionCount].from = account[getAccountIndexByNumber(fromAcc)].account_number;
             transaction[transactionCount].to = account[getAccountIndexByNumber(toAcc)].account_number;
-            
-            transaction[transactionCount].ammount = (int) ammount;
-            
+            transaction[transactionCount].amount = amount;
             transaction[transactionCount].user_id = user[loggedInUserIndex].user_id;
-            
             transaction[transactionCount].active = 1;
-            
             strncpy(transaction[transactionCount].date, date, 20);
-            //printf("%d\n", transaction[transactionCount].ammount);
             
-            
+            //ALLOC MORE MEM.
             transactionCount++;
             transaction = realloc(transaction, (transactionCount + 1)*sizeof(struct Transaction));
             
-            puts("Transfer complete!");
-            printf("Account %d: %d kr\nAccount %d: %d kr\n",
-                   account[getAccountIndexByNumber(fromAcc)].account_number, account[getAccountIndexByNumber(fromAcc)].balance,
-                   account[getAccountIndexByNumber(toAcc)].account_number, account[getAccountIndexByNumber(toAcc)].balance);
+            //NOTIFY
+            newScreen();
+            printf("Transfer succesfull!\n");
+            waitForEnter();
+            return;
             
         }
         
     } else if (accept == 'n') {
+        newScreen();
+        printf("Transfere canceled!\n");
+        waitForEnter();
         return;
     }
-    waitForEnter();
+    
 }
 
 //NEW REQUEST
 void newRequest() {
-    int loop, loop2;
     int input;
     int accountNumber;
+    
     newScreen();
-    printf("Request\n");
-    printf("Options:\n");
-    printf("New account.........(1)\n");
-    printf("Delete account......(2)\n");
-    do{
-        loop = 0;
-        input = 0;
-        accountNumber = 0;
-        
-        printf("Enter number to select option: ");
-        scanf("%d", &input);
-        
+    printf("CREATE REQUEST (enter # to cancel):\n");
+    printf("[1] New account\n");
+    printf("[2] Delete account\n");
+    
+    if (scanf(" %d", &input)) {
         switch (input) {
             case 1:
                 requestNewAccount();
+                waitForEnter();
+                return;
                 break;
             case 2:
+                newScreen();
+                printf("CHOOSE ACCOUNT TO REMOVE (enter # to cancel):\n");
                 listAccounts();
-                loop2 = 0;
-                while(!loop2){
-                    printf("Enter account number of account to be deleted: ");
-                    loop2 = scanf("%d", &accountNumber);
+                if (scanf(" %d", &accountNumber)) {
+                    if (account[getAccountIndexByNumber(accountNumber)].active == 1) {
+                        requestRemovalOfAccount(accountNumber);
+                        waitForEnter();
+                        return;
+                    }else{
+                        printf("Invalid input!\n");
+                        waitForEnter();
+                        return;
+                    }
+                }else{
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
                 }
-                requestRemovalOfAccount(accountNumber);
                 break;
             default:
-                printf("Error, please choose again!\n");
-                loop = 1;
+                printf("Invalid input!\n");
+                waitForEnter();
+                return;
                 break;
         }
-    }while(loop);
-    waitForEnter();
-    
+    }else{
+        getchar();
+    }
 }
 
 //GEN. ADMIN OPTIONS
@@ -580,9 +640,11 @@ void showAdminOptions() {
                 break;
             case 4:
                 logOut();
+                loop = 0;
                 break;
             case 5:
                 quitProgram();
+                loop = 0;
                 break;
             default:
                 printf("Error, please choose again!\n");

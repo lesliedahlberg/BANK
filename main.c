@@ -70,7 +70,7 @@ int main() {
             }
         }
     }else{
-        printf("Error reading data file!");
+        printf("Error reading data file!\n");
         waitForEnter();
     }
     
@@ -78,9 +78,9 @@ int main() {
     savedFileSuccesfully = writeToXML(dataPath);
 	
     if (savedFileSuccesfully) {
-        printf("Exited without errors!");
+        printf("Exited without errors!\n");
     }else{
-        printf("Error occured, changes will not be saved!");
+        printf("Error occured, changes will not be saved!\n");
     }
 
     //WAIT FOR USER TO EXIT

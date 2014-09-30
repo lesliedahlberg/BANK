@@ -217,8 +217,8 @@ int readXML(char filePath[]){
 	    			else if(!strcmp(tag, "DATE")){
 	    				strncpy(transaction[transactionStructIndex].date, entry, entryIndex);
 	    			}
-	    			else if(!strcmp(tag, "AMMOUNT")){
-	    				transaction[transactionStructIndex].ammount = (int) atoi(entry);
+	    			else if(!strcmp(tag, "AMOUNT")){
+	    				transaction[transactionStructIndex].amount = (int) atoi(entry);
 	    			}
 	    			else if(!strcmp(tag, "USER_ID")){
 	    				transaction[transactionStructIndex].user_id = (int) atoi(entry);
@@ -440,8 +440,8 @@ int writeToXML(char filePath[]){
 		fputs(transaction[i].date, file);
 		fputs("\n", file);
 
-		fputs("		<AMMOUNT>", file);
-		fprintf(file, "%d", transaction[i].ammount);
+		fputs("		<AMOUNT>", file);
+		fprintf(file, "%d", transaction[i].amount);
 		fputs("\n", file);
 
 		fputs("		<USER_ID>", file);
