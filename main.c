@@ -78,13 +78,14 @@ int main() {
     savedFileSuccesfully = writeToXML(dataPath);
 	
     if (savedFileSuccesfully) {
-        printf("Exited without errors!\n");
+        //printf("Exited without errors!\n");
     }else{
         printf("Error occured, changes will not be saved!\n");
+        waitForEnter();
     }
 
     //WAIT FOR USER TO EXIT
-    waitForEnter();
+    
     
     //RETURN
 	return 0;

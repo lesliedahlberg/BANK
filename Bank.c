@@ -21,7 +21,7 @@ void showOptions() {
     newScreen();
     
     printf("WELCOME TO OUR ELECTRONIC BANKING SYSTEM\n");
-    printf("OPTIONS (enter number and press enter):\n");
+    printf("OPTIONS:\n");
     
     //IF LOGGED IN
     if(loggedIn){
@@ -273,7 +273,7 @@ void showClientOptions() {
     int loop;
     
     newScreen();
-    printf("OPTIONS (enter number and press enter):\n");
+    printf("OPTIONS:\n");
     printf("[1] Accounts\n");
     printf("[2] Transactions\n");
     printf("[3] Transfer own accounts\n");
@@ -365,7 +365,7 @@ void newTransactionToPA() {
     
     //Get source account
     newScreen();
-    printf("SELECT SOURCE ACCOUNT NUMBER (enter # to cancel):\n");
+    printf("ENTER SOURCE ACCOUNT NUMBER (enter # to cancel):\n");
     listAccounts();
     
     if (scanf(" %d", &fromAcc)) {
@@ -384,7 +384,7 @@ void newTransactionToPA() {
     
     //Get target account
     newScreen();
-    printf("SELECT TARGET ACCOUNT NUMBER (enter # to cancel):\n");
+    printf("ENTER TARGET ACCOUNT NUMBER (enter # to cancel):\n");
     listAccounts();
     if (scanf(" %d", &toAcc)) {
     }else{
@@ -410,7 +410,7 @@ void newTransactionToPA() {
     }
     
     newScreen();
-    printf("TRANSFERE %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
+    printf("TRANSFER %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
     if (scanf(" %c", &accept)) {
     }else{
         getchar();
@@ -450,7 +450,7 @@ void newTransactionToPA() {
         
     } else if (accept == 'n') {
         newScreen();
-        printf("Transfere canceled!\n");
+        printf("Transfer canceled!\n");
         waitForEnter();
         return;
     }
@@ -467,7 +467,7 @@ void newTransaction() {
     
     //Get source account
     newScreen();
-    printf("SELECT SOURCE ACCOUNT (enter account number and press enter):\n");
+    printf("ENTER SOURCE ACCOUNT NUMBER (enter # to cancel):\n");
     listAccounts();
     if (scanf(" %d", &fromAcc)) {
     }else{
@@ -484,7 +484,7 @@ void newTransaction() {
     
     //Get target account
     newScreen();
-    printf("SELECT TARGET ACCOUNT (enter account number and press enter):\n");
+    printf("ENTER TARGET ACCOUNT NUMBER (enter # to cancel):\n");
     if (scanf(" %d", &toAcc)) {
     }else{
         getchar();
@@ -508,7 +508,7 @@ void newTransaction() {
     }
     
     newScreen();
-    printf("TRANSFERE %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
+    printf("TRANSFER %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
     if (scanf(" %c", &accept)) {
     }else{
         getchar();
@@ -551,7 +551,7 @@ void newTransaction() {
         
     } else if (accept == 'n') {
         newScreen();
-        printf("Transfere canceled!\n");
+        printf("Transfer canceled!\n");
         waitForEnter();
         return;
     }
@@ -614,19 +614,22 @@ void showAdminOptions() {
     
     newScreen();
     
-    printf("Options:\n");
-    printf("Clients ......................(1)\n");
-    printf("Account Requests..............(2)\n");
-    printf("User log......................(3)\n");
-    printf("Logout........................(4)\n");
-    printf("Quit..........................(5)\n");
+    printf("OPTIONS:\n");
+    printf("[1] Clients\n");
+    printf("[2] Account Requests\n");
+    printf("[3] User log\n");
+    printf("[4] Logout\n");
+    printf("[5] Quit\n");
     
     do{
         loop = 0;
         input = 0;
         
-        printf("Enter number to select option: ");
-        scanf("%d", &input);
+        if (scanf(" %d", &input)) {
+        }else{
+            getchar();
+        }
+        
         
         switch (input) {
             case 1:
@@ -647,7 +650,7 @@ void showAdminOptions() {
                 loop = 0;
                 break;
             default:
-                printf("Error, please choose again!\n");
+                printf("Invalid input!\n");
                 loop = 1;
                 break;
         }
@@ -660,7 +663,7 @@ void listClient() {
     char fullName[203];
     
     newScreen();
-    printf("Clients:\n");
+    printf("CLIENTS:\n");
     printf("NAME                ID NUMBER      ACCOUNT ID     ADDRESS             \n");
     for(int i = 0; i < userCount; i ++){
         if(!strcmp(user[i].user_type, "client") ){
@@ -683,41 +686,66 @@ void showRequests() {
     char answer;
     
     if(requestCount == 0){
-        puts("No requests at this time.");
+        printf("There are no requests!\n");
     }else{
+        printf("SELECT REQUEST TO ANSWER (enter # to cancel):\n");
+        printf("NUMBER    USER      ACCOUNT ID     ACTION              DATE                ACTIVE\n");
         for(int loop=0; loop < requestCount; loop++){
-            if(request[loop].active != 0){
-                printf("Request Nr. [%d]\nFrom User: %d\nAccount ID: %d\nAction: %s\nDate: %s\n////////////////////////////////\n\n", loop,request[loop].user_id, request[loop].account_id, request[loop].action, request[loop].date);
+            if(request[loop].active == 1){
+                printf("%-10d%-10d%-15d%-20s%-20s%d\n", loop,request[loop].user_id, request[loop].account_id, request[loop].action, request[loop].date, request[loop].active);
             }
         }
-        puts("Select a request to answer (enter # to cancel)!");
-        if (scanf("%d", &request_nr)) {
-            getchar();
-            printf("Would you'd like to take the action %s for the request nr [%d], y/n??", request[request_nr].action, request_nr);
-            answer = getchar();
-            
-            if(answer == 'y'){
+        
+        if (scanf(" %d", &request_nr)) {
+            if (request_nr < requestCount && request_nr >= 0) {
+                newScreen();
+                printf("DO YOU WANT TO ANSWER REQUEST NR.%d: %s (y/n)? ", request_nr, request[request_nr].action);
                 
-                
-                if(!strcmp(request[request_nr].action, "ADD ACCOUNT")){
-                    addAccount(request[request_nr].user_id);
-                    
-                    
-                } else if(!strcmp(request[request_nr].action, "REMOVE ACCOUNT")){
-                    account[getAccountIndexByID(request[request_nr].account_id)].active = 0;
-                    
-                    
+                if(scanf(" %c", &answer)){
+                    if(answer == 'y'){
+                        if(!strcmp(request[request_nr].action, "ADD ACCOUNT")){
+                            addAccount(request[request_nr].user_id);
+                            request[request_nr].active = 0;
+                            newScreen();
+                            printf("Account added succesfully!\n");
+                            waitForEnter();
+                            return;
+                        }else if(!strcmp(request[request_nr].action, "REMOVE ACCOUNT")){
+                            account[getAccountIndexByID(request[request_nr].account_id)].active = 0;
+                            request[request_nr].active = 0;
+                            newScreen();
+                            printf("Account removed succesfully!\n");
+                            waitForEnter();
+                            return;
+                        }
+                        
+                    }else if(answer == 'n'){
+                        printf("Invalid input!\n");
+                        waitForEnter();
+                        return;
+                    }
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
                 }
-                request[request_nr].active = 0;
-            }else if(answer == 'n'){
+                
                 
             }
+            
+            
+        }else{
+            getchar();
+            printf("Invalid input!\n");
+            waitForEnter();
+            return;
         }
         
         
     }
     
-    waitForEnter();
+ 
 }
 
 //SHOW LOG
@@ -913,6 +941,8 @@ void logMessage(char logMessage[]){
 
 //NEW SCREEN
 void newScreen(){
+    
+    printf("___________________________________________________\n");
     //system("cls");
 }
 

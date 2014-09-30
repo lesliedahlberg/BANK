@@ -224,7 +224,7 @@ int readXML(char filePath[]){
 	    				transaction[transactionStructIndex].user_id = (int) atoi(entry);
 	    			}
 	    			else if(!strcmp(tag, "ACTIVE")){
-	    				account[accountStructIndex].active = (short) atoi(entry);
+	    				transaction[transactionStructIndex].active = (short) atoi(entry);
 	    			}
                     
 	    		}else if(!strcmp(currentFile, "REQUEST")){
@@ -238,7 +238,7 @@ int readXML(char filePath[]){
 	    				strncpy(request[requestStructIndex].date, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "ACTIVE")){
-	    				account[accountStructIndex].active = (short) atoi(entry);
+	    				request[requestStructIndex].active = (short) atoi(entry);
 	    			}
 	    			else if(!strcmp(tag, "ACCOUNT_ID")){
 	    				request[requestStructIndex].account_id = (short) atoi(entry);
