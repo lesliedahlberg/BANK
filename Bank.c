@@ -1,4 +1,12 @@
-﻿#include <stdio.h>
+﻿/*
+ Created by: Leslie Dahlberg (ldg14001), Mattias Johansson (mjn14021)
+ Projekt: Banksystem
+ Mälardalens högskola
+ DVA117 - Programmering i C, HT14
+ 30 September 2014
+ */
+
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
@@ -419,13 +427,14 @@ void showTransactionForAccount(int accountNumber){
     int accountExist = 0;
     
     newScreen();
+    printf("FROM      TO        AMOUNT    DATE           \n");
     
     for (i=0; i < transactionCount; i++){
         if(transaction[i].user_id == user[loggedInUserIndex].user_id && ( transaction[i].from == accountNumber || transaction[i].to == accountNumber)){
             accountExist = 1;
-            if (i == 0) {
-                printf("FROM      TO        AMOUNT    DATE           \n");
-            }
+            
+            
+            
             printf("%-10d%-10d%-10d%-15s\n", transaction[i].from, transaction[i].to, transaction[i].amount, transaction[i].date);
             //printf("From: %d\nTo: %d\nAmount: %d\nDate: %s\n||||||||||||||||||\n", transaction[i].from, transaction[i].to, transaction[i].amount, transaction[i].date);
         }

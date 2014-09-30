@@ -1,3 +1,11 @@
+/*
+ Created by: Leslie Dahlberg (ldg14001), Mattias Johansson (mjn14021)
+ Projekt: Banksystem
+ Mälardalens högskola
+ DVA117 - Programmering i C, HT14
+ 30 September 2014
+ */
+
 #ifndef SHARED_H_
 #define SHARED_H_
 

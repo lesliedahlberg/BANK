@@ -1,3 +1,11 @@
+/*
+Created by: Leslie Dahlberg (ldg14001), Mattias Johansson (mjn14021)
+Projekt: Banksystem
+Mälardalens högskola
+DVA117 - Programmering i C, HT14
+30 September 2014
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -46,8 +54,8 @@ int main() {
     //dataPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/data.xml";
     //logPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/log.txt";
     
-    dataPath = "src/data.xml";
-    logPath = "src/log.txt";
+    dataPath = "data/data.xml";
+    logPath = "data/log.txt";
 
     //READ DATA FILE AND CHECK FOR ERRORS
     readFileSuccesfully = readXML(dataPath);
