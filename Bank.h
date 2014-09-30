@@ -58,14 +58,23 @@ void quitProgram();
 void showClientOptions();
 void listAccountsWithNewScreen();
 void showTransactions();
+void showTransactionForAccount(int accountNumber);
 void newTransactionToPA();
 void newTransaction();
 void newRequest();
+
 //admin level
 void showAdminOptions();
-void listClient();
+void clients();
+void listClientAccount();
+void deleteClient();
+void editClient();
+void listClientsWithNewScreen();
+void listClients();
+void listUsers();
 void showRequests();
 void listLog();
+void manageAccounts();
 
 //SUPPORT FUNCTIONS
 //GENERAL
@@ -73,12 +82,15 @@ void getDate(char *date);
 int getAccountIdByNumber(int accountNumber);
 int getAccountIndexByNumber(int accountNumber);
 int getAccountIndexByID(int account_id);
+int getUserIndexByID(int userID);
 int uniqueAccountNumberGenerator();
 //BANK
 void requestNewAccount();
 void requestRemovalOfAccount(int accountNumber);
 void listAccounts();
+void listAccountsForUser(int userID);
 void addClient();
+void registerClientByAdmin();
 void editClient();
 void addAccount();
 void removeAccount();

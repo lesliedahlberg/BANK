@@ -180,8 +180,71 @@ void registerClient() {
     char password[100];
     
     newScreen();
+    
     printf("REGISTRATION (enter # to cancel):\n");
     
+    printf("National identification number (10 digits): ");
+    if (scanf(" %s", personal_number)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    if (!strcmp(personal_number, "#")) {
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+
+    printf("Username: ");
+    if (scanf(" %s", username)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("First name: ");
+    if (scanf(" %s", first_name)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("Last name: ");
+    if (scanf(" %s", last_name)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("Address: ");
+    if (scanf(" %s", address)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("Password: ");
+    if (scanf(" %s", password)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    
+    /*
     while(1){
         while(getchar() != '\n');
         printf("National identification number (10 digits): ");
@@ -231,7 +294,7 @@ void registerClient() {
         if(scanf(" %s", password))
             break;
         printf("Invalid input!\n");
-    }
+    }*/
     
     //SAVE TO STRUCT
     user[userCount].user_id = ++info[0].last_user_id;
@@ -254,6 +317,8 @@ void registerClient() {
     waitForEnter();
     
 }
+
+
 
 //QUIT
 void quitProgram() {
@@ -333,13 +398,30 @@ void listAccountsWithNewScreen() {
 
 //SHOW TRANSACTIONS
 void showTransactions() {
+    int accountNumber;
+    newScreen();
+    printf("ENTER ACCOUNT NUMBER FOR TRANSACTION HISTORY (enter # to cancel):\n");
+    listAccounts();
+    if (scanf(" %d", &accountNumber)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    showTransactionForAccount(accountNumber);
+    
+    
+}
+
+void showTransactionForAccount(int accountNumber){
     int i;
     int accountExist = 0;
     
     newScreen();
     
     for (i=0; i < transactionCount; i++){
-        if(transaction[i].user_id == user[loggedInUserIndex].user_id){
+        if(transaction[i].user_id == user[loggedInUserIndex].user_id && ( transaction[i].from == accountNumber || transaction[i].to == accountNumber)){
             accountExist = 1;
             if (i == 0) {
                 printf("FROM      TO        AMOUNT    DATE           \n");
@@ -350,11 +432,13 @@ void showTransactions() {
     }
     
     if (!accountExist) {
-        printf("You do not have any transactions!\n");
+        printf("You do not have any transactions for this account!\n");
     }
     
     waitForEnter();
 }
+
+
 
 //NEW PERSONAL TRANSACTION
 void newTransactionToPA() {
@@ -410,7 +494,7 @@ void newTransactionToPA() {
     }
     
     newScreen();
-    printf("TRANSFER %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
+    printf("TRANSFER %d FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
     if (scanf(" %c", &accept)) {
     }else{
         getchar();
@@ -508,7 +592,7 @@ void newTransaction() {
     }
     
     newScreen();
-    printf("TRANSFER %d SEK FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
+    printf("TRANSFER %d FROM %d TO %d (y/n)? ", amount, fromAcc, toAcc);
     if (scanf(" %c", &accept)) {
     }else{
         getchar();
@@ -615,11 +699,12 @@ void showAdminOptions() {
     newScreen();
     
     printf("OPTIONS:\n");
-    printf("[1] Clients\n");
+    printf("[1] Users\n");
     printf("[2] Account Requests\n");
-    printf("[3] User log\n");
-    printf("[4] Logout\n");
-    printf("[5] Quit\n");
+    printf("[3] Accounts\n");
+    printf("[4] User log\n");
+    printf("[5] Logout\n");
+    printf("[6] Quit\n");
     
     do{
         loop = 0;
@@ -633,19 +718,22 @@ void showAdminOptions() {
         
         switch (input) {
             case 1:
-                listClient();
+                clients();
                 break;
             case 2:
                 showRequests();
                 break;
             case 3:
-                listLog();
+                manageAccounts();
                 break;
             case 4:
+                listLog();
+                break;
+            case 5:
                 logOut();
                 loop = 0;
                 break;
-            case 5:
+            case 6:
                 quitProgram();
                 loop = 0;
                 break;
@@ -657,16 +745,387 @@ void showAdminOptions() {
     }while(loop);
 }
 
+//CLIENTS MENU
+void clients(){
+    
+    int input;
+    int loop;
+    
+    
+    
+    do{
+        loop = 1;
+        input = 0;
+        
+        newScreen();
+        
+        printf("USERS:\n");
+        printf("[1] List clients\n");
+        printf("[2] List client accounts\n");
+        printf("[3] Edit user information\n");
+        printf("[4] Add users\n");
+        printf("[5] Delete users\n");
+        printf("[6] Return\n");
+        
+        if (scanf(" %d", &input)) {
+        }else{
+            getchar();
+        }
+        
+        
+        switch (input) {
+            case 1:
+                listClientsWithNewScreen();
+                break;
+            case 2:
+                listClientAccount();
+                break;
+            case 3:
+                editClient();
+                break;
+            case 4:
+                addClient();
+                break;
+            case 5:
+                deleteClient();
+                break;
+            case 6:
+                loop = 0;
+                return;
+                break;
+            default:
+                printf("Invalid input!\n");
+                loop = 1;
+                break;
+        }
+    }while(loop);
+
+}
+
+//LIST CLIENT ACCOUNTS
+void listClientAccount(){
+    int userID;
+    newScreen();
+    printf("ENTER CLIENT (USER ID) TO DISPLAY ACCOUNTS FOR (enter # to cancel):\n");
+    listClients();
+    if (scanf(" %d", &userID)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    listAccountsForUser(userID);
+    waitForEnter();
+}
+
+//ADD CLIENTS
+void addClient(){
+    registerClientByAdmin();
+}
+
+//REGISTER CLIENT BY ADMIN
+void registerClientByAdmin() {
+    
+    //TEMP VARS
+    char personal_number[100];
+    char username[100];
+    char first_name[100];
+    char last_name[100];
+    char address[100];
+    char password[100];
+    char userType[100];
+    
+    newScreen();
+    
+    printf("REGISTRATION (enter # to cancel):\n");
+    
+    printf("National identification number (10 digits): ");
+    if (scanf(" %s", personal_number)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    if (!strcmp(personal_number, "#")) {
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("Username: ");
+    if (scanf(" %s", username)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("First name: ");
+    if (scanf(" %s", first_name)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("Last name: ");
+    if (scanf(" %s", last_name)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("Address: ");
+    if (scanf(" %s", address)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("Password: ");
+    if (scanf(" %s", password)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    printf("User type: ");
+    if (scanf(" %s", userType)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    //SAVE TO STRUCT
+    user[userCount].user_id = ++info[0].last_user_id;
+    user[userCount].active = 1;
+    strcpy(user[userCount].personal_number, personal_number);
+    strcpy(user[userCount].username, username);
+    strcpy(user[userCount].first_name, first_name);
+    strcpy(user[userCount].last_name, last_name);
+    strcpy(user[userCount].address, address);
+    strcpy(user[userCount].password, password);
+    strcpy(user[userCount].user_type, userType);
+    
+    //ALLOC MORE MEM.
+    userCount++;
+    user = realloc(user, (userCount + 1)*sizeof(struct User));
+    
+    //SUCCESS
+    newScreen();
+    printf("Registration successfull!\n");
+    waitForEnter();
+    
+}
+
+
+//DELETE CLIENTS
+void deleteClient(){
+    int userID;
+    newScreen();
+    printf("ENTER USER ID OF USER TO BE DELETED (enter # to cancel):\n");
+    listUsers();
+    if (scanf(" %d", &userID)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    user[getUserIndexByID(userID)].active = 0;
+    waitForEnter();
+}
+
+//EDIT CLIENTS
+void editClient(){
+    int userID;
+    int userIndex;
+    int input;
+    int loop;
+    
+    
+    newScreen();
+    printf("ENTER USER ID TO EDIT USER (enter # to cancel):\n");
+    listUsers();
+    if (scanf(" %d", &userID)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    //user[getUserIndexByID(userID)].active = 0;
+
+    userIndex = getUserIndexByID(userID);
+    
+    do{
+        loop = 1;
+        input = 0;
+        
+        newScreen();
+        
+        printf("EDIT USER INFORMATION:\n");
+        printf("[1] National indentification number\n");
+        printf("[2] Username\n");
+        printf("[3] First name\n");
+        printf("[4] Last name\n");
+        printf("[5] Address\n");
+        printf("[6] User type\n");
+        printf("[7] Password\n");
+        printf("[8] Return\n");
+        
+        
+        if (scanf(" %d", &input)) {
+        }else{
+            getchar();
+        }
+        
+        
+        switch (input) {
+            case 1:
+                newScreen();
+                printf("Current national indentification number: %s\n", user[userIndex].personal_number);
+                printf("Enter new: ");
+                if (scanf(" %s", user[userIndex].personal_number)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                printf("Change succesfull!\n");
+                waitForEnter();
+                break;
+            case 2:
+                newScreen();
+                printf("Current username: %s\n", user[userIndex].username);
+                printf("Enter new: ");
+                if (scanf(" %s", user[userIndex].username)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                printf("Change succesfull!\n");
+                waitForEnter();
+                break;
+            case 3:
+                newScreen();
+                printf("Current first name: %s\n", user[userIndex].first_name);
+                printf("Enter new: ");
+                if (scanf(" %s", user[userIndex].first_name)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                printf("Change succesfull!\n");
+                waitForEnter();
+                break;
+            case 4:
+                newScreen();
+                printf("Current last name: %s\n", user[userIndex].last_name);
+                printf("Enter new: ");
+                if (scanf(" %s", user[userIndex].last_name)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                printf("Change succesfull!\n");
+                waitForEnter();
+                break;
+            case 5:
+                newScreen();
+                printf("Current address: %s\n", user[userIndex].address);
+                printf("Enter new: ");
+                if (scanf(" %s", user[userIndex].address)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                printf("Change succesfull!\n");
+                waitForEnter();
+                break;
+            case 6:
+                newScreen();
+                printf("Current user type: %s\n", user[userIndex].user_type);
+                printf("Enter new: ");
+                if (scanf(" %s", user[userIndex].user_type)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                printf("Change succesfull!\n");
+                waitForEnter();
+                break;
+            case 7:
+                newScreen();
+                printf("Enter new password: ");
+                if (scanf(" %s", user[userIndex].password)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                printf("Change succesfull!\n");
+                waitForEnter();
+            case 8:
+                loop = 0;
+                return;
+                break;
+            default:
+                printf("Invalid input!\n");
+                loop = 1;
+                break;
+        }
+    }while(loop);
+    
+    //
+    
+    waitForEnter();
+}
+
 //LIST CLIENTS
-void listClient() {
+void listClientsWithNewScreen() {
+    
+    newScreen();
+    listClients();
+    waitForEnter();
+}
+
+//LIST CLIENTS
+void listClients() {
     
     char fullName[203];
     
-    newScreen();
+    
     printf("CLIENTS:\n");
-    printf("NAME                ID NUMBER      ACCOUNT ID     ADDRESS             \n");
+    printf("NAME                ID NUMBER      USER ID        ADDRESS             \n");
     for(int i = 0; i < userCount; i ++){
-        if(!strcmp(user[i].user_type, "client") ){
+        if(!strcmp(user[i].user_type, "client") && user[i].active == 1){
             fullName[0] = '\0';
             strcat(fullName, user[i].first_name);
             strcat(fullName, " ");
@@ -677,8 +1136,107 @@ void listClient() {
         
         
     }
-    waitForEnter();
+    
 }
+
+//LIST USERS
+void listUsers() {
+    
+    char fullName[203];
+    
+    
+    printf("CLIENTS:\n");
+    printf("NAME                ID NUMBER      USER ID        ADDRESS             \n");
+    for(int i = 0; i < userCount; i ++){
+        if(user[i].active == 1){
+            fullName[0] = '\0';
+            strcat(fullName, user[i].first_name);
+            strcat(fullName, " ");
+            strcat(fullName, user[i].last_name);
+            
+            printf("%-20s%-15s%-15d%-20s\n", fullName, user[i].personal_number, user[i].user_id, user[i].address);
+        }
+        
+        
+    }
+    
+}
+
+void manageAccounts(){
+    int userID;
+    int accountNumber;
+    newScreen();
+    printf("ENTER A USER ID TO ADD/REMOVE ACCOUNTS FOR  (enter # to cancel):\n");
+    listClients();
+    if (scanf(" %d", &userID)) {
+    }else{
+        getchar();
+        printf("Invalid input!\n");
+        waitForEnter();
+        return;
+    }
+    
+    int input;
+    int loop;
+    
+    newScreen();
+    
+    do{
+        loop = 1;
+        input = 0;
+        
+        newScreen();
+        
+        printf("ACTIONS:\n");
+        printf("[1] Add account\n");
+        printf("[2] Remove account\n");
+        printf("[3] Return\n");
+        
+        if (scanf(" %d", &input)) {
+        }else{
+            getchar();
+        }
+        
+        
+        switch (input) {
+            case 1:
+                addAccount(userID);
+                printf("Account added succesfully!\n");
+                waitForEnter();
+                break;
+            case 2:
+                newScreen();
+                printf("ENTER A ACCOUNT ID TO DELETE (enter # to cancel):\n");
+                listAccountsForUser(userID);
+                if (scanf(" %d", &accountNumber)) {
+                }else{
+                    getchar();
+                    printf("Invalid input!\n");
+                    waitForEnter();
+                    return;
+                }
+                account[getAccountIndexByNumber(accountNumber)].active = 0;
+                printf("Account deleted succesfully!\n");
+                break;
+            case 3:
+                loop = 0;
+                return;
+                break;
+            default:
+                printf("Invalid input!\n");
+                loop = 1;
+                break;
+        }
+    }while(loop);
+
+    
+    
+    
+    waitForEnter();
+    
+    
+};
+
 
 //SHOW REQUESTS
 void showRequests() {
@@ -813,6 +1371,15 @@ int getAccountIdByNumber(int accountNumber){
     return -1;
 }
 
+int getUserIndexByID(int userID){
+    for (int i = 0; i < userCount; i++) {
+        if (user[i].user_id == userID) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 int uniqueAccountNumberGenerator(){
     int accountNumber;
     srand((unsigned) time(NULL ));
@@ -868,11 +1435,6 @@ void removeAccount(int accountIndex) {
     printf("The account was successfully deleted!\n");
 }
 
-//EDIT ACCOUNT
-void editClient() {
-    
-}
-
 //ADD ACCOUNT
 void addAccount(int user_id) {
     
@@ -888,23 +1450,7 @@ void addAccount(int user_id) {
     
 }
 
-//ADD CLIENT
-void addClient() {
-    
-}
-/*
-//LIST ACCOUNTS
-void listAccounts() {
-    int i;
-    int userAccCount = 0;
-    for (i = 0; i < accountCount; i++) {
-        if (account[i].user_id == user[loggedInUserIndex].user_id && account[i].active == 1) {
-            printf("Account Number: %d : Balance: %d\n",
-                   account[i].account_number, account[i].balance);
-            userAccCount++;
-        }
-    }
-}*/
+
 
 
 //LIST ACCOUNTS
@@ -917,7 +1463,29 @@ void listAccounts() {
             if (userAccCount == 0) {
                 printf("ACCOUNT NUMBER      BALANCE\n");
             }
-            printf("%-20d%d SEK\n", account[i].account_number, account[i].balance);
+            printf("%-20d%d\n", account[i].account_number, account[i].balance);
+            userAccCount++;
+        }
+    }
+    
+    if (userAccCount == 0) {
+        printf("No accounts available!\n");
+    }
+
+    
+}
+
+//LIST ACCOUNTS FOR USER
+void listAccountsForUser(int userID) {
+    int i;
+    int userAccCount = 0;
+    
+    for (i = 0; i < accountCount; i++) {
+        if (account[i].user_id == user[getUserIndexByID(userID)].user_id && account[i].active == 1) {
+            if (userAccCount == 0) {
+                printf("ACCOUNT NUMBER      BALANCE\n");
+            }
+            printf("%-20d%d\n", account[i].account_number, account[i].balance);
             userAccCount++;
         }
     }
@@ -925,9 +1493,10 @@ void listAccounts() {
     if (userAccCount == 0) {
         printf("You do not have any accounts!\n");
     }
-
+    
     
 }
+
 
 //LOG
 void logMessage(char logMessage[]){
