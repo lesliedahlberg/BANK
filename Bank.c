@@ -4,58 +4,35 @@
 #include <time.h>
 #include <string.h>
 
-#include "Bank.h"
-#include "shared.h"
+#include "Bank.h" //HEADER
+#include "shared.h" //GLOBALS
 
-#define MAXLINE 80
-#define MAXRECORDS 10
+/*****************
+ LEVEL 1 FUNCTIONS
+ *****************/
 
-
-int getAccountIndexByNumber(int accountNumber){
-    for(int i = 0; i < accountCount; i++){
-        if(account[i].account_number == accountNumber){
-            return i;
-        }
-    }
-    return -1;
-}
-
-int getAccountIndexByID(int account_id){
-    for(int i = 0; i < accountCount; i++){
-        if(account[i].account_id == account_id){
-            return i;
-        }
-    }
-    return -1;
-}
-
-int getAccountIdByNumber(int accountNumber){
-    for(int i = 0; i < accountCount; i++){
-        if(account[i].account_number == accountNumber){
-            return account[i].account_id;
-        }
-    }
-    return -1;
-}
-
-
+//GENERAL OPRIONS
 void showOptions() {
+    
+    //LOOP & Y/N
     int input;
-    int loop = 0;
+    int loop;
     
     newScreen();
     
+    printf("WELCOME TO OUR ELECTRONIC BANKING SYSTEM\n");
+    printf("OPTIONS (enter number and press enter):\n");
+    
+    //IF LOGGED IN
     if(loggedIn){
-        newScreen();
-        printf("Options:\n");
-        printf("Logout..............(1)\n");
-        printf("Quit................(2)\n");
+        
+        printf("[1] Logout\n");
+        printf("[2] Quit\n");
+        
         do{
             loop = 0;
             input = 0;
             
-            printf("Enter number to select option: ");
-            //while (getchar() != '\n');
             scanf("%d", &input);
             
             switch (input) {
@@ -66,23 +43,23 @@ void showOptions() {
                     quitProgram();
                     break;
                 default:
-                    printf("Error, please choose again!\n");
+                    printf("Invalid input!\n");
                     loop = 1;
                     break;
             }
         }while(loop);
+        
+    //IF LOGGED OUT
     }else if(!loggedIn){
-        newScreen();
-        printf("Options:\n");
-        printf("Login...............(1)\n");
-        printf("Register............(2)\n");
-        printf("Quit................(3)\n");
+        
+        printf("[1] Login\n");
+        printf("[2] Register\n");
+        printf("[3] Quit\n");
+        
         do{
             loop = 0;
             input = 0;
             
-            printf("Enter number to select option: ");
-            //while (getchar() != '\n');
             scanf("%d", &input);
             
             switch (input) {
@@ -96,7 +73,7 @@ void showOptions() {
                     quitProgram();
                     break;
                 default:
-                    printf("Error, please choose again!\n");
+                    printf("Invalid input!\n");
                     loop = 1;
                     break;
             }
@@ -104,10 +81,13 @@ void showOptions() {
     }
 }
 
+//LOG IN
 int logIn() {
     char username[100];
     char password[100];
     int loop = 0;
+    
+    
     
     if(loggedIn){
         logOut();
@@ -115,59 +95,78 @@ int logIn() {
     
     do {
         newScreen();
+        printf("LOG IN (enter # to cancel): \n");
         if(loop){
-            printf("Wrong username or password, try again!\n");
+            printf("Invalid login credentials!\n");
         }
         
         printf("Username: ");
         scanf("%s", username);
         
-        if(!strcmp(username, "cancel")){
+        if(!strcmp(username, "#")){
             return 0;
         }
         
         printf("Password: ");
         scanf("%s", password);
         
-        
         for(int i = 0; i < userCount; i++){
             if (strcmp(user[i].username, username) == 0 && strcmp(user[i].password, password) == 0 && user[i].active == 1) {
+                //DATE FOR LOG
                 char date[100];
                 char message[100];
                 getDate(date);
+                
+                //SET ENV. VARS
                 loggedIn = 1;
                 loop = 1;
-                LOGGED_IN_USER_ID = user[i].user_id;
-                LOGGED_IN_INDEX = i;
+                loggedInUserID = user[i].user_id;
+                loggedInUserIndex = i;
                
-                newScreen();
-                printf("Successfull login!\n");
+                //CREATE LOG MESSAGE
                 strcat(message, user[i].username);
                 strcat(message, " logged in: ");
                 strcat(message, date);
                 logMessage(message);
                 
+                //EXIT LOOP
                 i = userCount;
-                waitForEnter();
             }
         }
         
-        
     } while (!loggedIn);
     
+    //RETURN
     return 1;
 }
 
+//LOG OUT
+void logOut() {
+    
+    char date[100];
+    char message[100];
+    getDate(date);
+    
+    message[0] = '\0';
+    
+    strcat(message, user[loggedInUserIndex].username);
+    strcat(message, " logged out: ");
+    strcat(message, date);
+    logMessage(message);
+    
+    loggedIn = 0;
+    loggedInUserIndex = 0;
+    loggedInUserID = 0;
+}
+
+//REGISTER CLIENT
 void registerClient() {
     
-    //char input;
-    //int user_id;
     char personal_number[100];
     char username[100];
     char first_name[100];
     char last_name[100];
     char address[100];
-    //char user_type[10];
     char password[100];
     
     newScreen();
@@ -239,6 +238,18 @@ void registerClient() {
     
 }
 
+//QUIT
+void quitProgram() {
+    logOut();
+    running = 0;
+    
+}
+
+/*****************
+ LEVEL 2 FUNCTIONS
+ *****************/
+
+//GEN. CLIENT OPTIONS
 void showClientOptions() {
     
     int input;
@@ -253,8 +264,6 @@ void showClientOptions() {
     printf("Request new/delet account.....(5)\n");
     printf("Logout........................(6)\n");
     printf("Quit..........................(7)\n");
-    
-    
     
     do{
         loop = 0;
@@ -292,6 +301,8 @@ void showClientOptions() {
         }
     }while(loop);
 }
+
+//LIST ACCOUNTS
 void listAccountsWithNewScreen() {
     int i;
     int userAccCount = 0;
@@ -299,7 +310,7 @@ void listAccountsWithNewScreen() {
     newScreen();
     
     for (i = 0; i < accountCount; i++) {
-        if (account[i].user_id == user[LOGGED_IN_INDEX].user_id && account[i].active == 1) {
+        if (account[i].user_id == user[loggedInUserIndex].user_id && account[i].active == 1) {
             printf("Account Number: %d : Balance: %d\n",
                    account[i].account_number, account[i].balance);
             userAccCount++;
@@ -309,30 +320,15 @@ void listAccountsWithNewScreen() {
     waitForEnter();
     
 }
-void listAccounts() {
-    int i;
-    int userAccCount = 0;
-    
-    
-    for (i = 0; i < accountCount; i++) {
-        if (account[i].user_id == user[LOGGED_IN_INDEX].user_id && account[i].active == 1) {
-            printf("Account Number: %d : Balance: %d\n",
-                   account[i].account_number, account[i].balance);
-            userAccCount++;
-        }
-    }
-    
-    
-    
-}
 
+//SHOW TRANSACTIONS
 void showTransactions() {
     int i;
     
     newScreen();
     
     for (i=0; i < transactionCount; i++){
-        if(transaction[i].user_id == user[LOGGED_IN_INDEX].user_id){
+        if(transaction[i].user_id == user[loggedInUserIndex].user_id){
             printf("From: %d\nTo: %d\nAmmount: %d\nDate: %s\n||||||||||||||||||\n", transaction[i].from, transaction[i].to, transaction[i].ammount, transaction[i].date);
         }
     }
@@ -340,6 +336,7 @@ void showTransactions() {
     waitForEnter();
 }
 
+//NEW PERSONAL TRANSACTION
 void newTransactionToPA() {
     int fromAcc = 0, toAcc = 0, ammount = 0;
     char accept;
@@ -365,7 +362,7 @@ void newTransactionToPA() {
         
         looping = 1;
         
-    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[LOGGED_IN_INDEX].user_id && account[getAccountIndexByNumber(fromAcc)].active != 1);
+    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[loggedInUserIndex].user_id && account[getAccountIndexByNumber(fromAcc)].active != 1);
     
     //Get target account
     looping = 0;
@@ -384,7 +381,7 @@ void newTransactionToPA() {
         
         looping = 1;
         
-    }while((account[getAccountIndexByNumber(toAcc)].user_id != user[LOGGED_IN_INDEX].user_id || fromAcc == toAcc) && account[getAccountIndexByNumber(toAcc)].active != 1);
+    }while((account[getAccountIndexByNumber(toAcc)].user_id != user[loggedInUserIndex].user_id || fromAcc == toAcc) && account[getAccountIndexByNumber(toAcc)].active != 1);
     
     
     
@@ -409,7 +406,7 @@ void newTransactionToPA() {
             
             transaction[transactionCount].ammount = (int) ammount;
             
-            transaction[transactionCount].user_id = user[LOGGED_IN_INDEX].user_id;
+            transaction[transactionCount].user_id = user[loggedInUserIndex].user_id;
             
             transaction[transactionCount].active = 1;
             
@@ -433,6 +430,7 @@ void newTransactionToPA() {
     waitForEnter();
 }
 
+//NEW GENERAL TRANSACTION
 void newTransaction() {
     int fromAcc = 0, toAcc = 0, ammount = 0;
     char accept;
@@ -458,7 +456,7 @@ void newTransaction() {
         
         looping = 1;
         
-    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[LOGGED_IN_INDEX].user_id && account[getAccountIndexByNumber(fromAcc)].active != 1);
+    }while(account[getAccountIndexByNumber(fromAcc)].user_id != user[loggedInUserIndex].user_id && account[getAccountIndexByNumber(fromAcc)].active != 1);
     
     //Get target account
     looping = 0;
@@ -499,7 +497,7 @@ void newTransaction() {
             
             transaction[transactionCount].ammount = (int) ammount;
             
-            transaction[transactionCount].user_id = user[LOGGED_IN_INDEX].user_id;
+            transaction[transactionCount].user_id = user[loggedInUserIndex].user_id;
             
             transaction[transactionCount].active = 1;
             
@@ -523,6 +521,48 @@ void newTransaction() {
     waitForEnter();
 }
 
+//NEW REQUEST
+void newRequest() {
+    int loop, loop2;
+    int input;
+    int accountNumber;
+    newScreen();
+    printf("Request\n");
+    printf("Options:\n");
+    printf("New account.........(1)\n");
+    printf("Delete account......(2)\n");
+    do{
+        loop = 0;
+        input = 0;
+        accountNumber = 0;
+        
+        printf("Enter number to select option: ");
+        scanf("%d", &input);
+        
+        switch (input) {
+            case 1:
+                requestNewAccount();
+                break;
+            case 2:
+                listAccounts();
+                loop2 = 0;
+                while(!loop2){
+                    printf("Enter account number of account to be deleted: ");
+                    loop2 = scanf("%d", &accountNumber);
+                }
+                requestRemovalOfAccount(accountNumber);
+                break;
+            default:
+                printf("Error, please choose again!\n");
+                loop = 1;
+                break;
+        }
+    }while(loop);
+    waitForEnter();
+    
+}
+
+//GEN. ADMIN OPTIONS
 void showAdminOptions() {
     
     int input;
@@ -568,10 +608,7 @@ void showAdminOptions() {
     }while(loop);
 }
 
-void addClient() {
-    
-}
-
+//LIST CLIENTS
 void listClient() {
     
     char fullName[203];
@@ -594,68 +631,7 @@ void listClient() {
     waitForEnter();
 }
 
-void editClient() {
-    
-}
-
-int uniqueAccountNumberGenerator(){
-    int accountNumber;
-    srand((unsigned) time(NULL ));
-    accountNumber = rand() % 9999 + 1;
-    for(int loop=0; loop < accountCount; loop++){
-        if(accountNumber == account[loop].account_number){
-            accountNumber = rand() % 9999 + 1;
-        }
-    }
-    return accountNumber;
-}
-
-void addAccount(int user_id) {
-    
-    
-    account[accountCount].account_id = accountCount;
-    account[accountCount].account_number = uniqueAccountNumberGenerator();
-    account[accountCount].balance = 100;
-    account[accountCount].user_id = user_id;
-    account[accountCount].active = 1;
-    
-    accountCount++;
-    account = realloc(account, (accountCount + 1)*sizeof(struct Account));
-    
-}
-
-
-/*FOR USER: void removeAccount() {
-	int ID;
-	char verify[1];
-	int loop = 1;
-	printf("Remove account\n");
-	
-	listAccounts();
-	
-	while(loop){
- printf("Enter account number of account to be deleted: ");
- loop = scanf("%d", &ID);
-	}
- 
-	printf("Are you sure you want to delete the account (y/n)?\n");
-	while(!scanf("%s", verify));
- 
-	if(!strcmp(verify, "y")){
- account[getAccountIdByNumber(ID)].active = 0;
- printf("The account was successfully deleted!\n");
-	}else{
- printf("The account was not deleted!\n");
-	}
-	
- }*/
-
-void removeAccount(int accountIndex) {
-    //account[getAccountIndexByNumber(accountNumber)].active = 0;
-    account[accountIndex].active = 0;
-    printf("The account was successfully deleted!\n");
-}
-
+//SHOW REQUESTS
 void showRequests() {
     int request_nr;
     char answer;
@@ -698,7 +674,7 @@ void showRequests() {
     waitForEnter();
 }
 
-
+//SHOW LOG
 void listLog() {
     
     newScreen();
@@ -721,60 +697,67 @@ void listLog() {
     
 }
 
-void logMessage(char logMessage[]){
-    FILE * file;
-    file = fopen(logPath, "a");
-    char date[100];
-    getDate(date);
-    fprintf(file, "%s\n", logMessage);
-    fclose(file);
-}
+/*****************
+ SUPPORT FUNCTIONS
+ *****************/
 
-void newRequest() {
-    int loop, loop2;
-    int input;
-    int accountNumber;
-    newScreen();
-    printf("Request\n");
-    printf("Options:\n");
-    printf("New account.........(1)\n");
-    printf("Delete account......(2)\n");
-    do{
-        loop = 0;
-        input = 0;
-        accountNumber = 0;
-        
-        printf("Enter number to select option: ");
-        scanf("%d", &input);
-        
-        switch (input) {
-            case 1:
-                requestNewAccount();
-                break;
-            case 2:
-                listAccounts();
-                loop2 = 0;
-                while(!loop2){
-                    printf("Enter account number of account to be deleted: ");
-                    loop2 = scanf("%d", &accountNumber);
-                }
-                requestRemovalOfAccount(accountNumber);
-                break;
-            default:
-                printf("Error, please choose again!\n");
-                loop = 1;
-                break;
-        }
-    }while(loop);
-    waitForEnter();
+//GENERAL
+//DATE
+void getDate(char *date){
+    
+    time_t now = time(NULL );
+    struct tm *t = localtime(&now);
+    strftime(date, 20, "%d %m %Y %H:%M", t);
+    //printf("%s\n", date);
     
 }
+//ID, ACCOUNT NUMBER AND INDEX COORDINATOR
+int getAccountIndexByNumber(int accountNumber){
+    for(int i = 0; i < accountCount; i++){
+        if(account[i].account_number == accountNumber){
+            return i;
+        }
+    }
+    return -1;
+}
 
+int getAccountIndexByID(int account_id){
+    for(int i = 0; i < accountCount; i++){
+        if(account[i].account_id == account_id){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int getAccountIdByNumber(int accountNumber){
+    for(int i = 0; i < accountCount; i++){
+        if(account[i].account_number == accountNumber){
+            return account[i].account_id;
+        }
+    }
+    return -1;
+}
+
+int uniqueAccountNumberGenerator(){
+    int accountNumber;
+    srand((unsigned) time(NULL ));
+    accountNumber = rand() % 9999 + 1;
+    for(int loop=0; loop < accountCount; loop++){
+        if(accountNumber == account[loop].account_number){
+            accountNumber = rand() % 9999 + 1;
+        }
+    }
+    return accountNumber;
+}
+
+//BANK
+//REQUEST NEW ACCOUNT
 void requestNewAccount(){
     char date[20];
     getDate(date);
     
-    request[requestCount].user_id = user[LOGGED_IN_INDEX].user_id;
+    request[requestCount].user_id = user[loggedInUserIndex].user_id;
     strcpy(request[requestCount].action, "ADD ACCOUNT");
     strcpy(request[requestCount].date, date);
     request[requestCount].active = 1;
@@ -787,11 +770,12 @@ void requestNewAccount(){
     
 }
 
+//REQUEST REMOVAL OF ACCOUNT
 void requestRemovalOfAccount(int accountNumber){
     char date[20];
     getDate(date);
     
-    request[requestCount].user_id = user[LOGGED_IN_INDEX].user_id;
+    request[requestCount].user_id = user[loggedInUserIndex].user_id;
     strcpy(request[requestCount].action, "REMOVE ACCOUNT");
     request[requestCount].account_id = getAccountIdByNumber(accountNumber);
     strcpy(request[requestCount].date, date);
@@ -804,47 +788,69 @@ void requestRemovalOfAccount(int accountNumber){
     request = realloc(request, (requestCount + 1)*sizeof(struct Request));
 }
 
-void getDate(char *date){
-    
-    time_t now = time(NULL );
-    struct tm *t = localtime(&now);
-    strftime(date, 20, "%d %m %Y %H:%M", t);
-    //printf("%s\n", date);
+//REMOVE ACCOUNT
+void removeAccount(int accountIndex) {
+    account[accountIndex].active = 0;
+    printf("The account was successfully deleted!\n");
+}
+
+//EDIT ACCOUNT
+void editClient() {
     
 }
 
-void logOut() {
+//ADD ACCOUNT
+void addAccount(int user_id) {
     
+    
+    account[accountCount].account_id = accountCount;
+    account[accountCount].account_number = uniqueAccountNumberGenerator();
+    account[accountCount].balance = 100;
+    account[accountCount].user_id = user_id;
+    account[accountCount].active = 1;
+    
+    accountCount++;
+    account = realloc(account, (accountCount + 1)*sizeof(struct Account));
+    
+}
+
+//ADD CLIENT
+void addClient() {
+    
+}
+
+//LIST ACCOUNTS
+void listAccounts() {
+    int i;
+    int userAccCount = 0;
+    for (i = 0; i < accountCount; i++) {
+        if (account[i].user_id == user[loggedInUserIndex].user_id && account[i].active == 1) {
+            printf("Account Number: %d : Balance: %d\n",
+                   account[i].account_number, account[i].balance);
+            userAccCount++;
+        }
+    }
+}
+
+//LOG
+void logMessage(char logMessage[]){
+    FILE * file;
+    file = fopen(logPath, "a");
     char date[100];
-    char message[100];
     getDate(date);
-    
-    message[0] = '\0';
-    
-    strcat(message, user[LOGGED_IN_INDEX].username);
-    strcat(message, " logged out: ");
-    strcat(message, date);
-    logMessage(message);
-    
-    loggedIn = 0;
-    LOGGED_IN_INDEX = 0;
-    LOGGED_IN_USER_ID = 0;
+    fprintf(file, "%s\n", logMessage);
+    fclose(file);
 }
 
-void quitProgram() {
-    logOut();
-    running = 0;
-    
-}
-
+//NEW SCREEN
 void newScreen(){
-    
     //system("cls");
-    //CLEARSCREEN
 }
 
+//WAIT FOR USER
 void waitForEnter(){
     while(getchar() != '\n');
     printf("Press ENTER to continue...");
     getchar();
 }
+

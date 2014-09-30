@@ -1,13 +1,7 @@
-/*
- * Bank.h
- *
- *  Created on: 19 sep 2014
- *      Author: Mattias
- */
-
 #ifndef BANK_H_
 #define BANK_H_
 
+//STRUCTS FOR BANK STORAGE
 struct Info {
 	char bank_name[50];
 	int last_user_id;
@@ -15,7 +9,6 @@ struct Info {
 };
 
 struct User {
-	//char user_id[100];
 	int user_id;
 	char personal_number[100];
 	char username[100];
@@ -27,7 +20,6 @@ struct User {
 	short active;
 
 };
-
 
 struct Account {
 	short account_id;
@@ -54,38 +46,44 @@ struct Request {
 	short active;
 };
 
-
-
-
-
+//LEVEL 1 FUNCTIONS
 void showOptions();
 void registerClient();
+int logIn();
+void logOut();
+void quitProgram();
+
+//LEVEL 2 FUNCTIONS
+//client level
 void showClientOptions();
-void listAccounts();
 void listAccountsWithNewScreen();
 void showTransactions();
 void newTransactionToPA();
 void newTransaction();
 void newRequest();
-int logIn();
-void logOut();
-void quitProgram();
-
+//admin level
 void showAdminOptions();
-void addClient();
 void listClient();
+void showRequests();
+void listLog();
+
+//SUPPORT FUNCTIONS
+//GENERAL
+void getDate(char *date);
+int getAccountIdByNumber(int accountNumber);
+int getAccountIndexByNumber(int accountNumber);
+int getAccountIndexByID(int account_id);
+int uniqueAccountNumberGenerator();
+//BANK
+void requestNewAccount();
+void requestRemovalOfAccount(int accountNumber);
+void listAccounts();
+void addClient();
 void editClient();
 void addAccount();
 void removeAccount();
-void showRequests();
-void listLog();
 void logMessage(char * logMessage);
-
-int getAccountIdByNumber(int accountNumber);
-void requestNewAccount();
-void requestRemovalOfAccount(int accountNumber);
-void getDate(char *date);
-
+//GRAPHICS
 void newScreen();
 void waitForEnter();
 

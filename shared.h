@@ -1,6 +1,8 @@
 #ifndef SHARED_H_
 #define SHARED_H_
 
+//GLOBALS
+
 extern int infoCount;
 extern int userCount;
 extern int accountCount;
@@ -14,8 +16,8 @@ extern int currentUserId;
 extern char * dataPath;
 extern char * logPath;
 
-extern int LOGGED_IN_USER_ID;
-extern int LOGGED_IN_INDEX;
+extern int loggedInUserID;
+extern int loggedInUserIndex;
 
 extern struct Info *info;
 extern struct User *user;
