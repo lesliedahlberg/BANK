@@ -41,15 +41,13 @@ int main() {
 	running = 1;
 	loggedIn = 0;
 
-    //TO BE REMOVED
-	//setvbuf(stdout, NULL, _IONBF, 0); // Fixar delayen i min Eclipse konsol
-
-    //PATHS
-    dataPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/data.xml";
-    logPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/log.txt";
     
-    //dataPath = "src/data.xml";
-    //logPath = "src/log.txt";
+    //PATHS
+    //dataPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/data.xml";
+    //logPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/log.txt";
+    
+    dataPath = "src/data.xml";
+    logPath = "src/log.txt";
 
     //READ DATA FILE AND CHECK FOR ERRORS
     readFileSuccesfully = readXML(dataPath);

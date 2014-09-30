@@ -1511,8 +1511,8 @@ void logMessage(char logMessage[]){
 //NEW SCREEN
 void newScreen(){
     
-    printf("___________________________________________________\n");
-    //system("cls");
+    //printf("___________________________________________________\n");
+    system("cls");
 }
 
 //WAIT FOR USER
