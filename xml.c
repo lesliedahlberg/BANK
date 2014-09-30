@@ -313,7 +313,7 @@ int writeToXML(char filePath[]){
 		return 0;
 	}
 
-	//WRITE USER
+	//WRITE INFO
 	fputs("<FILE>\n", file);
 	fputs("	<FILE_NAME>INFO\n", file);
 

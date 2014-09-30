@@ -73,7 +73,7 @@ int main() {
         printf("Error reading data file!");
         waitForEnter();
     }
-	
+    
     //SAVE TO FILE AND CHECK FOR ERRORS
     savedFileSuccesfully = writeToXML(dataPath);
 	
