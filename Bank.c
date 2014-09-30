@@ -4,12 +4,40 @@
 #include <time.h>
 #include <string.h>
 
-
 #include "Bank.h"
 #include "shared.h"
 
 #define MAXLINE 80
 #define MAXRECORDS 10
+
+
+int getAccountIndexByNumber(int accountNumber){
+    for(int i = 0; i < accountCount; i++){
+        if(account[i].account_number == accountNumber){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int getAccountIndexByID(int account_id){
+    for(int i = 0; i < accountCount; i++){
+        if(account[i].account_id == account_id){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int getAccountIdByNumber(int accountNumber){
+    for(int i = 0; i < accountCount; i++){
+        if(account[i].account_number == accountNumber){
+            return account[i].account_id;
+        }
+    }
+    return -1;
+}
+
 
 void showOptions() {
     int input;
@@ -132,14 +160,14 @@ int logIn() {
 
 void registerClient() {
     
-    char input;
-    int user_id;
+    //char input;
+    //int user_id;
     char personal_number[100];
     char username[100];
     char first_name[100];
     char last_name[100];
     char address[100];
-    char user_type[10];
+    //char user_type[10];
     char password[100];
     
     newScreen();
@@ -596,32 +624,6 @@ void addAccount(int user_id) {
     
 }
 
-int getAccountIndexByNumber(int accountNumber){
-    for(int i = 0; i < accountCount; i++){
-        if(account[i].account_number == accountNumber){
-            return i;
-        }
-    }
-    return -1;
-}
-
-int getAccountIndexByID(int account_id){
-    for(int i = 0; i < accountCount; i++){
-        if(account[i].account_id == account_id){
-            return i;
-        }
-    }
-    return -1;
-}
-
-int getAccountIdByNumber(int accountNumber){
-    for(int i = 0; i < accountCount; i++){
-        if(account[i].account_number == accountNumber){
-            return account[i].account_id;
-        }
-    }
-    return -1;
-}
 
 /*FOR USER: void removeAccount() {
 	int ID;
@@ -658,33 +660,41 @@ void showRequests() {
     int request_nr;
     char answer;
     
-    for(int loop=0; loop < requestCount; loop++){
-    	if(request[loop].active != 0){
-        printf("Request Nr. [%d]\nFrom User: %d\nAccount ID: %d\nAction: %s\nDate: %s\n////////////////////////////////\n\n", loop,request[loop].user_id, request[loop].account_id, request[loop].action, request[loop].date);
-    	}
+    if(requestCount == 0){
+        puts("No requests at this time.");
+    }else{
+        for(int loop=0; loop < requestCount; loop++){
+            if(request[loop].active != 0){
+                printf("Request Nr. [%d]\nFrom User: %d\nAccount ID: %d\nAction: %s\nDate: %s\n////////////////////////////////\n\n", loop,request[loop].user_id, request[loop].account_id, request[loop].action, request[loop].date);
+            }
+        }
+        puts("Select a request to answer (enter # to cancel)!");
+        if (scanf("%d", &request_nr)) {
+            getchar();
+            printf("Would you'd like to take the action %s for the request nr [%d], y/n??", request[request_nr].action, request_nr);
+            answer = getchar();
+            
+            if(answer == 'y'){
+                
+                
+                if(!strcmp(request[request_nr].action, "ADD ACCOUNT")){
+                    addAccount(request[request_nr].user_id);
+                    
+                    
+                } else if(!strcmp(request[request_nr].action, "REMOVE ACCOUNT")){
+                    account[getAccountIndexByID(request[request_nr].account_id)].active = 0;
+                    
+                    
+                }
+                request[request_nr].active = 0;
+            }else if(answer == 'n'){
+                
+            }
+        }
+        
+        
     }
-    puts("Select a request to answer!");
-    scanf("%d", &request_nr);
-    getchar();
-    printf("Would you'd like to take the action %s for the request nr [%d], y/n??", request[request_nr].action, request_nr);
-    answer = getchar();
-
-    if(answer == 'y'){
-    	
-
-         if(!strcmp(request[request_nr].action, "ADD ACCOUNT")){
-         addAccount(request[request_nr].user_id);
-
-
-         } else if(!strcmp(request[request_nr].action, "REMOVE ACCOUNT")){
-         account[getAccountIndexByID(request[request_nr].account_id)].active = 0;
-
-
-         }
-     request[request_nr].active = 0;
-    }else if(answer == 'n'){
-        showRequests();
-    }
+    
     waitForEnter();
 }
 
@@ -732,6 +742,7 @@ void newRequest() {
     do{
         loop = 0;
         input = 0;
+        accountNumber = 0;
         
         printf("Enter number to select option: ");
         scanf("%d", &input);
@@ -827,7 +838,8 @@ void quitProgram() {
 }
 
 void newScreen(){
-    system("cls");
+    
+    //system("cls");
     //CLEARSCREEN
 }
 
