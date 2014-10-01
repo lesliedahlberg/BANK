@@ -12,7 +12,7 @@
 #include <time.h>
 #include <string.h>
 
-#include "Bank.h" //HEADER
+#include "bank.h" //HEADER
 #include "shared.h" //GLOBALS
 
 /*****************

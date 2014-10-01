@@ -10,11 +10,9 @@ DVA117 - Programmering i C, HT14
 #include <string.h>
 #include <stdlib.h>
 
-#include "Bank.h"   //BANK SYSTEM
+#include "bank.h"   //BANK SYSTEM
 #include "xml.h"    //XML FILE HANDLING
-#include "shared.h"
-#include "Bank.h"
-#include "Bank.h" //GLOBALS
+#include "shared.h"//GLOBALS
 
 //DECLARE GLOBALS
 //NEW ONES MUST BE ADDED TO SHARED.H
