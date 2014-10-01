@@ -12,7 +12,9 @@ DVA117 - Programmering i C, HT14
 
 #include "Bank.h"   //BANK SYSTEM
 #include "xml.h"    //XML FILE HANDLING
-#include "shared.h" //GLOBALS
+#include "shared.h"
+#include "Bank.h"
+#include "Bank.h" //GLOBALS
 
 //DECLARE GLOBALS
 //NEW ONES MUST BE ADDED TO SHARED.H
@@ -60,6 +62,8 @@ int main() {
     //READ DATA FILE AND CHECK FOR ERRORS
     readFileSuccesfully = readXML(dataPath);
     
+    
+    
     if (readFileSuccesfully) {
         //RUN PROGRAM
         while(running){
@@ -81,6 +85,7 @@ int main() {
     }
     
     //SAVE TO FILE AND CHECK FOR ERRORS
+    
     savedFileSuccesfully = writeToXML(dataPath);
 	
     if (savedFileSuccesfully) {
@@ -94,5 +99,6 @@ int main() {
     
     
     //RETURN
+        waitForEnter();
 	return 0;
 }

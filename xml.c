@@ -64,11 +64,11 @@ int readXML(char filePath[]){
 	requestStructIndex = 0;
 
 	//ALLOC. STRUCTS
-	info = malloc(sizeof(struct Info));
-	user = malloc(sizeof(struct User));
-	account = malloc(sizeof(struct Account));
-	transaction = malloc(sizeof(struct Transaction));
-	request = malloc(sizeof(struct Request));
+	info = calloc(1, sizeof(struct Info));
+	user = calloc(1, sizeof(struct User));
+	account = calloc(1, sizeof(struct Account));
+	transaction = calloc(1, sizeof(struct Transaction));
+	request = calloc(1, sizeof(struct Request));
     
     currentFile = calloc(20, sizeof(char));
 
@@ -177,7 +177,9 @@ int readXML(char filePath[]){
 	    				strncpy(user[userStructIndex].personal_number, entry, entryIndex);
 	    			}
 	    			else if(!strcmp(tag, "USERNAME")){
-	    				strncpy(user[userStructIndex].username, entry, entryIndex);
+                                    	
+                                    strncpy(user[userStructIndex].username, entry, entryIndex);
+                                    
 	    			}
 	    			else if(!strcmp(tag, "FIRST_NAME")){
 	    				strcpy(user[userStructIndex].first_name, entry);

@@ -1,4 +1,4 @@
-﻿/*
+/*
  Created by: Leslie Dahlberg (ldg14001), Mattias Johansson (mjn14021)
  Projekt: Banksystem
  Mälardalens högskola
@@ -1101,6 +1101,7 @@ void editClient(){
                 }
                 printf("Change succesfull!\n");
                 waitForEnter();
+                break;
             case 8:
                 loop = 0;
                 return;
