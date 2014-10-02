@@ -55,7 +55,7 @@ void showOptions() {
                     quitProgram();
                     break;
                 default:
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     loop = 1;
                     break;
             }
@@ -88,7 +88,7 @@ void showOptions() {
                     quitProgram();
                     break;
                 default:
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     loop = 1;
                     break;
             }
@@ -195,13 +195,13 @@ void registerClient() {
     if (scanf(" %s", personal_number)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
     
     if (!strcmp(personal_number, "#")) {
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -210,7 +210,7 @@ void registerClient() {
     if (scanf(" %s", username)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -219,7 +219,7 @@ void registerClient() {
     if (scanf(" %s", first_name)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -228,7 +228,7 @@ void registerClient() {
     if (scanf(" %s", last_name)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -237,7 +237,7 @@ void registerClient() {
     if (scanf(" %s", address)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -246,7 +246,7 @@ void registerClient() {
     if (scanf(" %s", password)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -261,7 +261,7 @@ void registerClient() {
         if (!strcmp(personal_number, "#")) {
             return;
         }
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
     }
     
     while(1){
@@ -269,7 +269,7 @@ void registerClient() {
         printf("Username: ");
         if(scanf(" %s", username))
             break;
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
     }
     
     while(1){
@@ -277,7 +277,7 @@ void registerClient() {
         printf("First name: ");
         if(scanf(" %s", first_name))
             break;
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
     }
     
     while(1){
@@ -285,7 +285,7 @@ void registerClient() {
         printf("Last name: ");
         if(scanf(" %s", last_name))
             break;
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
     }
     
     while(1){
@@ -293,7 +293,7 @@ void registerClient() {
         printf("Address: ");
         if(scanf(" %s", address))
             break;
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
     }
     
     while(1){
@@ -301,7 +301,7 @@ void registerClient() {
         printf("Password: ");
         if(scanf(" %s", password))
             break;
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
     }*/
     
     //SAVE TO STRUCT
@@ -390,7 +390,7 @@ void showClientOptions() {
                 loop = 0;
                 break;
             default:
-                printf("Invalid input!\n");
+                printf("Action interrupted, cancelling...\n");
                 loop = 1;
                 break;
         }
@@ -413,7 +413,7 @@ void showTransactions() {
     if (scanf(" %d", &accountNumber)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -464,13 +464,13 @@ void newTransactionToPA() {
     if (scanf(" %d", &fromAcc)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
     
     if(account[getAccountIndexByNumber(fromAcc)].user_id != user[loggedInUserIndex].user_id || account[getAccountIndexByNumber(fromAcc)].active != 1){
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -482,12 +482,12 @@ void newTransactionToPA() {
     if (scanf(" %d", &toAcc)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
     if((account[getAccountIndexByNumber(toAcc)].user_id != user[loggedInUserIndex].user_id || fromAcc == toAcc) || account[getAccountIndexByNumber(toAcc)].active != 1){
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -497,7 +497,7 @@ void newTransactionToPA() {
     if (scanf(" %d", &amount)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -565,12 +565,12 @@ void newTransaction() {
     if (scanf(" %d", &fromAcc)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
     if(account[getAccountIndexByNumber(fromAcc)].user_id != user[loggedInUserIndex].user_id || account[getAccountIndexByNumber(fromAcc)].active != 1){
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -581,11 +581,11 @@ void newTransaction() {
     if (scanf(" %d", &toAcc)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
     }
     if((getAccountIndexByNumber(toAcc) >= accountCount || fromAcc == toAcc) || account[getAccountIndexByNumber(toAcc)].active != 1){
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -595,7 +595,7 @@ void newTransaction() {
     if (scanf(" %d", &amount)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -605,7 +605,7 @@ void newTransaction() {
     if (scanf(" %c", &accept)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -678,18 +678,18 @@ void newRequest() {
                         waitForEnter();
                         return;
                     }else{
-                        printf("Invalid input!\n");
+                        printf("Action interrupted, cancelling...\n");
                         waitForEnter();
                         return;
                     }
                 }else{
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
                 break;
             default:
-                printf("Invalid input!\n");
+                printf("Action interrupted, cancelling...\n");
                 waitForEnter();
                 return;
                 break;
@@ -747,7 +747,7 @@ void showAdminOptions() {
                 loop = 0;
                 break;
             default:
-                printf("Invalid input!\n");
+                printf("Action interrupted, cancelling...\n");
                 loop = 1;
                 break;
         }
@@ -803,7 +803,7 @@ void clients(){
                 return;
                 break;
             default:
-                printf("Invalid input!\n");
+                printf("Action interrupted, cancelling...\n");
                 loop = 1;
                 break;
         }
@@ -820,7 +820,7 @@ void listClientAccount(){
     if (scanf(" %d", &userID)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -853,13 +853,13 @@ void registerClientByAdmin() {
     if (scanf(" %s", personal_number)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
     
     if (!strcmp(personal_number, "#")) {
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -868,7 +868,7 @@ void registerClientByAdmin() {
     if (scanf(" %s", username)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -877,7 +877,7 @@ void registerClientByAdmin() {
     if (scanf(" %s", first_name)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -886,7 +886,7 @@ void registerClientByAdmin() {
     if (scanf(" %s", last_name)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -895,7 +895,7 @@ void registerClientByAdmin() {
     if (scanf(" %s", address)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -904,7 +904,7 @@ void registerClientByAdmin() {
     if (scanf(" %s", password)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -913,7 +913,7 @@ void registerClientByAdmin() {
     if (scanf(" %s", userType)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -950,7 +950,7 @@ void deleteClient(){
     if (scanf(" %d", &userID)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -972,7 +972,7 @@ void editClient(){
     if (scanf(" %d", &userID)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -1012,7 +1012,7 @@ void editClient(){
                 if (scanf(" %s", user[userIndex].personal_number)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1026,7 +1026,7 @@ void editClient(){
                 if (scanf(" %s", user[userIndex].username)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1040,7 +1040,7 @@ void editClient(){
                 if (scanf(" %s", user[userIndex].first_name)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1054,7 +1054,7 @@ void editClient(){
                 if (scanf(" %s", user[userIndex].last_name)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1068,7 +1068,7 @@ void editClient(){
                 if (scanf(" %s", user[userIndex].address)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1082,7 +1082,7 @@ void editClient(){
                 if (scanf(" %s", user[userIndex].user_type)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1095,7 +1095,7 @@ void editClient(){
                 if (scanf(" %s", user[userIndex].password)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1107,7 +1107,7 @@ void editClient(){
                 return;
                 break;
             default:
-                printf("Invalid input!\n");
+                printf("Action interrupted, cancelling...\n");
                 loop = 1;
                 break;
         }
@@ -1181,7 +1181,7 @@ void manageAccounts(){
     if (scanf(" %d", &userID)) {
     }else{
         getchar();
-        printf("Invalid input!\n");
+        printf("Action interrupted, cancelling...\n");
         waitForEnter();
         return;
     }
@@ -1221,7 +1221,7 @@ void manageAccounts(){
                 if (scanf(" %d", &accountNumber)) {
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1233,7 +1233,7 @@ void manageAccounts(){
                 return;
                 break;
             default:
-                printf("Invalid input!\n");
+                printf("Action interrupted, cancelling...\n");
                 loop = 1;
                 break;
         }
@@ -1288,13 +1288,13 @@ void showRequests() {
                         }
                         
                     }else if(answer == 'n'){
-                        printf("Invalid input!\n");
+                        printf("Action interrupted, cancelling...\n");
                         waitForEnter();
                         return;
                     }
                 }else{
                     getchar();
-                    printf("Invalid input!\n");
+                    printf("Action interrupted, cancelling...\n");
                     waitForEnter();
                     return;
                 }
@@ -1305,7 +1305,7 @@ void showRequests() {
             
         }else{
             getchar();
-            printf("Invalid input!\n");
+            printf("Action interrupted, cancelling...\n");
             waitForEnter();
             return;
         }
