@@ -236,7 +236,7 @@ void registerClient() {
     }
     
     printf("Address: ");
-    if (scanf(" %s", address)) {
+    if (scanf(" %[^\n]s", address)) {
     }else{
         getchar();
         printf("Action interrupted, cancelling...\n");
@@ -894,7 +894,7 @@ void registerClientByAdmin() {
     }
     
     printf("Address: ");
-    if (scanf(" %s", address)) {
+    if (scanf(" %[^\n]s", address)) {
     }else{
         getchar();
         printf("Action interrupted, cancelling...\n");
@@ -1523,8 +1523,8 @@ void logMessage(char logMessage[]){
 //NEW SCREEN
 void newScreen(){
     
-    //printf("___________________________________________________\n");
-    system("cls");
+    printf("___________________________________________________\n");
+    //system("cls");
 }
 
 //WAIT FOR USER

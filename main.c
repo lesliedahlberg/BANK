@@ -51,11 +51,11 @@ int main() {
 
     
     //PATHS
-    //dataPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/data.xml";
-    //logPath = "/Users/lesliedahlberg/Documents/GITHUB/BANK/log.txt";
+    dataPath = "/Users/lesliedahlberg/Documents/Dev/BANK/data/data.xml";
+    logPath = "/Users/lesliedahlberg/Documents/Dev/BANK/data/log.txt";
     
-    dataPath = "data/data.xml";
-    logPath = "data/log.txt";
+    //dataPath = "data/data.xml";
+    //logPath = "data/log.txt";
 
     //READ DATA FILE AND CHECK FOR ERRORS
     readFileSuccesfully = readXML(dataPath);
