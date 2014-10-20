@@ -129,7 +129,8 @@ int logIn() {
             if (strcmp(user[i].username, username) == 0 && strcmp(user[i].password, password) == 0 && user[i].active == 1) {
                 //DATE FOR LOG
                 char date[100];
-                char message[100];
+                char *message;
+                message = calloc(100, sizeof(char));
                 getDate(date);
                 
                 //SET ENV. VARS
@@ -143,6 +144,7 @@ int logIn() {
                 strcat(message, " logged in: ");
                 strcat(message, date);
                 logMessage(message);
+                free(message);
                 
                 //EXIT LOOP
                 i = userCount;
@@ -157,7 +159,7 @@ int logIn() {
 
 //LOG OUT
 void logOut() {
-    //DATE FOR LOG
+    /*//DATE FOR LOG
     char date[100];
     char message[100];
     getDate(date);
@@ -168,7 +170,7 @@ void logOut() {
     strcat(message, user[loggedInUserIndex].username);
     strcat(message, " logged out: ");
     strcat(message, date);
-    logMessage(message);
+    logMessage(message);*/
     
     //SET ENV. VARS
     loggedIn = 0;
