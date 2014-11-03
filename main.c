@@ -51,11 +51,11 @@ int main() {
 
     
     //PATHS
-    dataPath = "/Users/lesliedahlberg/Documents/Dev/BANK/data/data.xml";
-    logPath = "/Users/lesliedahlberg/Documents/Dev/BANK/data/log.txt";
+    //dataPath = "/Users/lesliedahlberg/Documents/Dev/BANK/data/data.xml";
+    //logPath = "/Users/lesliedahlberg/Documents/Dev/BANK/data/log.txt";
     
-    //dataPath = "data/data.xml";
-    //logPath = "data/log.txt";
+    dataPath = "data/data.xml";
+    logPath = "data/log.txt";
 
     //READ DATA FILE AND CHECK FOR ERRORS
     readFileSuccesfully = readXML(dataPath);
@@ -98,5 +98,10 @@ int main() {
     
     //RETURN
         waitForEnter();
+        free(info);
+        free(user);
+        free(account);
+        free(transaction);
+        free(request);
 	return 0;
 }
